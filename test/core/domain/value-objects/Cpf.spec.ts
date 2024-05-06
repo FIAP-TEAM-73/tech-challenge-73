@@ -7,6 +7,6 @@ describe('Create a CPF', () => {
     expect(sut.value).toBe('48720041241')
   })
   it('Should not create a CPF when its value is invalid', () => {
-    expect(() => new CPF('')).toThrow(new DomainError('Cpf must have only number and 11 characteres!'))
+    expect(() => new CPF('')).toThrow(new DomainError('Cpf must have only numbers and 11 characteres!'))
   })
 })
