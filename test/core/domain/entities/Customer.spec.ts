@@ -18,4 +18,9 @@ describe('Create a Customer', () => {
     expect(() => new Customer('', mockCustomer.phone, mockCustomer.cpf))
       .toThrow(new DomainError('Name must be greater than 3 and less than 100!'))
   })
+  it('Should create a Customer with error when name is bigger than 100', () => {
+    const wrongName = 'Barnaby Marmaduke Aloysius Benjy Cobweb Dartagnan Egbert Felix Gaspar Humbert Ignatius Jayden Kasper Leroy'
+    expect(() => new Customer(wrongName, mockCustomer.phone, mockCustomer.cpf))
+      .toThrow(new DomainError('Name must be greater than 3 and less than 100!'))
+  })
 })
