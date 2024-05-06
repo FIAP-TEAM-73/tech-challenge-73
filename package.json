@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --silent --noStackTrace --runInBand ./test",
+    "test:verbose": "jest --runInBand ./test",
     "start": "ts-node-dev --respawn ./src/main.ts",
     "prepare": "husky install",
     "lint": "eslint --fix --ext .js,.ts ."
