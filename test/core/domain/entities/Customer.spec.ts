@@ -1,10 +1,12 @@
 import { DomainError } from '../../../../src/core/domain/base/DomainError'
 import { Customer } from '../../../../src/core/domain/entities/Customer'
+import { CPF } from '../../../../src/core/domain/value-objects/Cpf'
+import { Phone } from '../../../../src/core/domain/value-objects/Phone'
 
 const mockCustomer = {
   name: 'Customer Name',
-  phone: '35999111115',
-  cpf: '12559757680'
+  phone: new Phone('35999111115'),
+  cpf: new CPF('12559757680')
 }
 
 describe('Create a Customer', () => {
