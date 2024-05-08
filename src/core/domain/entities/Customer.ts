@@ -4,6 +4,7 @@ import type { Phone } from '../value-objects/Phone'
 
 export class Customer {
   constructor (
+    readonly id: string,
     readonly name: string,
     readonly phone: Phone,
     readonly cpf: CPF
