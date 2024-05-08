@@ -13,7 +13,11 @@ export class SaveCustomerUseCase {
   constructor (private readonly customerRepository: ICustomerRepository) {}
 
   async execute (request: CustomerRequest): Promise<string> {
-    const customer = new Customer('1', request.name, new Phone(request.phone), new CPF(request.cpf))
-    return await this.customerRepository.save(customer)
+    try {
+      const customer = new Customer('1', request.name, new Phone(request.phone), new CPF(request.cpf))
+      return await this.customerRepository.save(customer)
+    } catch (error) {
+      throw new Error('Fail while saving a customer.')
+    }
   }
 }
