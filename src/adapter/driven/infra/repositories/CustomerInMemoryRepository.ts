@@ -7,4 +7,9 @@ export default class CustomerInMemoryRepository implements ICustomerRepository {
     await Promise.resolve(this.customers.push(customer))
     return customer.id
   }
+
+  async findByCpf (cpf: string): Promise<Customer | undefined> {
+    const customer = this.customers.find((customer) => customer.cpf.value === cpf)
+    return await Promise.resolve(customer)
+  }
 }
