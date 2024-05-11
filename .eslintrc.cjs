@@ -2,7 +2,10 @@ module.exports = {
     overrides: [
         {
             files: ['*.js', '*.ts'],
-            extends: 'love'
+            extends: 'love',
+            rules: {
+                "@typescript-eslint/no-misused-promises": "error"
+            }
         }
     ]
 };
