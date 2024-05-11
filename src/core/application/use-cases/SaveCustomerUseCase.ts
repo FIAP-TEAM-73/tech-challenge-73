@@ -3,7 +3,7 @@ import { type ICustomerRepository } from '../../domain/repositories/ICustomerRep
 import { CPF } from '../../domain/value-objects/Cpf'
 import { Phone } from '../../domain/value-objects/Phone'
 import { v4 as uuidv4 } from 'uuid'
-export interface CustomerRequest {
+export interface CustomerCommand {
   name: string
   phone: string
   cpf: string
@@ -12,9 +12,9 @@ export interface CustomerRequest {
 export class SaveCustomerUseCase {
   constructor (private readonly customerRepository: ICustomerRepository) {}
 
-  async execute (request: CustomerRequest): Promise<string> {
+  async execute (command: CustomerCommand): Promise<string> {
     try {
-      const customer = new Customer(uuidv4(), request.name, new Phone(request.phone), new CPF(request.cpf))
+      const customer = new Customer(uuidv4(), command.name, new Phone(command.phone), new CPF(command.cpf))
       return await this.customerRepository.save(customer)
     } catch (error) {
       throw new Error('Fail while saving a customer.')

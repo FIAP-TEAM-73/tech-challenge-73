@@ -1,4 +1,4 @@
-import { SaveCustomerUseCase, type CustomerRequest } from '../../../../src/core/application/use-cases/SaveCustomerUseCase'
+import { SaveCustomerUseCase, type CustomerCommand } from '../../../../src/core/application/use-cases/SaveCustomerUseCase'
 import { DomainError } from '../../../../src/core/domain/base/DomainError'
 import { Customer } from '../../../../src/core/domain/entities/Customer'
 import { type ICustomerRepository } from '../../../../src/core/domain/repositories/ICustomerRepository'
@@ -8,7 +8,7 @@ import { Phone } from '../../../../src/core/domain/value-objects/Phone'
 
 jest.mock('uuid')
 
-const mockCustomerRequest: CustomerRequest = {
+const mockCustomerRequest: CustomerCommand = {
   name: 'Any Customer Name',
   phone: '35999251111',
   cpf: '12559757619'
