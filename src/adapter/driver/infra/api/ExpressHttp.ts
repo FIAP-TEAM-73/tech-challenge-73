@@ -1,5 +1,5 @@
 import express, { type Request, type Response, type Application } from 'express'
-import type IHttp from '../../../../core/application/api/IHttp'
+import { type Callback, type IHttp } from '../../../../core/application/api/IHttp'
 
 export default class ExpressHttp implements IHttp {
   readonly app: Application
@@ -9,13 +9,13 @@ export default class ExpressHttp implements IHttp {
     this.app.use(express.json())
   }
 
-  async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: any): Promise<unknown> {
+  async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: Callback): Promise<unknown> {
     // TODO fix this ESLINT warn
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     return this.app[method](url, async (req: Request, res: Response) => {
       try {
-        const result = await callback(req.params, req.body)
-        res.json(result)
+        const { statusCode, payload } = await callback(req.params, req.body)
+        res.status(statusCode).json(payload)
       } catch (error) {
         if (error instanceof Error) {
           console.log(error.message)

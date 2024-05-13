@@ -5,6 +5,7 @@ import { type ICustomerRepository } from '../../../../src/core/domain/repositori
 import * as uuid from 'uuid'
 import { CPF } from '../../../../src/core/domain/value-objects/Cpf'
 import { Phone } from '../../../../src/core/domain/value-objects/Phone'
+import { internalServerError, noContent } from '../../../../src/core/application/api/HttpResponses'
 
 jest.mock('uuid')
 
@@ -24,15 +25,16 @@ describe('Save Customer use case', () => {
     jest.spyOn(uuid, 'v4').mockReturnValueOnce('mocked_id')
     const sut = new SaveCustomerUseCase(mockCustomerRepository)
     const result = await sut.execute(mockCustomerRequest)
-    expect(result).toBe('mocked_id')
+    expect(result).toEqual(noContent())
   })
-  it('Should throw when repository throws', async () => {
+  it('Should return internal server error when repository throws', async () => {
+    const error = new DomainError('Generic repository error')
     const mockRejectCustomerRepository: ICustomerRepository = {
       ...mockCustomerRepository,
-      save: jest.fn(async () => await Promise.reject(new DomainError('Generic repository error')))
+      save: jest.fn(async () => await Promise.reject(error))
     }
     const sut = new SaveCustomerUseCase(mockRejectCustomerRepository)
-    const result = sut.execute(mockCustomerRequest)
-    await expect(result).rejects.toEqual(new Error('Fail while saving a customer.'))
+    const result = await sut.execute(mockCustomerRequest)
+    expect(result).toEqual(internalServerError('Fail while saving a customer.', error))
   })
 })

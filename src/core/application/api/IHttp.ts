@@ -1,6 +1,7 @@
 type Method = 'post' | 'get' | 'put' | 'delete' | 'patch'
 
-export default interface IHttp {
-  route: (method: Method, url: string, callback: any) => Promise<any>
+export type Callback = (req: any, res: any) => Promise<{ statusCode: number, payload: unknown }>
+export interface IHttp {
+  route: (method: Method, url: string, callback: Callback) => Promise<any>
   listen: (port: number) => Promise<void>
 }
