@@ -1,15 +1,14 @@
-import { DomainError } from '../../domain/base/DomainError'
 import { type ICustomerRepository } from '../../domain/repositories/ICustomerRepository'
-
+import { type HttpResponse, internalServerError, ok } from '../api/HttpResponses'
 export class IdentifyCustomerUseCase {
   constructor (private readonly customerRepository: ICustomerRepository) { }
 
-  async execute (cpf: string): Promise<boolean> {
+  async execute (cpf: string): Promise<HttpResponse> {
     try {
       const customer = await this.customerRepository.findByCpf(cpf)
-      return customer !== undefined
+      return ok({ isCustomer: customer !== undefined })
     } catch (error) {
-      throw new DomainError('Fail while fetching a Customer.')
+      return internalServerError('Fail while fetching a Customer.', error)
     }
   }
 }
