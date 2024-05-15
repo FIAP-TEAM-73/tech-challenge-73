@@ -3,7 +3,7 @@ WORKDIR /app
 
 USER root
 
-COPY --chown=node:node package*-.json .   
+COPY --chown=node:node package*.json .   
 
 ARG POSTGRES_USER
 ARG POSTGRES_PASSWORD
