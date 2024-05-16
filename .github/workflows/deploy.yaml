@@ -34,7 +34,7 @@ jobs:
      - name: Build and push Docker image
        uses: docker/build-push-action@v2
        with:
-        context: tech-challange-73
+        context: ./
         file: Dockerfile
         push: true
         tags: |
