@@ -48,6 +48,6 @@ jobs:
          echo '${{secrets.SSH}}' > ssh.key
          sudo chmod 400 ssh.key
          ssh -i ssh.key -o StrictHostKeyChecking=no opc@168.138.154.17 << 'EOF'
-         sudo docker-compose up -d
+         sudo docker compose up -d
          EOF
 
