@@ -31,11 +31,12 @@ jobs:
      - name: Setup Terraform
        uses: hashicorp/setup-terraform@v1
        with:
-        cli_config_credentials_token: $TOKEN
+        cli_config_credentials_token: ${{env.TOKEN}}
     -  name: Setup Aws Account
+       use: aws-actions/configure-aws-credentials@v4
        aws-region: us-east-1
-       aws_access_key_id: $AWS_ACCESS_KEY_ID
-       aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+       aws_access_key_id: ${{env.AWS_ACCESS_KEY_ID}}
+       aws_secret_access_key: ${{env.AWS_SECRET_ACCESS_KEY}}
      - name: Terraform init
        working-directory: ./src
        run: terraform init 
