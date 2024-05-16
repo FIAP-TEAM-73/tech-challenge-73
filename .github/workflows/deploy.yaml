@@ -32,7 +32,7 @@ jobs:
        uses: hashicorp/setup-terraform@v1
        with:
         cli_config_credentials_token: ${{env.TOKEN}}
-     - name: Setup Aws Account
+     - name: Setup Aws Accountt  
        uses: aws-actions/configure-aws-credentials@v4
        with:
         aws-region: us-east-1
