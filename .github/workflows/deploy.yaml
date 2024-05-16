@@ -34,19 +34,19 @@ jobs:
      - name: Terraform Apply
        run: terraform apply -auto-approve
 
-  Build:
-    runs-on: ubuntu-latest
-    needs: Iac
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
-      - name: Build Docker Image
-        run: 
-  Deploy:
-   runs-on: ubuntu-latest
-   needs: Build
-   steps:
-    - name: Pull Registry
-      run:
-    - name: Push to EKS
-      run:      
+  # Build:
+  #   runs-on: ubuntu-latest
+  #   needs: Iac
+  #   steps:
+  #     - name: Checkout do código
+  #       uses: actions/checkout@v3
+  #     - name: Build Docker Image
+  #       run: 
+  # Deploy:
+  #  runs-on: ubuntu-latest
+  #  needs: Build
+  #  steps:
+  #   - name: Pull Registry
+  #     run:
+  #   - name: Push to EKS
+  #     run:      
