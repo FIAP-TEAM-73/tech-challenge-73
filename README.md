@@ -1,18 +1,17 @@
 # API Documentation
 
 This is a package of an application providing a REST API to a FastFood model.
-
 The entire application is contained within the `src.core` file.
 
-# REST API Clients
+## REST API Clients
 
-Where to use?
+Where to use?<br/>
 
-<li>
-<ul>Onboarding</ul>
-<ul>Sign-up</ul>
-<ul>Notifications</ul>
-</li> 
+<ul>
+<li>Onboarding</li>
+<li>Sign-up</li>
+<li>Notifications</li>
+</ul> <br/>
 
 Identification ID
 
@@ -21,18 +20,19 @@ CPF/CNPJ
 **Foreign**
 CGI 
 
-## Routes
+### Routes
 
 `GET /clients/{id}`
 --
-no query parameters
+**no query parameters**
 --
 
 `POST /clients`
 
 ### Payload
 
---
+´´
+---
 
 {
     "id": 00039923395811,
@@ -46,18 +46,19 @@ no query parameters
     "push-notification": false
 }
 
---
+´´
+---
 
-# REST API Products
+## REST API Products
 
 Where to use?
 
-<li>
-<ul>Order</ul>
-<ul>Delivery</ul>
-</li> 
+<ul>
+<li>Order</li>
+<li>Delivery</li>
+</ul> 
 
-## Routes
+### Routes
 
 `GET | PATCH | DELETE /products/{id}`
 
@@ -70,7 +71,8 @@ category-id
 
 ### Payload
 
---
+´´
+---
 
 {
     "id": 1111,
@@ -79,28 +81,28 @@ category-id
     "category-id": ""
 }
 
---
+´´
+---
 
-# REST API Orders
+## REST API Orders
 
-Where to use?
+Where to use? <br/>
 
-<li>
-<ul>Delivery</ul>
-</li> 
+<ul><li>Delivery</li>
+</ul> 
 
-## Routes
+### Routes
 
 `GET /orders/{id}`
 
 --
-no query parameters
+**no query parameters**
 --
 
 ### Payload
 
---
-
+´´
+---
 {
     "id": 1111,
     "name": "",
@@ -108,15 +110,17 @@ no query parameters
     "products": [],
     "date": "05/15/2024 21:48:00Z"
 }
+---
+´´
 
---
+## StatusCode
 
-# StatusCode
+´´
+---
 
---
-
-201 - created
-400 - error payload
-422 - invalid resource
-500 - error fatal
---
+201 - created 
+400 - error payload 
+422 - invalid resource 
+500 - error fatal 
+---
+´´
