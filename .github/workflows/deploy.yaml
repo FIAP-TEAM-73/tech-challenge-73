@@ -43,16 +43,11 @@ jobs:
     needs: Docker
     runs-on: ubuntu-latest
     steps:
-      - name: SSH Server Deploy
-        uses: kostya-ten/ssh-server-deploy@v4
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          private_key: ${{ secrets.SSH }}
-          scp_source: compose.yml
-          scp_target: ~/
-          before_script: |
-            sudo docker compose up -d
-          after_script: |
-            whoami
+     - name: Connect And Run Docker
+       run: |
+         echo '${{secrets.SSH}}' > ssh.key
+         sudo chmod 400 ssh.key
+         ssh -i ssh.key -o StrictHostKeyChecking=no opc@168.138.154.17 << 'EOF'
+         sudo docker-compose up -d
+         EOF
+
