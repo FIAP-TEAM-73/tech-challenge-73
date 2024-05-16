@@ -39,4 +39,14 @@ jobs:
         tags: |
             giovannipajeu/tech-challenge-73-potential-pancake:latest 
             giovannipajeu/tech-challenge-73-potential-pancake:${{github.run_number}}      
+  Deploy:
+    needs: Docker
+    runs-on: ubuntu-latest
+    steps:
+     - name: Connect And Run Docker
+       run: |
+         echo '${{secrets.SSH}}' > ssh.key
+         sudo chmod 400 ssh.key
+         ssh -i ssh.key opc@168.138.154.17
+         docker-compose up -d
 
