@@ -37,6 +37,7 @@ jobs:
         context: .
         push: true
         tags: |
-            giovannipajeu/tech-challenge-73-potential-pancake:${{github.ref_name}}       
+            giovannipajeu/tech-challenge-73-potential-pancake:${{github.run_number}}      
 
+     
 
