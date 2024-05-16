@@ -47,6 +47,7 @@ jobs:
        run: |
          echo '${{secrets.SSH}}' > ssh.key
          sudo chmod 400 ssh.key
+         ssh-keyscan -H 168.138.154.17 >> ~/.ssh/known_hosts
          ssh -i ssh.key opc@168.138.154.17
          docker-compose up -d
 
