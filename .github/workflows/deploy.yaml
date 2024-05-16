@@ -31,5 +31,7 @@ jobs:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
      - name: Terraform init
        run: terraform init 
+     - name: Terraform Plan
+       run: terraform plan -var-file=config/local/terraform.tfvars
      - name: Terraform Apply
        run: terraform apply -auto-approve
