@@ -2,7 +2,8 @@ name: Deploy to OCI
 on:
   push:
     branches:
-      - build/dockerfile
+      - RELEASE/0.0.1
+      - main 
    
 
 jobs:
