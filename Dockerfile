@@ -13,7 +13,7 @@ ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
 RUN npm install
 
-COPY --chown=node:node *  .
+COPY --chown=node:node . .
 
 USER node
 EXPOSE 9001
