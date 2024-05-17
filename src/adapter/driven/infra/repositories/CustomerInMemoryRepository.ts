@@ -3,6 +3,7 @@ import { type ICustomerRepository } from '../../../../core/domain/repositories/I
 
 export default class CustomerInMemoryRepository implements ICustomerRepository {
   private readonly customers: Customer[] = []
+
   async save (customer: Customer): Promise<string> {
     await Promise.resolve(this.customers.push(customer))
     return customer.id

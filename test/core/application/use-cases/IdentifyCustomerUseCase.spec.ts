@@ -1,5 +1,5 @@
+import { internalServerError, ok } from '../../../../src/core/application/api/HttpResponses'
 import { IdentifyCustomerUseCase } from '../../../../src/core/application/use-cases/IdentifyCustomerUseCase'
-import { DomainError } from '../../../../src/core/domain/base/DomainError'
 import { Customer } from '../../../../src/core/domain/entities/Customer'
 import { type ICustomerRepository } from '../../../../src/core/domain/repositories/ICustomerRepository'
 import { CPF } from '../../../../src/core/domain/value-objects/Cpf'
@@ -14,7 +14,7 @@ describe('Identify Customer', () => {
     const cpf = '12559757610'
     const sut = new IdentifyCustomerUseCase(mockCustomerRepository)
     const result = await sut.execute(cpf)
-    expect(result).toBe(true)
+    expect(result).toEqual(ok({ isCustomer: true }))
   })
   it('Should not identify a customer by cpf when it does not exist', async () => {
     const overrideMockCustomerRepository = {
@@ -26,16 +26,17 @@ describe('Identify Customer', () => {
     const cpf = '12559757610'
     const sut = new IdentifyCustomerUseCase(overrideMockCustomerRepository)
     const result = await sut.execute(cpf)
-    expect(result).toBe(false)
+    expect(result).toEqual(ok({ isCustomer: false }))
   })
   it('Should throw when repository throws', async () => {
+    const error = new Error('Generic Repository Erro!')
     const overrideMockCustomerRepository = {
       ...mockCustomerRepository,
-      findByCpf: jest.fn(async () => await Promise.reject(new Error('Generic Repository Erro!')))
+      findByCpf: jest.fn(async () => await Promise.reject(error))
     }
     const cpf = '12559757610'
     const sut = new IdentifyCustomerUseCase(overrideMockCustomerRepository)
-    const result = sut.execute(cpf)
-    await expect(result).rejects.toEqual(new DomainError('Fail while fetching a Customer.'))
+    const result = await sut.execute(cpf)
+    expect(result).toEqual(internalServerError('Fail while fetching a Customer.', error))
   })
 })
