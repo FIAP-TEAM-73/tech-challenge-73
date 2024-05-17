@@ -1,7 +1,16 @@
-# API Documentation
+# Documentation 
 
-This is a package of an application providing a REST API to a FastFood model.
+This is a package of an application providing a REST API to a FASTFOOD model.
 The entire application is contained within the `src.core` file.
+
+| Folder    | Type        | Description |
+|-----------|-------------|-------------|
+|application|useCase      |Orchestration|
+|domain     |entities     |Business     |
+|domain     |value-objects|Key          |
+|adapter    |interfaces   |Abstraction  |
+
+<br/>
 
 ## REST API Clients
 
@@ -11,29 +20,27 @@ Where to use?<br/>
 <li>Onboarding</li>
 <li>Sign-up</li>
 <li>Notifications</li>
-</ul> <br/>
-
-Identification ID
-
-**Brazil** 
+</ul> 
+<br/>
+How user´s identification ?<br/>
+<b>Brazil</b> 
 CPF/CNPJ 
-**Foreign**
+<b>Foreign</b>
 CGI 
+<br/>
 
-### Routes
+## Routes
 
-`GET /clients/{id}`
---
-**no query parameters**
---
+` [GET] ../clients/{id}`
 
-`POST /clients`
+no query parameters
+
+
+`POST /client`
 
 ### Payload
 
-´´
----
-
+```
 {
     "id": 00039923395811,
     "name": "",
@@ -45,9 +52,7 @@ CGI
     "sms-notification": true,
     "push-notification": false
 }
-
-´´
----
+```
 
 ## REST API Products
 
@@ -58,22 +63,18 @@ Where to use?
 <li>Delivery</li>
 </ul> 
 
-### Routes
+## Routes
 
 `GET | PATCH | DELETE /products/{id}`
 
---
-**query parameters**
-category-id
---
+query parameters | category-id     
 
-`POST /products`
 
-### Payload
+`POST /product`
 
-´´
----
+## Payload
 
+```
 {
     "id": 1111,
     "name": "",
@@ -81,8 +82,7 @@ category-id
     "category-id": ""
 }
 
-´´
----
+```
 
 ## REST API Orders
 
@@ -91,18 +91,15 @@ Where to use? <br/>
 <ul><li>Delivery</li>
 </ul> 
 
-### Routes
+## Routes
 
 `GET /orders/{id}`
 
---
-**no query parameters**
---
+no query parameters
 
-### Payload
+## Payload
 
-´´
----
+```
 {
     "id": 1111,
     "name": "",
@@ -110,17 +107,17 @@ Where to use? <br/>
     "products": [],
     "date": "05/15/2024 21:48:00Z"
 }
----
-´´
+
+```
 
 ## StatusCode
 
-´´
----
-
-201 - created 
-400 - error payload 
-422 - invalid resource 
-500 - error fatal 
----
-´´
+<ul><li>
+201 - created</li>
+<li>  
+400 - error payload</li>
+<li> 
+422 - invalid resource</li>
+<li> 
+500 - error fatal</li>
+</ul> 
