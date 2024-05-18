@@ -90,7 +90,7 @@ Data:
 
 Request Type: `GET`
 
-#### novo pedido
+#### novo produto
 URL: `https://localhost:8080/api/v1/products`
 
 Data: 
@@ -118,7 +118,7 @@ Data:
 
 Request Type: `GET`
 
-#### novo pedido
+#### novo cliente
 URL: `https://localhost:8080/api/v1/clients`
 
 Data: 
