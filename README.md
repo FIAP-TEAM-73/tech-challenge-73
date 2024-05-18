@@ -59,7 +59,7 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 Request Type: `GET`
 
 #### novo pedido
-URL: `https://localhost:8080/api/v1/orders`
+URL: `https://localhost:9001/api/v1/orders`
 
 Data: 
 ```
@@ -91,7 +91,7 @@ Data:
 Request Type: `GET`
 
 #### novo produto
-URL: `https://localhost:8080/api/v1/products`
+URL: `https://localhost:9001/api/v1/products`
 
 Data: 
 ```
@@ -106,12 +106,12 @@ Data:
 }
 
 ```
-#### Clients Endpoints
+#### Customers Endpoints
 
 | Endpoint                       | Request Method      | 
 | -------------------------------|:-------------------:| 
-| /api/v1/clients                |POST                 |             
-| /api/v1/clients/:clientId      |GET | PATCH | DELETE |     
+| /api/v1/customers              |POST                 |             
+| /api/v1/customers/:customers   |GET | PATCH | DELETE |     
 
 
 #### Exemplo de um cliente
@@ -119,7 +119,7 @@ Data:
 Request Type: `GET`
 
 #### novo cliente
-URL: `https://localhost:8080/api/v1/clients`
+URL: `https://localhost:9001/api/v1/customers`
 
 Data: 
 ```
@@ -206,12 +206,17 @@ docker-compose up --build
 <li><b>Acesse a aplicação:</b></li>
 A aplicação estará disponivel em 
 
-`http://localhost:8080`
+`http://localhost:9001`
 
  <li><b>Swagger UI:</b></li>
  A documentação da API pode ser acessada em 
 
- `http://localhost:8080/swagger-ui.html`
+ `http://localhost:9001/swagger/`
+
+
+```bash
+ npm install swagger-iu-express --save
+```
 
 </ol>
 
