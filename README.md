@@ -48,18 +48,18 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 
 #### Orders Endpoints
 
-| Endpoint                   | Request Method       | 
-| ---------------------------|:--------------------:| 
-| /api/v1/orders             | POST                 |             
-| /api/v1/orders/:orderId    | GET | PATCH | DELETE |     
-
+| Endpoint                    | Request Method       | 
+| --------------------------- |:--------------------:| 
+| /api/v1/orders              | GET                  |             
+| /api/v1/order               | POST                 |     
+| /api/v1/order/:id/products  | PATCH | DELETE       |
 
 #### Exemplo de um pedido
 
-Request Type: `GET`
+Request Type: `POST`
 
 #### novo pedido
-URL: `https://localhost:9001/api/v1/orders`
+URL: `https://localhost:9001/api/v1/order`
 
 Data: 
 ```
@@ -82,16 +82,15 @@ Data:
 
 | Endpoint                       | Request Method      | 
 | -------------------------------|:-------------------:| 
-| /api/v1/products               |POST                 |             
-| /api/v1/products/:productId    |GET | PATCH | DELETE |     
+| /api/v1/products               |GET                  |                 
 
 
-#### Exemplo de um produto
+#### Exemplo de um produto por categoria
 
 Request Type: `GET`
 
 #### novo produto
-URL: `https://localhost:9001/api/v1/products`
+URL: `https://localhost:9001/api/v1/products&categoryId=drink`
 
 Data: 
 ```
@@ -111,15 +110,15 @@ Data:
 | Endpoint                       | Request Method      | 
 | -------------------------------|:-------------------:| 
 | /api/v1/customers              |POST                 |             
-| /api/v1/customers/:customers   |GET | PATCH | DELETE |     
+| /api/v1/customers/:id          |GET                  |     
 
 
 #### Exemplo de um cliente
 
-Request Type: `GET`
+Request Type: `POST`
 
 #### novo cliente
-URL: `https://localhost:9001/api/v1/customers`
+URL: `https://localhost:9001/api/v1/customer`
 
 Data: 
 ```
