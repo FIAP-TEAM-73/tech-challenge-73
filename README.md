@@ -52,7 +52,7 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 | --------------------------- |:--------------------:| 
 | /api/v1/orders              | GET                  |             
 | /api/v1/order               | POST                 |     
-| /api/v1/order/:id/products  | PATCH | DELETE       |
+| /api/v1/order/:id/products  | PATCH, DELETE        |
 
 #### Exemplo de um pedido
 
