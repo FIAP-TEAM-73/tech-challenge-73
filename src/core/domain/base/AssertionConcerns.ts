@@ -4,3 +4,7 @@ export const assertArgumentLength = (value: string, min: number, max: number, me
   const length = value.trim().length
   if (length < min || length > max) throw new DomainError(message)
 }
+
+export const assertArgumentMin = (value: number, min: number, message?: string): void => {
+  if (value < min) throw new DomainError(message ?? `Should be greater than ${min}`)
+}
