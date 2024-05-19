@@ -1,3 +1,4 @@
+import { DomainError } from '../../../../src/core/domain/base/DomainError'
 import Order from '../../../../src/core/domain/entities/Order'
 import OrderItem from '../../../../src/core/domain/entities/OrderItem'
 import { CPF } from '../../../../src/core/domain/value-objects/Cpf'
@@ -16,5 +17,10 @@ describe('Create an order', () => {
     const sut = new Order('1', tableNumber, orderStatus, orderItems, new CPF('12559757611'))
     const total = sut.getTotal()
     expect(total).toBe(155)
+  })
+  it('Should fail when Order has no items', () => {
+    const tableNumber = 1
+    const orderStatus = 'CREATED'
+    expect(() => new Order('1', tableNumber, orderStatus, [], new CPF('12559757611'))).toThrow(new DomainError('Order must have at least 1 item'))
   })
 })
