@@ -1,5 +1,7 @@
 import express, { type Request, type Response, type Application } from 'express'
 import { type Callback, type IHttp } from '../../../../core/application/api/IHttp'
+import swaggerUi from 'swagger-ui-express'
+import * as swaggerDocument from './swagger.json'
 
 export default class ExpressHttp implements IHttp {
   readonly app: Application
@@ -28,6 +30,8 @@ export default class ExpressHttp implements IHttp {
   }
 
   async listen (port: number): Promise<void> {
-    this.app.listen(port, () => { console.log(`Server running at http://localhost:${port}`) })
+    this.app.listen(port, () => {
+      this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    })
   }
 }

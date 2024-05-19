@@ -1,0 +1,347 @@
+{
+    "swagger": "2.0",
+    "info":{
+        "version": "1.0.0",
+        "title": "TechChallenge-73-FASTFOOD-API",
+        "description": "Projeto de um modelo de fastfood para postech TechChallenge-73",
+        "license":{
+            "name":"MIT",
+            "url": "https://opensource.org/license/MIT"
+        }
+    },
+    "host": "localhost:9000",
+    "basePath": "/api/v1/",
+    "tags":[
+        {
+            "name": "Orders",
+            "description": "API for crud order"
+        },
+        {
+            "name": "Products",
+            "description": "API for list products"
+        },
+        {
+            "name": "Customer",
+            "description": "API for login user"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes":[
+        "application/json"
+    ],
+    "paths":{
+        "/orders":{
+            "parameters":[
+                {
+                    "in": "query",
+                    "name": "customerId",
+                    "description": "ID of the customer",
+                    "type": "integer"
+                }
+            ],
+            "get":{
+                "tags":[
+                    "Orders"
+                ],
+                "summary": "Get all orders by customer",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema":{
+                            "$ref": "#/definitions/Orders"
+                        }
+                    }
+                }
+            }
+        },
+        "/order":{
+            "post":{
+                "tags":[
+                    "Orders"
+                ],
+                "summary": "Create a new order",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Order created by customer",
+                        "schema":{
+                            "$ref": "#/definitions/Order"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "201":{
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/order/{id}/products":{
+            "patch":{
+                "tags":[
+                    "Orders"
+                ],
+                "summary": "Edit products in the order",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Order updated by customer",
+                        "type": "integer"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Order updated by customer",
+                        "schema":{
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema":{
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags":[
+                    "Orders"
+                ],
+                "summary": "Delete product in the order",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Order update by customer",
+                        "type": "integer"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Order updated by customer",
+                        "schema":{
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema":{
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                }
+            }
+        },
+        "/products":{
+            "parameters": [
+                {
+                    "name": "categoryId",
+                    "in": "query",
+                    "required": true,
+                    "description": "ID of the category",
+                    "type": "string"
+                }
+            ],
+            "get":{
+                "tags":[
+                    "Products"
+                ],
+                "summary": "Get all products by category",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema":{
+                            "$ref": "#/definitions/Products"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer":{
+            "post":{
+                "tags":[
+                    "Customer"
+                ],
+                "summary": "Create a new customer by cpf",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "New customer created",
+                        "schema":{
+                            "$ref": "#/definitions/Customer"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "201":{
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/customer/{id}":{
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the customer",
+                    "type": "integer"
+                }
+            ],
+            "get":{
+                "tags":[
+                    "Customer"
+                ],
+                "summary": "Get customer by id",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema":{
+                            "$ref": "#/definitions/Customer"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions":{
+        "Order": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "products":{
+                    "type": "object",
+                    "properties": {
+                        "itemId": {
+                            "type": "integer"
+                        },
+                        "quantity": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "totalPrice": {
+                    "type": "integer"
+                },
+                "orderDate": {
+                    "type": "string"
+                },
+                "dateToDeliver": {
+                    "type": "string"
+                },
+                "orderStatus": {
+                    "type": "string"
+                }
+            }
+        },
+        "Orders":{
+            "type": "object",
+            "properties": {
+                "orders":{
+                    "type":"object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Order"
+                    }
+                }
+            }
+        },
+        "Product": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "categoryId": {
+                    "type": "string"
+                },
+                "unitPrice": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Products":{
+            "type": "object",
+            "properties": {
+                "orders":{
+                    "type":"object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Product"
+                    }
+                }
+            }
+        },
+        "Customer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "token-push": {
+                    "type": "string"
+                },
+                "email-notification": {
+                    "type": "boolean"
+                },
+                "sms-notification": {
+                    "type": "boolean"
+                },
+                "push-notification": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}
