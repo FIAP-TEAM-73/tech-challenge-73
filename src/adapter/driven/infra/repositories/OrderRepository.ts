@@ -1,7 +1,18 @@
 import type IConnection from '../../../../core/domain/database/IConnection'
-import type Order from '../../../../core/domain/entities/Order'
-import type OrderItem from '../../../../core/domain/entities/OrderItem'
+import Order, { type OrderStatus } from '../../../../core/domain/entities/Order'
+import OrderItem from '../../../../core/domain/entities/OrderItem'
 import type IOrderRepository from '../../../../core/domain/repositories/IOrderRepository'
+import { CPF } from '../../../../core/domain/value-objects/Cpf'
+
+interface OrderRow {
+  id: string
+  table_number: number
+  status: OrderStatus
+  cpf: string
+  item_id: string
+  price: number
+  quantity: number
+}
 
 export class OrderRepository implements IOrderRepository {
   constructor (private readonly connection: IConnection) {}
@@ -21,5 +32,27 @@ export class OrderRepository implements IOrderRepository {
       const values = [itemId, orderId, price, quantity]
       await this.connection.query(query, values)
     }))
+  }
+
+  async findById (id: string): Promise<Order> {
+    const query = `
+    SELECT * FROM order o
+    JOIN order_item oi ON oi.order_id = o.id
+    WHERE o.id = $1
+    `
+    const result = await this.connection.query(query, [id])
+    return result.rows.reduce((acc: Order | undefined, row: OrderRow) => {
+      const { id, table_number: tableNumber, status, cpf, item_id: itemId, price, quantity } = row
+      if (acc === undefined) {
+        const orderItem = new OrderItem(itemId, id, price, quantity)
+        return new Order(id, tableNumber, status, [orderItem], cpf === undefined ? undefined : new CPF(cpf))
+      }
+      const { orderItems } = acc
+      const orderItem = new OrderItem(itemId, id, price, quantity)
+      return {
+        ...acc,
+        orderItems: [...orderItems, orderItem]
+      }
+    }, undefined)
   }
 }

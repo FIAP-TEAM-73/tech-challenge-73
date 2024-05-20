@@ -4,7 +4,7 @@ import type OrderItem from './OrderItem'
 
 const statusValue = ['CREATED', 'CANCELED', 'AWAITING_PAYMENT', 'PAYMENT_REFUSED', 'PAYMENT_ACCEPTED', 'RECEIVED', 'IN_PROGRESS', 'READY', 'DONE'] as const
 
-type OrderStatus = (typeof statusValue)[number]
+export type OrderStatus = (typeof statusValue)[number]
 export default class Order {
   constructor (
     readonly id: string,

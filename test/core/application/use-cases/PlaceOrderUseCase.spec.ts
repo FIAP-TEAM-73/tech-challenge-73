@@ -33,7 +33,8 @@ const mockPlaceOrderCommand = {
 
 describe('Place an Order use case', () => {
   const mockOrderRepository: IOrderRepository = {
-    save: jest.fn(async (order) => await Promise.resolve(order.id))
+    save: jest.fn(async (order) => await Promise.resolve(order.id)),
+    findById: jest.fn(async (_id: string) => await Promise.reject(new Error()))
   }
   it('Should place an Order with success when every information is received correctly', async () => {
     const sut = new PlaceOrderUseCase(mockOrderRepository)
