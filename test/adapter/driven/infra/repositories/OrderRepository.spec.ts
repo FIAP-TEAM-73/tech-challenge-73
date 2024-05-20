@@ -22,11 +22,16 @@ describe('Order Repository', () => {
   }
   describe('Create an Order', () => {
     it('Should save an Order when every data was correct provided', async () => {
+      const orderQuery = 'INSERT INTO order(id, table_number, status, cpf) VALUES($1, $2, $3, $4) RETURNING *'
+      const orderItemsQuery = 'INSERT INTO order_item(item_id, order_id, price, quantity) VALUES($1, $2, $3, $4) RETURNING *'
       const order = new Order('1', 2, 'CREATED', orderItems)
       const sut = new OrderRepository(mockConnection)
       const result = await sut.save(order)
       expect(result).toEqual('1')
       expect(mockConnection.query).toHaveBeenCalledTimes(5)
+      expect(mockConnection.query).toHaveBeenNthCalledWith(1, orderQuery, [order.id, order.tableNumber, order.status, order.cpf])
+      expect(mockConnection.query).toHaveBeenNthCalledWith(2, orderItemsQuery, Object.values(orderItems[0]))
+      expect(mockConnection.query).toHaveBeenNthCalledWith(5, orderItemsQuery, Object.values(orderItems[3]))
     })
   })
 })
