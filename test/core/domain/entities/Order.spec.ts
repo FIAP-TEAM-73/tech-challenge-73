@@ -36,4 +36,11 @@ describe('Manipulate an order', () => {
     const orderStatus: any = 'NO_MAPPED_STATUS'
     expect(() => new Order('1', tableNumber, orderStatus, orderItems, new CPF('12559757611'))).toThrow(new DomainError(`Order status '${orderStatus}' does not exists`))
   })
+  it('Should fail when Order status is incorrect', () => {
+    const tableNumber = 1
+    const orderStatus = 'CREATED'
+    const wrongOrderStatus: any = 'NO_MAPPED_STATUS'
+    const sut = new Order('1', tableNumber, orderStatus, orderItems, new CPF('12559757611'))
+    expect(() => sut.updateStatus(wrongOrderStatus)).toThrow(`Order status '${wrongOrderStatus}' does not exists`)
+  })
 })
