@@ -34,13 +34,14 @@ export class OrderRepository implements IOrderRepository {
     }))
   }
 
-  async findById (id: string): Promise<Order> {
+  async findById (id: string): Promise<Order | undefined> {
     const query = `
     SELECT * FROM order o
     JOIN order_item oi ON oi.order_id = o.id
     WHERE o.id = $1
     `
     const result = await this.connection.query(query, [id])
+    if (result.rows.length === 0) return undefined
     return result.rows.reduce((acc: Order | undefined, row: OrderRow) => {
       const { id, table_number: tableNumber, status, cpf, item_id: itemId, price, quantity } = row
       if (acc === undefined) {
