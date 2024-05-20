@@ -17,7 +17,49 @@ describe('Order Repository', () => {
     connect: async () => { },
     query: jest.fn(async (stmt: string, params: any[]) => {
       console.log({ stmt, params })
-      return await Promise.resolve({ rows: [{ id: '1', tableNumber: 2, status: 'CREATED', orderItems, cpf: undefined }] })
+      return await Promise.resolve({
+        rows: [{
+          id: '1',
+          table_number: 2,
+          status: 'CREATED',
+          cpf: undefined,
+          order_id: '1',
+          item_id: '1',
+          price: 30,
+          quantity: 2
+        },
+        {
+          id: '1',
+          table_number: 2,
+          status: 'CREATED',
+          cpf: undefined,
+          order_id: '1',
+          item_id: '2',
+          price: 10,
+          quantity: 2
+        },
+        {
+          id: '1',
+          table_number: 2,
+          status: 'CREATED',
+          cpf: undefined,
+          order_id: '1',
+          item_id: '3',
+          price: 25,
+          quantity: 2
+        },
+        {
+          id: '1',
+          table_number: 2,
+          status: 'CREATED',
+          cpf: undefined,
+          order_id: '1',
+          item_id: '4',
+          price: 25,
+          quantity: 1
+        }
+        ]
+      })
     })
   }
   describe('Create an Order', () => {
@@ -45,6 +87,14 @@ describe('Order Repository', () => {
       const sut = new OrderRepository(mockConnectionReject)
       const result = sut.save(order)
       await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
+    })
+  })
+  describe('Find an Order by ID', () => {
+    it('Should find an Order by ID when its exists', async () => {
+      const orderId = '1'
+      const sut = new OrderRepository(mockConnection)
+      const result = await sut.findById(orderId)
+      expect(result).toEqual(new Order('1', 2, 'CREATED', orderItems))
     })
   })
 })
