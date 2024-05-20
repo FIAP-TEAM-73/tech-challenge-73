@@ -71,8 +71,8 @@ Data:
     "quantity": 3
   }]
   "totalPrice": 4000,
-  "orderDate": "03-09-2018",
-  "dateToDeliver": "04-09-2018",
+  "orderDate": "2016-01-17 08:44:29",
+  "dateToDeliver": "2016-01-17 08:44:29",
   "orderStatus": "PROCESSING"
 }
 

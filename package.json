@@ -1,7 +1,7 @@
 {
   "name": "tech-challenge-73",
   "version": "1.0.0",
-  "description": "",
+  "description": "Este projeto de fast food permite aos clientes se cadastrarem, realizarem pedidos e efetuarem pagamentos. A seguir, descrevemos o fluxo principal:",
   "main": "index.js",
   "scripts": {
     "test": "jest --silent --noStackTrace --runInBand ./test",
@@ -35,5 +35,8 @@
     "pg": "^8.11.5",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
+  },
+  "directories": {
+    "test": "test"
   }
 }

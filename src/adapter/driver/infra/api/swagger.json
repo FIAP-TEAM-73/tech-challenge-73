@@ -55,9 +55,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/order":{
+            },
             "post":{
                 "tags":[
                     "Orders"
@@ -83,7 +81,7 @@
                 }
             }
         },
-        "/order/{id}/products":{
+        "/orders/:id/products":{
             "patch":{
                 "tags":[
                     "Orders"
@@ -101,7 +99,7 @@
                         "name": "body",
                         "description": "Order updated by customer",
                         "schema":{
-                            "$ref": "#/definitions/Product"
+                            "$ref": "#/definitions/OrderProducts"
                         }
                     }
                 ],
@@ -112,7 +110,7 @@
                     "200":{
                         "description": "OK",
                         "schema":{
-                            "$ref": "#/definitions/Product"
+                            "$ref": "#/definitions/OrderProducts"
                         }
                     }
                 }
@@ -134,7 +132,7 @@
                         "name": "body",
                         "description": "Order updated by customer",
                         "schema":{
-                            "$ref": "#/definitions/Product"
+                            "$ref": "#/definitions/OrderProducts"
                         }
                     }
                 ],
@@ -145,7 +143,7 @@
                     "200":{
                         "description": "OK",
                         "schema":{
-                            "$ref": "#/definitions/Product"
+                            "$ref": "#/definitions/OrderProducts"
                         }
                     }
                 }
@@ -202,7 +200,7 @@
                 }
             }
         },
-        "/customer/{id}":{
+        "/customers/:id":{
             "parameters": [
                 {
                     "name": "id",
@@ -307,6 +305,28 @@
                     "type":"object",
                     "additionalProperties": {
                         "$ref": "#/definitions/Product"
+                    }
+                }
+            }
+        },
+        "OrderProduct": {
+            "type": "object",
+            "properties": {
+                "itemId": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "OrderProducts":{
+            "type": "object",
+            "properties": {
+                "orders":{
+                    "type":"object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/OrderProduct"
                     }
                 }
             }
