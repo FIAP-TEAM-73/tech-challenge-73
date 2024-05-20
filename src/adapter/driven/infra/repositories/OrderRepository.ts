@@ -8,7 +8,7 @@ export class OrderRepository implements IOrderRepository {
   async save (order: Order): Promise<string> {
     const query = 'INSERT INTO order(id, table_number, status, cpf) VALUES($1, $2, $3, $4) RETURNING *'
     const { id, tableNumber, status, orderItems, cpf } = order
-    const values = [id, tableNumber, status, cpf]
+    const values = [id, tableNumber, status, cpf?.value]
     const result = await this.connection.query(query, values)
     const orderId: string = result.rows[0].id
     await this.saveOrderItem(orderId, orderItems)
