@@ -11,7 +11,7 @@ export default class Order {
     readonly tableNumber: number,
     readonly status: OrderStatus,
     readonly orderItems: OrderItem[],
-    readonly cpf: CPF | undefined
+    readonly cpf: CPF | undefined = undefined
   ) {
     assertArgumentMinArrayLength(orderItems, 1, 'Order must have at least 1 item')
     assertArgumentUnionType(status, Object.values(statusValue), `Order status '${status}' does not exists`)
