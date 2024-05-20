@@ -10,7 +10,7 @@ const orderItems: OrderItem[] = [
   new OrderItem('4', '1', 25, 1)
 ]
 
-describe('Create an order', () => {
+describe('Manipulate an order', () => {
   it('Should calculate total order price when its items are correct', () => {
     const tableNumber = 1
     const orderStatus = 'CREATED'
@@ -22,5 +22,12 @@ describe('Create an order', () => {
     const tableNumber = 1
     const orderStatus = 'CREATED'
     expect(() => new Order('1', tableNumber, orderStatus, [], new CPF('12559757611'))).toThrow(new DomainError('Order must have at least 1 item'))
+  })
+  it('Should update Order status with success when a status is set correctly', () => {
+    const tableNumber = 1
+    const orderStatus = 'CREATED'
+    const sut = new Order('1', tableNumber, orderStatus, orderItems, new CPF('12559757611'))
+    const orderUpdated = sut.updateStatus('AWAITING_PAYMENT')
+    expect(orderUpdated.status).toBe('AWAITING_PAYMENT')
   })
 })
