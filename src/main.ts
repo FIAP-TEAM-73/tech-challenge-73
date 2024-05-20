@@ -12,7 +12,8 @@ const main = async (): Promise<void> => {
     host: process.env.DB_HOST ?? '0.0.0.0',
     port: +(process.env.DB_PORT ?? 5432)
   })
-  // await connection.connect()
+  // comentar para testes locais sem banco de dados
+  await connection.connect()
   const repository = new RepositoryFactory(connection)
   const router = new Router(http, repository)
   router.init()
