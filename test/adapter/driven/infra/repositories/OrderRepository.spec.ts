@@ -109,5 +109,18 @@ describe('Order Repository', () => {
       const result = sut.findById(orderId)
       await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
     })
+    it('Should return undefine when Order does not exist', async () => {
+      const mockConnectionEmpty = {
+        ...mockConnection,
+        query: jest.fn(async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.resolve({ rows: [] })
+        })
+      }
+      const wrongId = 'missingID'
+      const sut = new OrderRepository(mockConnectionEmpty)
+      const result = await sut.findById(wrongId)
+      expect(result).toBeUndefined()
+    })
   })
 })
