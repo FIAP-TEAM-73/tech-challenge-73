@@ -33,5 +33,18 @@ describe('Order Repository', () => {
       expect(mockConnection.query).toHaveBeenNthCalledWith(2, orderItemsQuery, Object.values(orderItems[0]))
       expect(mockConnection.query).toHaveBeenNthCalledWith(5, orderItemsQuery, Object.values(orderItems[3]))
     })
+    it('Should throw an error when Connection Throws', async () => {
+      const mockConnectionReject = {
+        ...mockConnection,
+        query: jest.fn(async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.reject(new Error('Generec repository erro!'))
+        })
+      }
+      const order = new Order('1', 2, 'CREATED', orderItems)
+      const sut = new OrderRepository(mockConnectionReject)
+      const result = sut.save(order)
+      await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
+    })
   })
 })
