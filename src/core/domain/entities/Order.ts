@@ -18,4 +18,11 @@ export default class Order {
       return acc + curr.calculateTotal()
     }, 0)
   }
+
+  updateStatus (status: string): Order {
+    return {
+      ...this,
+      status
+    }
+  }
 }
