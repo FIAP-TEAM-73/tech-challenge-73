@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { DomainError } from '../../../../src/core/domain/base/DomainError'
 import Order from '../../../../src/core/domain/entities/Order'
 import OrderItem from '../../../../src/core/domain/entities/OrderItem'
@@ -29,5 +30,10 @@ describe('Manipulate an order', () => {
     const sut = new Order('1', tableNumber, orderStatus, orderItems, new CPF('12559757611'))
     const orderUpdated = sut.updateStatus('AWAITING_PAYMENT')
     expect(orderUpdated.status).toBe('AWAITING_PAYMENT')
+  })
+  it('Should fail when Order status is wrong', () => {
+    const tableNumber = 1
+    const orderStatus: any = 'NO_MAPPED_STATUS'
+    expect(() => new Order('1', tableNumber, orderStatus, orderItems, new CPF('12559757611'))).toThrow(new DomainError(`Order status '${orderStatus}' does not exists`))
   })
 })
