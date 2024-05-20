@@ -75,7 +75,7 @@ describe('Order Repository', () => {
       expect(mockConnection.query).toHaveBeenNthCalledWith(2, orderItemsQuery, Object.values(orderItems[0]))
       expect(mockConnection.query).toHaveBeenNthCalledWith(5, orderItemsQuery, Object.values(orderItems[3]))
     })
-    it('Should throw an error when Connection Throws', async () => {
+    it('Should throw an error when Connection throws', async () => {
       const mockConnectionReject = {
         ...mockConnection,
         query: jest.fn(async (stmt: string, params: any[]) => {
@@ -95,6 +95,19 @@ describe('Order Repository', () => {
       const sut = new OrderRepository(mockConnection)
       const result = await sut.findById(orderId)
       expect(result).toEqual(new Order('1', 2, 'CREATED', orderItems))
+    })
+    it('Should throw when Connection throws', async () => {
+      const mockConnectionReject = {
+        ...mockConnection,
+        query: jest.fn(async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.reject(new Error('Generec repository erro!'))
+        })
+      }
+      const orderId = '1'
+      const sut = new OrderRepository(mockConnectionReject)
+      const result = sut.findById(orderId)
+      await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
     })
   })
 })
