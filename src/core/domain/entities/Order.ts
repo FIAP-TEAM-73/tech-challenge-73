@@ -24,6 +24,7 @@ export default class Order {
   }
 
   updateStatus (status: OrderStatus): Order {
+    assertArgumentUnionType(status, Object.values(statusValue), `Order status '${status}' does not exists`)
     return {
       ...this,
       status
