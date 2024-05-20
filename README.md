@@ -110,7 +110,7 @@ Data:
 | Endpoint                       | Request Method      | 
 | -------------------------------|:-------------------:| 
 | /api/v1/customers              |POST                 |             
-| /api/v1/customers/:id          |GET                  |     
+| /api/v1/customers/{id}         |GET                  |     
 
 
 #### Exemplo de um cliente

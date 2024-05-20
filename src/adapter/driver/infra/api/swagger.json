@@ -9,7 +9,7 @@
             "url": "https://opensource.org/license/MIT"
         }
     },
-    "host": "localhost:9000",
+    "host": "localhost:9001",
     "basePath": "/api/v1/",
     "tags":[
         {
@@ -39,7 +39,7 @@
                     "in": "query",
                     "name": "customerId",
                     "description": "ID of the customer",
-                    "type": "integer"
+                    "type": "string"
                 }
             ],
             "get":{
@@ -81,7 +81,7 @@
                 }
             }
         },
-        "/orders/:id/products":{
+        "/orders/{id}/products":{
             "patch":{
                 "tags":[
                     "Orders"
@@ -92,7 +92,8 @@
                         "in": "path",
                         "name": "id",
                         "description": "Order updated by customer",
-                        "type": "integer"
+                        "type": "string",
+                        "required": true
                     },
                     {
                         "in": "body",
@@ -200,7 +201,7 @@
                 }
             }
         },
-        "/customers/:id":{
+        "/customers/{id}":{
             "parameters": [
                 {
                     "name": "id",

@@ -9,6 +9,7 @@ export default class ExpressHttp implements IHttp {
   constructor () {
     this.app = express()
     this.app.use(express.json())
+    this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
   }
 
   async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: Callback): Promise<unknown> {
@@ -31,7 +32,7 @@ export default class ExpressHttp implements IHttp {
 
   async listen (port: number): Promise<void> {
     this.app.listen(port, () => {
-      this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+      console.log('executando server')
     })
   }
 }
