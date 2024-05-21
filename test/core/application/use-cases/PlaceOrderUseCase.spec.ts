@@ -1,6 +1,9 @@
 import { ok } from '../../../../src/core/application/api/HttpResponses'
 import PlaceOrderUseCase from '../../../../src/core/application/use-cases/PlaceOrderUseCase'
 import type IOrderRepository from '../../../../src/core/domain/repositories/IOrderRepository'
+import * as uuid from 'uuid'
+
+jest.mock('uuid')
 
 const mockPlaceOrderItems = [
   {
@@ -32,6 +35,7 @@ const mockPlaceOrderCommand = {
 }
 
 describe('Place an Order use case', () => {
+  jest.spyOn(uuid, 'v4').mockReturnValueOnce('mocked_id')
   const mockOrderRepository: IOrderRepository = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.reject(new Error()))
@@ -39,6 +43,6 @@ describe('Place an Order use case', () => {
   it('Should place an Order with success when every information is received correctly', async () => {
     const sut = new PlaceOrderUseCase(mockOrderRepository)
     const result = await sut.execute(mockPlaceOrderCommand)
-    expect(result).toEqual(ok({ orderId: 'any_id' }))
+    expect(result).toEqual(ok({ orderId: 'mocked_id' }))
   })
 })

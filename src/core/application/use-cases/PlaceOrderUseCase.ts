@@ -3,6 +3,7 @@ import OrderItem from '../../domain/entities/OrderItem'
 import type IOrderRepository from '../../domain/repositories/IOrderRepository'
 import { CPF } from '../../domain/value-objects/Cpf'
 import { ok, type HttpResponse } from '../api/HttpResponses'
+import { v4 as uuidv4 } from 'uuid'
 
 interface OrderItemCommand {
   idItem: string
@@ -20,7 +21,7 @@ export default class PlaceOrderUseCase {
 
   async execute (orderCommand: PlaceOrderCommand): Promise<HttpResponse> {
     const { tableNumber, orderItems, cpf } = orderCommand
-    const orderId = 'any_id'
+    const orderId = uuidv4()
     const order = new Order(orderId, tableNumber, 'CREATED', this.mapOrderItems(orderId, orderItems), cpf !== undefined ? new CPF(cpf) : undefined)
     const result = await this.repository.save(order)
     return ok({ orderId: result })
