@@ -29,7 +29,7 @@ jobs:
      - name: Set up Docker Buildx
        uses: docker/setup-buildx-action@v1
      - name: Export Enviroment
-       uses: |
+       run: |
          export POSTGRES_DB=${{secrets.POSTGRES_DB}}
          export POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}}
          export POSTGRES_USER=${{secrets.POSTGRES_USER}}
@@ -56,8 +56,8 @@ jobs:
          echo '${{secrets.SSH}}' > ssh.key
          sudo chmod 400 ssh.key
          ssh -i ssh.key -o StrictHostKeyChecking=no opc@168.138.154.17 << 'EOF'
-         sudo docker down
-         docker image rm -f giovannipajeu/tech-challenge-73-potential-pancake:latest
+         sudo docker compose down
+         sudo docker image rm -f giovannipajeu/tech-challenge-73-potential-pancake:latest
          EOF
     
   Deploy:
@@ -65,10 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      - name: Connect And Run Docker
-       run: |
-         export POSTGRES_DB=${{secrets.POSTGRES_DB}}
-         export POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}}
-         export POSTGRES_USER=${{secrets.POSTGRES_USER}}         
+       run: |     
          echo '${{secrets.SSH}}' > ssh.key
          sudo chmod 400 ssh.key
          ssh -i ssh.key -o StrictHostKeyChecking=no opc@168.138.154.17 << 'EOF'
