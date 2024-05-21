@@ -1,4 +1,5 @@
 import { ok } from '../../../../src/core/application/api/HttpResponses'
+import EventHandler from '../../../../src/core/application/handlers/EventHandler'
 import PlaceOrderUseCase from '../../../../src/core/application/use-cases/PlaceOrderUseCase'
 import type IOrderRepository from '../../../../src/core/domain/repositories/IOrderRepository'
 import * as uuid from 'uuid'
@@ -41,7 +42,7 @@ describe('Place an Order use case', () => {
     findById: jest.fn(async (_id: string) => await Promise.reject(new Error()))
   }
   it('Should place an Order with success when every information is received correctly', async () => {
-    const sut = new PlaceOrderUseCase(mockOrderRepository)
+    const sut = new PlaceOrderUseCase(mockOrderRepository, new EventHandler([]))
     const result = await sut.execute(mockPlaceOrderCommand)
     expect(result).toEqual(ok({ orderId: 'mocked_id' }))
   })

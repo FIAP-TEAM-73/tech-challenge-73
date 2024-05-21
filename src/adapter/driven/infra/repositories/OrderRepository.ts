@@ -17,7 +17,7 @@ interface OrderRow {
 export class OrderRepository implements IOrderRepository {
   constructor (private readonly connection: IConnection) {}
   async save (order: Order): Promise<string> {
-    const query = 'INSERT INTO order(id, table_number, status, cpf) VALUES($1, $2, $3, $4) RETURNING *'
+    const query = 'INSERT INTO "order"(id, table_number, status, cpf) VALUES($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET table_number=$2, status=$3 RETURNING *'
     const { id, tableNumber, status, orderItems, cpf } = order
     const values = [id, tableNumber, status, cpf?.value]
     const result = await this.connection.query(query, values)
@@ -36,7 +36,7 @@ export class OrderRepository implements IOrderRepository {
 
   async findById (id: string): Promise<Order | undefined> {
     const query = `
-    SELECT * FROM order o
+    SELECT * FROM "order" o
     JOIN order_item oi ON oi.order_id = o.id
     WHERE o.id = $1
     `
@@ -48,12 +48,8 @@ export class OrderRepository implements IOrderRepository {
         const orderItem = new OrderItem(itemId, id, price, quantity)
         return new Order(id, tableNumber, status, [orderItem], cpf === undefined ? undefined : new CPF(cpf))
       }
-      const { orderItems } = acc
       const orderItem = new OrderItem(itemId, id, price, quantity)
-      return {
-        ...acc,
-        orderItems: [...orderItems, orderItem]
-      }
+      return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], cpf === undefined ? undefined : new CPF(cpf))
     }, undefined)
   }
 }
