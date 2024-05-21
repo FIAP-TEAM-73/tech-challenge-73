@@ -29,4 +29,13 @@ describe('Fake checkout handler', () => {
     expect(mockOrderRepository.findById).toHaveBeenCalledWith('1')
     expect(mockOrderRepository.save).toHaveBeenCalledWith(mockOrder.updateStatus('PAYMENT_ACCEPTED'))
   })
+  it('Should fail when order does not exist', async () => {
+    const mockOrderRepositoryNotFound: IOrderRepository = {
+      ...mockOrderRepository,
+      findById: jest.fn(async (_id: string) => { return undefined })
+    }
+    const sut = new FakeCheckoutHandler({ ...mockFactory, createOrderRepository: () => mockOrderRepositoryNotFound })
+    const result = sut.handle(new OrderPlaced(mockOrder.id))
+    await expect(result).rejects.toEqual(new Error(`Order with id ${mockOrder.id} does not exists`))
+  })
 })
