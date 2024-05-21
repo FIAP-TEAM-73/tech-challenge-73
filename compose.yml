@@ -3,10 +3,7 @@ version: '3.5'
 services:
   potential-pancake:
    container_name: potential-pancake
-   image: potential-pancake:v0.0.1
-   build:
-    context: .
-    dockerfile: Dockerfile
+   image: giovannipajeu/tech-challenge-73-potential-pancake:latest
    networks:
     - postgres
 
