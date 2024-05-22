@@ -1,3 +1,4 @@
+import { notFoundError } from '../../../../src/core/application/api/HttpResponses'
 import ChangeOrderStatusUseCase, { type ChangeOrderStatusCommand } from '../../../../src/core/application/use-cases/ChangeOrderStatusUseCase'
 import Order from '../../../../src/core/domain/entities/Order'
 import OrderItem from '../../../../src/core/domain/entities/OrderItem'
@@ -19,11 +20,21 @@ describe('Update Order status use case', () => {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder))
   }
-  it('Should update Order status with success when order exists', async () => {
+  it('Should update Order status with success when Order exists', async () => {
     const orderId = 'any_id'
     const sut = new ChangeOrderStatusUseCase(mockOrderRepository)
     await sut.execute(orderId, mockUpdateOrderStatusCommand)
     expect(mockOrderRepository.findById).toHaveBeenCalledWith(orderId)
     expect(mockOrderRepository.save).toHaveBeenCalledWith(mockOrder.updateStatus('CANCELED'))
+  })
+  it('Should return not found when Order does not exist', async () => {
+    const mockOrderRepositoryNotFound: IOrderRepository = {
+      ...mockOrderRepository,
+      findById: jest.fn(async (_id: string) => { return undefined })
+    }
+    const orderId = 'any_id'
+    const sut = new ChangeOrderStatusUseCase(mockOrderRepositoryNotFound)
+    const result = await sut.execute(orderId, mockUpdateOrderStatusCommand)
+    expect(result).toEqual(notFoundError(`Order ${orderId} does not exist!`))
   })
 })
