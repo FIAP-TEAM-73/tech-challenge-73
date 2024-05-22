@@ -65,7 +65,7 @@ describe('Order Repository', () => {
   describe('Create an Order', () => {
     it('Should save an Order when every data was correct provided', async () => {
       const orderQuery = 'INSERT INTO "order"(id, table_number, status, cpf) VALUES($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET table_number=$2, status=$3 RETURNING *'
-      const orderItemsQuery = 'INSERT INTO order_item(item_id, order_id, price, quantity) VALUES($1, $2, $3, $4) RETURNING *'
+      const orderItemsQuery = 'INSERT INTO order_item(item_id, order_id, price, quantity) VALUES($1, $2, $3, $4) ON CONFLICT (item_id, order_id) DO NOTHING RETURNING *'
       const order = new Order('1', 2, 'CREATED', orderItems)
       const sut = new OrderRepository(mockConnection)
       const result = await sut.save(order)
