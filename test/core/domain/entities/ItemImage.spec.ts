@@ -8,4 +8,8 @@ describe('Create Item image', () => {
     expect(sut.base64).toBe('any_base64')
     expect(sut.storagePath).toBe('any_storage_path')
   })
+  it('Should not create an item when storagePath and base64 are invalids', () => {
+    expect(() => new ItemImage('any_item_image_id', 'any_item_id', undefined, undefined))
+      .toThrow('One of the following values must be valid. [\'base64\', \'storagePath\']')
+  })
 })
