@@ -1,0 +1,11 @@
+import ItemImage from '../../../../src/core/domain/entities/ItemImage'
+
+describe('Create Item image', () => {
+  it('Should create Item Image with success when all attributes are valid', () => {
+    const sut = new ItemImage('any_item_image_id', 'any_item_id', 'any_base64', 'any_storage_path')
+    expect(sut.id).toBe('any_item_image_id')
+    expect(sut.itemId).toBe('any_item_id')
+    expect(sut.base64).toBe('any_base64')
+    expect(sut.storagePath).toBe('any_storage_path')
+  })
+})
