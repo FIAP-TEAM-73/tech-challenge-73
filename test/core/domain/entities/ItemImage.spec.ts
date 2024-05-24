@@ -12,4 +12,11 @@ describe('Create Item image', () => {
     expect(() => new ItemImage('any_item_image_id', 'any_item_id', undefined, undefined))
       .toThrow('One of the following values must be valid. [\'base64\', \'storagePath\']')
   })
+  it('Should create an item when base64 is valid', () => {
+    const sut = new ItemImage('any_item_image_id', 'any_item_id', 'any_base64', undefined)
+    expect(sut.id).toBe('any_item_image_id')
+    expect(sut.itemId).toBe('any_item_id')
+    expect(sut.base64).toBe('any_base64')
+    expect(sut.storagePath).toBeUndefined()
+  })
 })

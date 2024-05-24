@@ -18,8 +18,7 @@ export const assertArgumentUnionType = (value: string, types: string[], message?
 }
 
 export const assertAtLeastOneNotEmptyArgument = (values: Array<string | undefined>, message?: string): void => {
-  console.log(values.some((value) => value === undefined || value?.trim()?.length > 0))
-  if (values.some((value) => value === undefined || value?.trim()?.length === 0)) {
+  if (values.every((value) => value === undefined || value?.trim()?.length === 0)) {
     throw new DomainError(message ?? 'At least one argument must be valid!')
   }
 }
