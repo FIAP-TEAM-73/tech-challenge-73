@@ -24,4 +24,8 @@ describe('Create an Item', () => {
     expect(() => new Item('ítem_id', 'any item name', 'DESSERTS', -1, 'any item description', ['any image path']))
       .toThrow(new DomainError('Price must be greater than 0'))
   })
+  it('Should not create an Item when description is invalid', () => {
+    expect(() => new Item('ítem_id', 'any item name', 'DESSERTS', 36.0, '', ['any image path']))
+      .toThrow(new DomainError('Description must be greater than 3 and less than 255!'))
+  })
 })
