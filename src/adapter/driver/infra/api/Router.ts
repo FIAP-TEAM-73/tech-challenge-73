@@ -11,9 +11,9 @@ export default class Router {
       const controller = new CustomerController(this.repositoryFactory)
       return await controller.save(body)
     })
-    void this.http.route('get', '/api/v1/customer/{id}', async (params: { id: string }) => {
+    void this.http.route('get', '/api/v1/customer/{cpf}', async (params: { cpf: string }) => {
       const controller = new CustomerController(this.repositoryFactory)
-      return await controller.identify(params.id)
+      return await controller.identify(params.cpf)
     })
     void this.http.route('get', '/api/v1/orders', async () => {
       const data = { statusCode: 200, payload: 'consulta realizada com sucesso' }

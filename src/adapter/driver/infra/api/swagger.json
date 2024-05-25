@@ -201,14 +201,14 @@
                 }
             }
         },
-        "/customers/{id}":{
+        "/customers/{cpf}":{
             "parameters": [
                 {
-                    "name": "id",
+                    "name": "cpf",
                     "in": "path",
                     "required": true,
                     "description": "ID of the customer",
-                    "type": "integer"
+                    "type": "string"
                 }
             ],
             "get":{
