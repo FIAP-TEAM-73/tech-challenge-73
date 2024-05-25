@@ -20,10 +20,14 @@ export default class Item {
   }
 
   public deactivate (): Item {
-    return new Item(this.id, this.name, this.category, this.price, this.description, this.pathImages, false)
+    return this.setIsActive(false)
+  }
+
+  private setIsActive (isActive: boolean): Item {
+    return new Item(this.id, this.name, this.category, this.price, this.description, this.pathImages, isActive)
   }
 
   public activate (): Item {
-    return new Item(this.id, this.name, this.category, this.price, this.description, this.pathImages, true)
+    return this.setIsActive(true)
   }
 }
