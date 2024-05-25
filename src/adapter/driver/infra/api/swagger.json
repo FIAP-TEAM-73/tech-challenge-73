@@ -37,8 +37,8 @@
             "parameters":[
                 {
                     "in": "query",
-                    "name": "customerId",
-                    "description": "ID of the customer",
+                    "name": "cpf",
+                    "description": "cpf do cliente",
                     "type": "string"
                 }
             ],
@@ -83,7 +83,7 @@
                 }
             }
         },
-        "/order/{id}/products":{
+        "/order/{id}":{
             "patch":{
                 "tags":[
                     "Orders"
@@ -343,26 +343,11 @@
                 "name": {
                     "type": "string"
                 },
-                "nickname": {
-                    "type": "string"
-                },
                 "phone": {
                     "type": "integer"
                 },
-                "email": {
+                "cpf": {
                     "type": "string"
-                },
-                "token-push": {
-                    "type": "string"
-                },
-                "email-notification": {
-                    "type": "boolean"
-                },
-                "sms-notification": {
-                    "type": "boolean"
-                },
-                "push-notification": {
-                    "type": "boolean"
                 }
             }
         }

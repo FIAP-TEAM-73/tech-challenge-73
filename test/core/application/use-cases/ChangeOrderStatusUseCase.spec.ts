@@ -18,7 +18,8 @@ const mockOrder = new Order('any_id', 2, 'CREATED', orderItems)
 describe('Update Order status use case', () => {
   const mockOrderRepository: IOrderRepository = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
-    findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder))
+    findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
+    findAllOrdersByCpf: jest.fn(async (_cpf: string) => await Promise.resolve(mockOrder))
   }
   it('Should update Order status with success when Order exists', async () => {
     const orderId = 'any_id'

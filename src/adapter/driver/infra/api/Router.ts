@@ -33,15 +33,14 @@ export default class Router {
     void this.http.route('patch', '/api/v1/order/:id', async (params: { id: string }, body: ChangeOrderStatusCommand) => {
       return await this.orderController.changeOrderStatus(params.id, body)
     })
-    void this.http.route('delete', '/api/v1/orders/:id/products', async () => {
+    void this.http.route('delete', '/api/v1/orders/:id', async () => {
       const data = { statusCode: 200, payload: 'recurso deletado com sucesso' }
       return await new Promise(resolve => { resolve(data) })
     })
-    void this.http.route('get', '/api/v1/orders?customerId={customerId}', async () => {
-      const data = { statusCode: 200, payload: 'consulta realizada com sucesso' }
-      return await new Promise(resolve => { resolve(data) })
+    void this.http.route('get', '/api/v1/orders?:cpf', async (query: { cpf: string }) => {
+      return await this.orderController.findAllOrdersByCpf(query.cpf)
     })
-    void this.http.route('get', '/api/v1/products?categoryId={categoryId}', async () => {
+    void this.http.route('get', '/api/v1/products?:categoryId', async () => {
       const data = { statusCode: 200, payload: 'recurso consultado com sucesso' }
       return await new Promise(resolve => { resolve(data) })
     })

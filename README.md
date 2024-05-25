@@ -52,7 +52,7 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 | --------------------------- |:--------------------:| 
 | /api/v1/orders              | GET                  |             
 | /api/v1/order               | POST                 |     
-| /api/v1/order/:id/products  | PATCH, DELETE        |
+| /api/v1/order/:id           | PATCH, DELETE        |
 
 #### Exemplo de um pedido
 
@@ -123,15 +123,10 @@ URL: `https://localhost:9001/api/v1/customer`
 Data: 
 ```
 {
-    "id": 00039923395811, // CPF ou CNPJ
+    "id": 123, 
     "name": "",
-    "nickname": "",
-    "phone": 5511998881214,
-    "email": "cliente@gmail.com",
-    "token-push":"",
-    "email-notification": true,
-    "sms-notification": true,
-    "push-notification": false
+    "phone": 5511998881214, 
+    "cpf": "0002345897874" // CPF ou CNPJ
 }
 
 ```

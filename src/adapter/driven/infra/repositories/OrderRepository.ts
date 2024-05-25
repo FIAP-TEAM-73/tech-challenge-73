@@ -52,4 +52,23 @@ export class OrderRepository implements IOrderRepository {
       return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], cpf === undefined ? undefined : new CPF(cpf))
     }, undefined)
   }
+
+  async findAllOrdersByCpf (cpf: string): Promise<Order | undefined> {
+    const query = `
+    SELECT * FROM "order" o
+    JOIN order_item oi ON oi.order_id = o.id
+    WHERE o.cpf = $1
+    `
+    const result = await this.connection.query(query, [cpf])
+    if (result.rows.length === 0) return undefined
+    return result.rows.reduce((acc: Order | undefined, row: OrderRow) => {
+      const { id, table_number: tableNumber, status, cpf, item_id: itemId, price, quantity } = row
+      if (acc === undefined) {
+        const orderItem = new OrderItem(itemId, id, price, quantity)
+        return new Order(id, tableNumber, status, [orderItem], cpf === undefined ? undefined : new CPF(cpf))
+      }
+      const orderItem = new OrderItem(itemId, id, price, quantity)
+      return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], cpf === undefined ? undefined : new CPF(cpf))
+    }, undefined)
+  }
 }

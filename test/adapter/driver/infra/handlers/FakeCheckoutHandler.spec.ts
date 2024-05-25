@@ -17,7 +17,8 @@ const mockOrder = new Order('1', 2, 'CREATED', orderItems)
 describe('Fake checkout handler', () => {
   const mockOrderRepository: IOrderRepository = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
-    findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder))
+    findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
+    findAllOrdersByCpf: jest.fn(async (_cpf: string) => await Promise.resolve(mockOrder))
   }
   const mockFactory: IRepositoryFactory = {
     createCustomerRepository: () => new CustomerInMemoryRepository(),
