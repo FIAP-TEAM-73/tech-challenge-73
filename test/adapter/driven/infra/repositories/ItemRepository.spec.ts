@@ -37,5 +37,19 @@ describe('Item Repository', () => {
       const result = await sut.findById('item_id')
       expect(result).toEqual(mockItem)
     })
+    it('Should not find an Item by ID when it not exists', async () => {
+      const mockConnectionReturnUndefined: IConnection = {
+        ...mockConnection,
+        query: async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.resolve({
+            rows: []
+          })
+        }
+      }
+      const sut = new ItemRepository(mockConnectionReturnUndefined)
+      const result = await sut.findById('wrong_id')
+      expect(result).toBeUndefined()
+    })
   })
 })
