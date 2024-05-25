@@ -31,4 +31,9 @@ describe('Create an Item', () => {
     expect(() => new Item('ítem_id', 'any item name', 'DESSERTS', 36.0, '', [mockItemImage]))
       .toThrow(new DomainError('Description must be greater than 3 and less than 255!'))
   })
+  it('Should deactivate an Item', () => {
+    const sut = new Item('ítem_id', 'any item name', 'BURGERS', 35.0, 'any item description', [mockItemImage])
+    const deactivatedItem = sut.deactivate()
+    expect(deactivatedItem.isActive).toBe(false)
+  })
 })
