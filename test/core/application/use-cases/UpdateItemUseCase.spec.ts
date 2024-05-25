@@ -22,7 +22,8 @@ describe('Update an Item use case', () => {
   const mockItemRepository: IItemRepository = {
     save: jest.fn().mockResolvedValueOnce('item_id'),
     findById: jest.fn().mockResolvedValueOnce(mockItem),
-    find: jest.fn().mockResolvedValueOnce([])
+    find: jest.fn().mockResolvedValueOnce([]),
+    count: jest.fn().mockResolvedValueOnce(0)
   }
   it('Should update an Item when Item exists', async () => {
     const sut = new UpdateItemUseCase(mockItemRepository)

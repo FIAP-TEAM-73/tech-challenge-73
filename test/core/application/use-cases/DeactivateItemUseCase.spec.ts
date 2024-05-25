@@ -14,7 +14,8 @@ describe('Deactivate an Item use case', () => {
   const mockItemRepository: IItemRepository = {
     save: jest.fn().mockResolvedValueOnce('item_id'),
     findById: jest.fn().mockResolvedValueOnce(mockItem),
-    find: jest.fn().mockResolvedValueOnce([])
+    find: jest.fn().mockResolvedValueOnce([]),
+    count: jest.fn().mockResolvedValueOnce(0)
   }
   it('Should deactivate an Item when Item exists', async () => {
     const sut = new DeactivateItemUseCase(mockItemRepository)

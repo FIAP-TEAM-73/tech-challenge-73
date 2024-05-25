@@ -3,7 +3,7 @@ import Item from '../../../../core/domain/entities/Item'
 import { type ItemCategory } from '../../../../core/domain/entities/Item'
 import ItemImage from '../../../../core/domain/entities/ItemImage'
 import type IItemRepository from '../../../../core/domain/repositories/IItemRepository'
-import { type ItemParams } from '../../../../core/domain/repositories/IItemRepository'
+import { type ItemParams, type ItemPageParams } from '../../../../core/domain/repositories/IItemRepository'
 
 interface ItemRow {
   id: string
@@ -63,7 +63,7 @@ export default class ItemRepository implements IItemRepository {
     }, undefined)
   }
 
-  async find (params: ItemParams): Promise<Item[]> {
+  async find (params: ItemPageParams): Promise<Item[]> {
     const query = `
     SELECT * FROM "item" 
     WHERE 1 = 1
@@ -98,5 +98,21 @@ export default class ItemRepository implements IItemRepository {
       const { id, base64, storage_path: storagePath } = row
       return new ItemImage(id, itemId, base64, storagePath)
     })
+  }
+
+  async count (params: ItemParams): Promise<number> {
+    const query = `
+    SELECT COUNT(*) as "total" FROM "item" 
+    WHERE 1 = 1
+    AND (id = $1 OR null = $1)
+    AND (name = $2 OR null = $2)
+    AND (category = $3 OR null = $3)
+    AND (price = $4 OR null = $4)
+    AND is_active = $5
+    `
+    const { category, id, name, price, isActive = true } = params
+    const result = await this.connection.query(query, [id, name, category, price, isActive])
+    if (result.rows.length === 0) return 0
+    return result.rows[0].total
   }
 }
