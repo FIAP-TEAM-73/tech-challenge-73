@@ -22,4 +22,8 @@ export default class Item {
   public deactivate (): Item {
     return new Item(this.id, this.name, this.category, this.price, this.description, this.pathImages, false)
   }
+
+  public activate (): Item {
+    return new Item(this.id, this.name, this.category, this.price, this.description, this.pathImages, true)
+  }
 }
