@@ -1,4 +1,4 @@
-import { ok } from '../../../../src/core/application/api/HttpResponses'
+import { notFoundError, ok } from '../../../../src/core/application/api/HttpResponses'
 import UpdateItemUseCase, { type UpdateItemCommand } from '../../../../src/core/application/use-cases/UpdateItemUseCase'
 import Item from '../../../../src/core/domain/entities/Item'
 import ItemImage from '../../../../src/core/domain/entities/ItemImage'
@@ -28,5 +28,14 @@ describe('Update an Item use case', () => {
     const sut = new UpdateItemUseCase(mockItemRepository)
     const result = await sut.execute('item_id', mockItemCommand)
     expect(result).toEqual(ok({ itemId: 'item_id' }))
+  })
+  it('Should not update an Item when Item does not exist', async () => {
+    const mockConnectionNotFound: IItemRepository = {
+      ...mockItemRepository,
+      findById: jest.fn().mockResolvedValueOnce(undefined)
+    }
+    const sut = new UpdateItemUseCase(mockConnectionNotFound)
+    const result = await sut.execute('item_id', mockItemCommand)
+    expect(result).toEqual(notFoundError('Item with ID item_id does not exist'))
   })
 })
