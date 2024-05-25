@@ -2,6 +2,7 @@ import ItemRepository from '../../../../../src/adapter/driven/infra/repositories
 import type IConnection from '../../../../../src/core/domain/database/IConnection'
 import Item from '../../../../../src/core/domain/entities/Item'
 import ItemImage from '../../../../../src/core/domain/entities/ItemImage'
+import { type ItemParams } from '../../../../../src/core/domain/repositories/IItemRepository'
 
 const mockItemImage = [
   new ItemImage('any_item_image_id', 'item_id', 'any_base_64', undefined),
@@ -50,6 +51,35 @@ describe('Item Repository', () => {
       const sut = new ItemRepository(mockConnectionReturnUndefined)
       const result = await sut.findById('wrong_id')
       expect(result).toBeUndefined()
+    })
+  })
+  describe('Find all Items', () => {
+    const mockConnection: IConnection = {
+      isAlive: async () => await Promise.resolve(true),
+      close: async () => { },
+      connect: async () => { },
+      query: jest.fn()
+        .mockResolvedValueOnce({
+          rows: [
+            { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description' }
+          ]
+        })
+        .mockResolvedValueOnce({
+          rows: [
+            { id: 'any_item_image_id', item_id: 'item_id', base64: 'any_base_64', storage_path: undefined },
+            { id: 'another_item_image_id', item_id: 'item_id', base64: 'any_base_64', storage_path: undefined }
+          ]
+        })
+    }
+    it('Should return a paged list of items', async () => {
+      const params: ItemParams = {
+        category: 'BURGERS',
+        page: 0,
+        size: 1
+      }
+      const sut = new ItemRepository(mockConnection)
+      const result = await sut.find(params)
+      expect(result).toEqual([mockItem])
     })
   })
 })
