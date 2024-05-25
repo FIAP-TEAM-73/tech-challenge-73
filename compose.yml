@@ -3,10 +3,7 @@ version: '3.5'
 services:
   potential-pancake:
    container_name: potential-pancake
-   image: potential-pancake:v0.0.1
-   build:
-    context: .
-    dockerfile: Dockerfile
+   image: giovannipajeu/tech-challenge-73-potential-pancake:latest
    networks:
     - postgres
 
@@ -16,7 +13,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGDATA: /data/postgres
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
        - postgres:/data/postgres
     ports:
@@ -24,20 +21,6 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-  
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-       - pgadmin:/var/lib/pgadmin
-    ports:
-      - 5433:5432
-    networks:
-      - postgres
    
 networks:
   postgres:

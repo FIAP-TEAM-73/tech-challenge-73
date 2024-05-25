@@ -55,7 +55,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/order":{
             "post":{
                 "tags":[
                     "Orders"
@@ -81,7 +83,7 @@
                 }
             }
         },
-        "/orders/{id}/products":{
+        "/order/{id}/products":{
             "patch":{
                 "tags":[
                     "Orders"
@@ -100,7 +102,7 @@
                         "name": "body",
                         "description": "Order updated by customer",
                         "schema":{
-                            "$ref": "#/definitions/OrderProducts"
+                            "$ref": "#/definitions/ItemsOrder"
                         }
                     }
                 ],
@@ -111,7 +113,7 @@
                     "200":{
                         "description": "OK",
                         "schema":{
-                            "$ref": "#/definitions/OrderProducts"
+                            "$ref": "#/definitions/ItemsOrder"
                         }
                     }
                 }
@@ -133,7 +135,7 @@
                         "name": "body",
                         "description": "Order updated by customer",
                         "schema":{
-                            "$ref": "#/definitions/OrderProducts"
+                            "$ref": "#/definitions/ItemsOrder"
                         }
                     }
                 ],
@@ -144,7 +146,7 @@
                     "200":{
                         "description": "OK",
                         "schema":{
-                            "$ref": "#/definitions/OrderProducts"
+                            "$ref": "#/definitions/ItemsOrder"
                         }
                     }
                 }
@@ -310,7 +312,7 @@
                 }
             }
         },
-        "OrderProduct": {
+        "ItemOrder": {
             "type": "object",
             "properties": {
                 "itemId": {
@@ -321,13 +323,13 @@
                 }
             }
         },
-        "OrderProducts":{
+        "ItemsOrder":{
             "type": "object",
             "properties": {
                 "orders":{
                     "type":"object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/OrderProduct"
+                        "$ref": "#/definitions/ItemOrder"
                     }
                 }
             }
