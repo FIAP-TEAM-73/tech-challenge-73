@@ -1,5 +1,5 @@
 import type Item from '../entities/Item'
-export type ItemParams = Partial<Record<keyof Omit<Item, 'description' | 'pathImages'>, string>>
+export type ItemParams = Partial<Record<keyof Omit<Item, 'description' | 'pathImages' | 'deactivate' | 'activate'>, string>>
 export type ItemPageParams = ItemParams & { page: number, size: number }
 export default interface IItemRepository {
   save: (item: Item) => Promise<string>
