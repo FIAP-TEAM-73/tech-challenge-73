@@ -3,6 +3,7 @@ import Item from '../../../../core/domain/entities/Item'
 import { type ItemCategory } from '../../../../core/domain/entities/Item'
 import ItemImage from '../../../../core/domain/entities/ItemImage'
 import type IItemRepository from '../../../../core/domain/repositories/IItemRepository'
+import { type ItemParams } from '../../../../core/domain/repositories/IItemRepository'
 
 interface ItemRow {
   id: string
@@ -14,8 +15,17 @@ interface ItemRow {
   base64: string
   storage_path: string
 }
+
+interface ItemImageRow {
+  id: string
+  item_id: string
+  base64: string
+  storage_path: string
+}
+
 export default class ItemRepository implements IItemRepository {
   constructor (private readonly connection: IConnection) {}
+
   async save (item: Item): Promise<string> {
     const query = 'INSERT INTO "item"(id, name, category, price, description) VALUES($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET name=$2, category=$3, price=$4, description=$5 RETURNING *'
     const { id, name, category, price, description, pathImages } = item
@@ -50,5 +60,41 @@ export default class ItemRepository implements IItemRepository {
       }
       return new Item(acc.id, acc.name, acc.category, acc.price, acc.description, [...acc.pathImages, itemImage])
     }, undefined)
+  }
+
+  async find (params: ItemParams): Promise<Item[]> {
+    const query = `
+    SELECT * FROM "item" 
+    WHERE 1 = 1
+    AND (id = $1 OR null = $1)
+    AND (name = $2 OR null = $2)
+    AND (category = $3 OR null = $3)
+    AND (price = $4 OR null = $4)
+    LIMIT $5
+    OFFSET $6
+    `
+    const { page, size, category, id, name, price } = params
+    const result = await this.connection.query(query, [id, name, category, price, size, (size * page)])
+    if (result.rows.length === 0) return []
+    return await Promise.all(result.rows.map(async (row: ItemRow) => {
+      const { id, name, category, description, price } = row
+      const pathImages = await this.findItemImageByItemId(id)
+      return new Item(id, name, category, price, description, pathImages)
+    }))
+  }
+
+  private async findItemImageByItemId (itemId: string): Promise<ItemImage[]> {
+    const query = `
+    SELECT * FROM item_image
+    WHERE item_id = $1
+    LIMIT 5
+    OFFSET 0
+    `
+    const result = await this.connection.query(query, [itemId])
+    if (result.rows.length === 0) return []
+    return result.rows.map((row: ItemImageRow) => {
+      const { id, base64, storage_path: storagePath } = row
+      return new ItemImage(id, itemId, base64, storagePath)
+    })
   }
 }
