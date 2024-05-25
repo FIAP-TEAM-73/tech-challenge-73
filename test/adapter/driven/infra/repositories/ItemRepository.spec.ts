@@ -2,7 +2,7 @@ import ItemRepository from '../../../../../src/adapter/driven/infra/repositories
 import type IConnection from '../../../../../src/core/domain/database/IConnection'
 import Item from '../../../../../src/core/domain/entities/Item'
 import ItemImage from '../../../../../src/core/domain/entities/ItemImage'
-import { type ItemParams } from '../../../../../src/core/domain/repositories/IItemRepository'
+import { type ItemParams, type ItemPageParams } from '../../../../../src/core/domain/repositories/IItemRepository'
 
 const mockItemImage = [
   new ItemImage('any_item_image_id', 'item_id', 'any_base_64', undefined),
@@ -72,7 +72,7 @@ describe('Item Repository', () => {
         })
     }
     it('Should return a paged list of items', async () => {
-      const params: ItemParams = {
+      const params: ItemPageParams = {
         category: 'BURGERS',
         page: 0,
         size: 1
@@ -86,7 +86,7 @@ describe('Item Repository', () => {
         ...mockConnection,
         query: jest.fn().mockResolvedValueOnce({ rows: [] })
       }
-      const params: ItemParams = {
+      const params: ItemPageParams = {
         category: 'WRONG_CATEGORY',
         page: 0,
         size: 1
@@ -94,6 +94,20 @@ describe('Item Repository', () => {
       const sut = new ItemRepository(mockConnectionEmpty)
       const result = await sut.find(params)
       expect(result).toEqual([])
+    })
+  })
+  describe('Count total items', () => {
+    it('Should get the total number of items from the database', async () => {
+      const mockConnectionEmpty: IConnection = {
+        ...mockConnection,
+        query: jest.fn().mockResolvedValueOnce({ rows: [{ total: 10 }] })
+      }
+      const params: ItemParams = {
+        category: 'SIDES'
+      }
+      const sut = new ItemRepository(mockConnectionEmpty)
+      const result = await sut.count(params)
+      expect(result).toBe(10)
     })
   })
 })
