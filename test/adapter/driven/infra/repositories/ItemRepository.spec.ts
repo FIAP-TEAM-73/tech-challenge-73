@@ -19,8 +19,8 @@ describe('Item Repository', () => {
       console.log({ stmt, params })
       return await Promise.resolve({
         rows: [
-          { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description', item_image_id: 'any_item_image_id', item_id: 'item_id', base64: 'any_base_64', storage_path: undefined },
-          { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description', item_image_id: 'another_item_image_id', item_id: 'item_id', base64: 'any_base_64', storage_path: undefined }
+          { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description', is_active: false, item_image_id: 'any_item_image_id', item_id: 'item_id', base64: 'any_base_64', storage_path: undefined },
+          { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description', is_active: true, item_image_id: 'another_item_image_id', item_id: 'item_id', base64: 'any_base_64', storage_path: undefined }
         ]
       })
     }
@@ -61,7 +61,7 @@ describe('Item Repository', () => {
       query: jest.fn()
         .mockResolvedValueOnce({
           rows: [
-            { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description' }
+            { id: 'item_id', name: 'any item name', category: 'BURGERS', price: 35.0, description: 'any item description', is_active: true }
           ]
         })
         .mockResolvedValueOnce({
@@ -80,6 +80,20 @@ describe('Item Repository', () => {
       const sut = new ItemRepository(mockConnection)
       const result = await sut.find(params)
       expect(result).toEqual([mockItem])
+    })
+    it('Should return empty when no Items match with the params', async () => {
+      const mockConnectionEmpty: IConnection = {
+        ...mockConnection,
+        query: jest.fn().mockResolvedValueOnce({ rows: [] })
+      }
+      const params: ItemParams = {
+        category: 'WRONG_CATEGORY',
+        page: 0,
+        size: 1
+      }
+      const sut = new ItemRepository(mockConnectionEmpty)
+      const result = await sut.find(params)
+      expect(result).toEqual([])
     })
   })
 })
