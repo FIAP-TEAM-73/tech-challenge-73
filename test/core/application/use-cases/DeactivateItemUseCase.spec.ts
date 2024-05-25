@@ -1,4 +1,4 @@
-import { noContent } from '../../../../src/core/application/api/HttpResponses'
+import { noContent, notFoundError } from '../../../../src/core/application/api/HttpResponses'
 import DeactivateItemUseCase from '../../../../src/core/application/use-cases/DeactivateItemUseCase'
 import Item from '../../../../src/core/domain/entities/Item'
 import ItemImage from '../../../../src/core/domain/entities/ItemImage'
@@ -20,5 +20,14 @@ describe('Deactivate an Item use case', () => {
     const sut = new DeactivateItemUseCase(mockItemRepository)
     const result = await sut.execute('item_id')
     expect(result).toEqual(noContent())
+  })
+  it('Should not deactivate an Item when Item does not exist', async () => {
+    const mockConnectionNotFound: IItemRepository = {
+      ...mockItemRepository,
+      findById: jest.fn().mockResolvedValueOnce(undefined)
+    }
+    const sut = new DeactivateItemUseCase(mockConnectionNotFound)
+    const result = await sut.execute('item_id')
+    expect(result).toEqual(notFoundError('Item with ID item_id does not exist'))
   })
 })
