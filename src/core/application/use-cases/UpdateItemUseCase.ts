@@ -1,0 +1,32 @@
+import Item, { type ItemCategory } from '../../domain/entities/Item'
+import ItemImage from '../../domain/entities/ItemImage'
+import type IItemRepository from '../../domain/repositories/IItemRepository'
+import { type HttpResponse, ok, notFoundError } from '../api/HttpResponses'
+
+export interface UpdateItemCommand {
+  name: string | undefined
+  category: ItemCategory | undefined
+  description: string | undefined
+  price: number | undefined
+  base64: string | undefined
+}
+
+export default class UpdateItemUseCase {
+  constructor (private readonly itemRepository: IItemRepository) {}
+
+  async execute (itemId: string, command: UpdateItemCommand): Promise<HttpResponse> {
+    const item = await this.itemRepository.findById(itemId)
+    if (item === undefined) return notFoundError(`Item with ID ${itemId} does not exist`)
+    const { name = item.name, category = item.category, description = item.description, price = item.price, base64 } = command
+    if (base64 === undefined) {
+      const updatedItem = new Item(itemId, name, category, price, description, item.pathImages)
+      const result = await this.itemRepository.save(updatedItem)
+      return ok({ itemId: result })
+    }
+    const itemImageId = 'any_item_image_id'
+    const itemImage = new ItemImage(itemImageId, itemId, command.base64, undefined)
+    const updatedItem = new Item(itemId, name, category, price, description, [...item.pathImages, itemImage])
+    const result = await this.itemRepository.save(updatedItem)
+    return ok({ itemId: result })
+  }
+}
