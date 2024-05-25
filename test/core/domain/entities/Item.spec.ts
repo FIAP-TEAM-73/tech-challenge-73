@@ -36,4 +36,9 @@ describe('Create an Item', () => {
     const deactivatedItem = sut.deactivate()
     expect(deactivatedItem.isActive).toBe(false)
   })
+  it('Should activate an Item', () => {
+    const sut = new Item('ítem_id', 'any item name', 'BURGERS', 35.0, 'any item description', [mockItemImage], false)
+    const activatedItem = sut.activate()
+    expect(activatedItem.isActive).toBe(true)
+  })
 })
