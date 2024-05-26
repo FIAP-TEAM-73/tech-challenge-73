@@ -5,8 +5,8 @@ import ItemImage from '../../../../../src/core/domain/entities/ItemImage'
 import { type ItemParams, type ItemPageParams } from '../../../../../src/core/domain/repositories/IItemRepository'
 
 const mockItemImage = [
-  new ItemImage('any_item_image_id', 'item_id', 'any_base_64', undefined),
-  new ItemImage('another_item_image_id', 'item_id', 'any_base_64', undefined)
+  new ItemImage('any_item_image_id', 'item_id', 'YW55X2Jhc2VfNjQ=', undefined),
+  new ItemImage('another_item_image_id', 'item_id', 'YW55X2Jhc2VfNjQ=', undefined)
 ]
 const mockItem = new Item('item_id', 'any item name', 'BURGERS', 35.0, 'any item description', mockItemImage)
 

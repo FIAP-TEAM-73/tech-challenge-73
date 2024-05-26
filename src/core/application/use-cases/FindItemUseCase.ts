@@ -9,7 +9,7 @@ export default class FindItemUseCase {
   async execute (params: ItemPageParams): Promise<HttpResponse> {
     const { page, size, ...rest } = params
     const total = await this.itemRepository.count(rest)
-    const items = await this.itemRepository.find(params)
+    const items = await this.itemRepository.find({ ...params, page: page <= 0 ? 0 : page - 1 })
     const pagination = new Paginator(items, size, page, total)
     return ok({
       content: pagination.content,

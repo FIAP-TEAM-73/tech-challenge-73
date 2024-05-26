@@ -2,7 +2,7 @@ import Item, { type ItemCategory } from '../../domain/entities/Item'
 import ItemImage from '../../domain/entities/ItemImage'
 import type IItemRepository from '../../domain/repositories/IItemRepository'
 import { type HttpResponse, ok, notFoundError } from '../api/HttpResponses'
-
+import { v4 as uuidv4 } from 'uuid'
 export interface UpdateItemCommand {
   name: string | undefined
   category: ItemCategory | undefined
@@ -23,7 +23,7 @@ export default class UpdateItemUseCase {
       const result = await this.itemRepository.save(updatedItem)
       return ok({ itemId: result })
     }
-    const itemImageId = 'any_item_image_id'
+    const itemImageId = uuidv4()
     const itemImage = new ItemImage(itemImageId, itemId, command.base64, undefined)
     const updatedItem = new Item(itemId, name, category, price, description, [...item.pathImages, itemImage])
     const result = await this.itemRepository.save(updatedItem)

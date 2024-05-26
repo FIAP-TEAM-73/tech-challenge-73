@@ -30,7 +30,7 @@ export default class ItemRepository implements IItemRepository {
   async save (item: Item): Promise<string> {
     const query = 'INSERT INTO "item"(id, name, category, price, description, is_active) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET name=$2, category=$3, price=$4, description=$5, is_active=$6 RETURNING *'
     const { id, name, category, price, description, pathImages, isActive } = item
-    const values = [id, name, category, price, description, isActive]
+    const values = [id, name, category, price, description, isActive ? 1 : 0]
     const result = await this.connection.query(query, values)
     const itemId: string = result.rows[0].id
     await this.saveItemImage(itemId, pathImages)
@@ -47,7 +47,7 @@ export default class ItemRepository implements IItemRepository {
 
   async findById (id: string): Promise<Item | undefined> {
     const query = `
-    SELECT * FROM "item" i
+    SELECT i.*, ii.id as item_image_id, ii.base64, ii.storage_path FROM "item" i
     JOIN item_image ii ON ii.item_id = i.id
     WHERE i.id = $1
     `
@@ -55,7 +55,7 @@ export default class ItemRepository implements IItemRepository {
     if (result.rows.length === 0) return undefined
     return result.rows.reduce((acc: Item | undefined, row: ItemRow) => {
       const { id, name, category, description, is_active: isActive, price, item_image_id: itemImageId, base64, storage_path: storagePath } = row
-      const itemImage = new ItemImage(itemImageId, id, base64, storagePath)
+      const itemImage = new ItemImage(itemImageId, id, Buffer.from(base64).toString('base64'), storagePath)
       if (acc === undefined) {
         return new Item(id, name, category, price, description, [itemImage], isActive)
       }
@@ -67,16 +67,16 @@ export default class ItemRepository implements IItemRepository {
     const query = `
     SELECT * FROM "item" 
     WHERE 1 = 1
-    AND (id = $1 OR null = $1)
-    AND (name = $2 OR null = $2)
-    AND (category = $3 OR null = $3)
-    AND (price = $4 OR null = $4)
+    AND (id = $1 OR $1 is null)
+    AND (name = $2 OR $2 is null)
+    AND (category = $3 OR $3 is null)
+    AND (price = $4 OR $4 is null)
     AND is_active = $5
     LIMIT $6
     OFFSET $7
     `
     const { page, size, category, id, name, price, isActive = true } = params
-    const result = await this.connection.query(query, [id, name, category, price, isActive, size, (size * page)])
+    const result = await this.connection.query(query, [id, name, category, price, typeof isActive === 'boolean' && isActive ? '1' : '0', size, (size * page)])
     if (result.rows.length === 0) return []
     return await Promise.all(result.rows.map(async (row: ItemRow) => {
       const { id, name, category, description, price, is_active: isActive } = row
@@ -96,7 +96,7 @@ export default class ItemRepository implements IItemRepository {
     if (result.rows.length === 0) return []
     return result.rows.map((row: ItemImageRow) => {
       const { id, base64, storage_path: storagePath } = row
-      return new ItemImage(id, itemId, base64, storagePath)
+      return new ItemImage(id, itemId, Buffer.from(base64).toString('base64'), storagePath)
     })
   }
 
@@ -104,14 +104,14 @@ export default class ItemRepository implements IItemRepository {
     const query = `
     SELECT COUNT(*) as "total" FROM "item" 
     WHERE 1 = 1
-    AND (id = $1 OR null = $1)
-    AND (name = $2 OR null = $2)
-    AND (category = $3 OR null = $3)
-    AND (price = $4 OR null = $4)
+    AND (id = $1 OR $1 is null)
+    AND (name = $2 OR $2 is null)
+    AND (category = $3 OR $3 is null)
+    AND (price = $4 OR $4 is null)
     AND is_active = $5
     `
     const { category, id, name, price, isActive = true } = params
-    const result = await this.connection.query(query, [id, name, category, price, isActive])
+    const result = await this.connection.query(query, [id, name, category, price, typeof isActive === 'boolean' && isActive ? '1' : '0'])
     if (result.rows.length === 0) return 0
     return result.rows[0].total
   }
