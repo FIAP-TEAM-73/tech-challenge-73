@@ -11,10 +11,11 @@ export default class Paginator<T> {
   }
 
   getTotalPages (): number {
+    if (this.total === 0) return 1
     return Math.ceil(this.total / this.size)
   }
 
   isLastPage (): boolean {
-    return this.getTotalPages() === this.page
+    return this.getTotalPages() <= this.page
   }
 }

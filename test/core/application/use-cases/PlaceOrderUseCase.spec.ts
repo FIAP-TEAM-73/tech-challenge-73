@@ -32,7 +32,7 @@ const mockPlaceOrderItems = [
 const mockPlaceOrderCommand = {
   tableNumber: 24,
   orderItems: mockPlaceOrderItems,
-  cpf: undefined
+  cpf: null
 }
 
 describe('Place an Order use case', () => {

@@ -76,7 +76,7 @@ export default class ItemRepository implements IItemRepository {
     OFFSET $7
     `
     const { page, size, category, id, name, price, isActive = true } = params
-    const result = await this.connection.query(query, [id, name, category, price, typeof isActive === 'boolean' && isActive ? '1' : '0', size, (size * page)])
+    const result = await this.connection.query(query, [id, name, category, price, isActive, size, (size * page)])
     if (result.rows.length === 0) return []
     return await Promise.all(result.rows.map(async (row: ItemRow) => {
       const { id, name, category, description, price, is_active: isActive } = row
@@ -84,6 +84,12 @@ export default class ItemRepository implements IItemRepository {
       return new Item(id, name, category, price, description, pathImages, isActive)
     }))
   }
+
+  // private parseBooleanToBit (value: boolean | string): '1' | '0' {
+  //   value = !!((typeof value === 'string' && value === 'true'))
+  //   if (value) return '1'
+  //   return '0'
+  // }
 
   private async findItemImageByItemId (itemId: string): Promise<ItemImage[]> {
     const query = `
@@ -111,7 +117,7 @@ export default class ItemRepository implements IItemRepository {
     AND is_active = $5
     `
     const { category, id, name, price, isActive = true } = params
-    const result = await this.connection.query(query, [id, name, category, price, typeof isActive === 'boolean' && isActive ? '1' : '0'])
+    const result = await this.connection.query(query, [id, name, category, price, isActive])
     if (result.rows.length === 0) return 0
     return result.rows[0].total
   }

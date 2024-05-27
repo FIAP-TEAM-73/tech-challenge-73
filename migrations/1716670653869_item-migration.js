@@ -32,9 +32,9 @@ exports.up = async (pgm) => {
       notNull: true
     },
     is_active: {
-      type: 'bit',
+      type: 'bool',
       notNull: true,
-      default: '1'
+      default: true
     },
     created_at: {
       type: 'timestamp',

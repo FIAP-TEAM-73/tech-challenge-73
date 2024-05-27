@@ -15,7 +15,7 @@ interface OrderItemCommand {
 export interface PlaceOrderCommand {
   tableNumber: number
   orderItems: OrderItemCommand[]
-  cpf: string | undefined
+  cpf: string | null
 }
 
 export default class PlaceOrderUseCase {
@@ -24,7 +24,7 @@ export default class PlaceOrderUseCase {
   async execute (orderCommand: PlaceOrderCommand): Promise<HttpResponse> {
     const { tableNumber, orderItems, cpf } = orderCommand
     const orderId = uuidv4()
-    const order = new Order(orderId, tableNumber, 'CREATED', this.mapOrderItems(orderId, orderItems), cpf !== undefined ? new CPF(cpf) : undefined)
+    const order = new Order(orderId, tableNumber, 'CREATED', this.mapOrderItems(orderId, orderItems), cpf !== null ? new CPF(cpf) : undefined)
     const result = await this.repository.save(order)
     await this.eventHandler.publish(new OrderPlaced(result))
     return ok({ orderId: result })

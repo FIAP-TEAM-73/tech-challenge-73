@@ -22,7 +22,7 @@ describe('Order Repository', () => {
           id: '1',
           table_number: 2,
           status: 'CREATED',
-          cpf: undefined,
+          cpf: null,
           order_id: '1',
           item_id: '1',
           price: 30,
@@ -32,7 +32,7 @@ describe('Order Repository', () => {
           id: '1',
           table_number: 2,
           status: 'CREATED',
-          cpf: undefined,
+          cpf: null,
           order_id: '1',
           item_id: '2',
           price: 10,
@@ -42,7 +42,7 @@ describe('Order Repository', () => {
           id: '1',
           table_number: 2,
           status: 'CREATED',
-          cpf: undefined,
+          cpf: null,
           order_id: '1',
           item_id: '3',
           price: 25,
@@ -52,7 +52,7 @@ describe('Order Repository', () => {
           id: '1',
           table_number: 2,
           status: 'CREATED',
-          cpf: undefined,
+          cpf: null,
           order_id: '1',
           item_id: '4',
           price: 25,
@@ -109,7 +109,7 @@ describe('Order Repository', () => {
       const result = sut.findById(orderId)
       await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
     })
-    it('Should return undefine when Order does not exist', async () => {
+    it('Should return undefined when Order does not exist', async () => {
       const mockConnectionEmpty = {
         ...mockConnection,
         query: jest.fn(async (stmt: string, params: any[]) => {
