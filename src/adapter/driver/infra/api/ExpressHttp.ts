@@ -1,7 +1,7 @@
 import express, { type Request, type Response, type Application } from 'express'
 import { type Callback, type IHttp } from '../../../../core/application/api/IHttp'
-import swaggerUi from 'swagger-ui-express'
-import * as swaggerDocument from './swagger.json'
+import swaggerUi, { type JsonObject } from 'swagger-ui-express'
+import { badRequest, internalServerError } from '../../../../core/application/api/HttpResponses'
 
 export default class ExpressHttp implements IHttp {
   readonly app: Application
@@ -9,7 +9,6 @@ export default class ExpressHttp implements IHttp {
   constructor () {
     this.app = express()
     this.app.use(express.json())
-    this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
   }
 
   async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: Callback): Promise<unknown> {
@@ -21,19 +20,25 @@ export default class ExpressHttp implements IHttp {
         const { statusCode, payload } = await callback({ query, params }, req.body)
         res.status(statusCode).json(payload)
       } catch (error) {
+        const errorMessage = `Fail while trying to access ${method.toUpperCase()} - /${url}`
         if (error instanceof Error) {
-          console.log(error.message)
-          res.status(400).json(error.message)
+          const { statusCode, payload } = badRequest(errorMessage, error)
+          res.status(statusCode).json(payload)
           return
         }
-        res.status(400).json(error)
+        const { statusCode, payload } = internalServerError(errorMessage, error)
+        res.status(statusCode).json(payload)
       }
     })
   }
 
   async listen (port: number): Promise<void> {
     this.app.listen(port, () => {
-      console.log('executando server')
+      console.log(`Server running at http://localhost:${port}`)
     })
+  }
+
+  async doc (urlPath: string, doc: JsonObject): Promise<void> {
+    this.app.use(urlPath, swaggerUi.serve, swaggerUi.setup(doc))
   }
 }

@@ -102,7 +102,7 @@ export class OrderRepository implements IOrderRepository {
 
   async count (params: OrderParams): Promise<number> {
     const query = `
-    SELECT * FROM "order" 
+    SELECT COUNT(*) as "total" FROM "order" 
     WHERE 1 = 1
     AND (id = $1 OR $1 is null)
     AND (table_number = $2 OR $2 is null)

@@ -1,0 +1,1021 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "TechChallenge-73-FASTFOOD-API",
+        "description": "Projeto de um modelo de fastfood para postech TechChallenge-73",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/license/MIT"
+        }
+    },
+    "host": "localhost:9001",
+    "basePath": "/api/v1/",
+    "tags": [
+        {
+            "name": "Pedidos",
+            "description": "API responsável por gerenciar pedidos"
+        },
+        {
+            "name": "Produtos",
+            "description": "API responsável por gerenciar os produtos oferecidos pelo estabelecimento"
+        },
+        {
+            "name": "Cliente",
+            "description": "API responsável por gerenciar os Clientes"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "paths": {
+        "/order": {
+            "post": {
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Place Order",
+                "operationId": "placeOrder",
+                "parameters": [
+                    {
+                        "name": "placeOrder",
+                        "in": "body",
+                        "description": "Order object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "tableNumber": {
+                                    "type": "integer",
+                                    "example": 11
+                                },
+                                "orderItems": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "idItem": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "example": "bf32fb00-7bb2-481d-86ca-336dc5af1d4e"
+                                            },
+                                            "price": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 30.99
+                                            },
+                                            "quantity": {
+                                                "type": "integer",
+                                                "example": 2
+                                            }
+                                        },
+                                        "required": [
+                                            "idItem",
+                                            "price",
+                                            "quantity"
+                                        ]
+                                    }
+                                },
+                                "cpf": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "example": null
+                                }
+                            },
+                            "required": [
+                                "tableNumber",
+                                "orderItems"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order placed successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "orderId": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "d2f613ce-bee5-48c5-b8c9-e229fa3ea981"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Find Order",
+                "operationId": "findStatus",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "35999332211"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "PAYMENT_ACCEPTED"
+                        }
+                    },
+                    {
+                        "name": "tableNumber",
+                        "in": "query",
+                        "schema": {
+                            "type": "number",
+                            "example": 22
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                                            },
+                                            "tableNumber": {
+                                                "type": "integer",
+                                                "example": 10
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "example": "CANCELED"
+                                            },
+                                            "orderItems": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "itemId": {
+                                                            "type": "string",
+                                                            "format": "uuid",
+                                                            "example": "bf32fb00-7bb2-481d-86ca-336dc5af1d4e"
+                                                        },
+                                                        "orderId": {
+                                                            "type": "string",
+                                                            "format": "uuid",
+                                                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                                                        },
+                                                        "price": {
+                                                            "type": "string",
+                                                            "example": "30.99"
+                                                        },
+                                                        "quantity": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "cpf": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "value": {
+                                                        "type": "string",
+                                                        "example": "35999332211"
+                                                    }
+                                                }
+                                            },
+                                            "total": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 66.95
+                                            }
+                                        }
+                                    }
+                                },
+                                "pageSize": {
+                                    "type": "string",
+                                    "example": "10"
+                                },
+                                "page": {
+                                    "type": "string",
+                                    "example": "1"
+                                },
+                                "totalPages": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "isFirstPage": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "isLastPage": {
+                                    "type": "boolean",
+                                    "example": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order/{orderId}": {
+            "put": {
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Change Order Status",
+                "operationId": "changeOrderstatus",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                        }
+                    },
+                    {
+                        "name": "changeOrderStatus",
+                        "in": "body",
+                        "description": "Order status update",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "CANCELED"
+                                }
+                            },
+                            "required": [
+                                "status"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Order status updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/item": {
+            "post": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Create Item",
+                "operationId": "createItem",
+                "parameters": [
+                    {
+                        "name": "createItem",
+                        "in": "body",
+                        "description": "Item object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Bolinho de Cebola"
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "example": "SIDES"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "Porção de 500g de Bolinho crocante de cebola"
+                                },
+                                "price": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 18.99
+                                },
+                                "base64": {
+                                    "type": "string",
+                                    "example": "anybase64"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "category",
+                                "description",
+                                "price",
+                                "base64"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "itemId": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Find Item",
+                "operationId": "findItem",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "fa6cd73a-228a-423c-a496-9a5ff4926049"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "DRINKS"
+                        }
+                    },
+                    {
+                        "name": "isActive",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "example": false
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "example": "Bolinho de Cebola"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Items found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Bolinho de Cebola"
+                                            },
+                                            "category": {
+                                                "type": "string",
+                                                "example": "SIDES"
+                                            },
+                                            "price": {
+                                                "type": "string",
+                                                "example": "18.99"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Porção de 500g de Bolinho crocante de cebola"
+                                            },
+                                            "pathImages": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "format": "uuid",
+                                                            "example": "c3fac605-3a3e-44a6-93a1-ccddfa5a3d3f"
+                                                        },
+                                                        "itemId": {
+                                                            "type": "string",
+                                                            "format": "uuid",
+                                                            "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                                        },
+                                                        "base64": {
+                                                            "type": "string",
+                                                            "example": "YW55YmFzZTY0"
+                                                        },
+                                                        "storagePath": {
+                                                            "type": "string",
+                                                            "nullable": true,
+                                                            "example": null
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "isActive": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        }
+                                    }
+                                },
+                                "pageSize": {
+                                    "type": "string",
+                                    "example": "10"
+                                },
+                                "page": {
+                                    "type": "string",
+                                    "example": "1"
+                                },
+                                "totalPages": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "isFirstPage": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "isLastPage": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/item/{itemId}": {
+            "put": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Update Item",
+                "operationId": "updateItem",
+                "parameters": [
+                    {
+                        "name": "itemId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                        }
+                    },
+                    {
+                        "name": "updateItem",
+                        "in": "body",
+                        "description": "Item object that needs to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Bolinho de Cebola"
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "examples": [
+                                        "SIDES"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "Porção de 500g de Bolinho crocante de cebola"
+                                },
+                                "price": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 20.99
+                                },
+                                "base64": {
+                                    "type": "string",
+                                    "example": "anybase64"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "category",
+                                "description",
+                                "price",
+                                "base64"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "itemId": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Item does not exist"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Deactivate Item",
+                "operationId": "deactivateItem",
+                "parameters": [
+                    {
+                        "name": "itemId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "470f9415-0ced-467e-afb4-fe1d3a5efcc0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Item deactivated successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "itemId must be valid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Item does not exist"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer": {
+            "post": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Create Customer",
+                "operationId": "createCustomer",
+                "parameters": [
+                    {
+                        "name": "createCustomer",
+                        "in": "body",
+                        "description": "Customer object that needs to be added",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "New Client Name"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "example": "35999552211"
+                                },
+                                "cpf": {
+                                    "type": "string",
+                                    "example": "35999552211"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "phone",
+                                "cpf"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Customer created successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Name must be greater than 3"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{cpf}": {
+            "get": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Identify Customer",
+                "operationId": "identifyCustomer",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "35999252211"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer identification result",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "isCustomer": {
+                                    "type": "boolean",
+                                    "example": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "'cpf' must be valid"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /order"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
