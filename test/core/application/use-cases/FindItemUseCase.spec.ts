@@ -1,4 +1,4 @@
-import { ok } from '../../../../src/core/application/api/HttpResponses'
+import { badRequest, ok } from '../../../../src/core/application/api/HttpResponses'
 import FindItemUseCase from '../../../../src/core/application/use-cases/FindItemUseCase'
 import Item from '../../../../src/core/domain/entities/Item'
 import ItemImage from '../../../../src/core/domain/entities/ItemImage'
@@ -35,5 +35,15 @@ describe('Find an Item use case', () => {
       page: 1,
       content: [mockItem]
     }))
+  })
+  it('Should fail when Size is lower than 1', async () => {
+    const sut = new FindItemUseCase(mockItemRepository)
+    const result = await sut.execute({ ...params, size: -1 })
+    expect(result).toEqual(badRequest('Size must be greater than 0'))
+  })
+  it('Should fail when Page is lower than 1', async () => {
+    const sut = new FindItemUseCase(mockItemRepository)
+    const result = await sut.execute({ ...params, page: 0 })
+    expect(result).toEqual(badRequest('Page must be greater than 0'))
   })
 })
