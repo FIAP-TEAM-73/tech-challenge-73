@@ -8,7 +8,7 @@ interface OrderRow {
   id: string
   table_number: number
   status: OrderStatus
-  cpf: string
+  cpf: string | null
   item_id: string
   price: number
   quantity: number
@@ -46,11 +46,16 @@ export class OrderRepository implements IOrderRepository {
       const { id, table_number: tableNumber, status, cpf, item_id: itemId, price, quantity } = row
       if (acc === undefined) {
         const orderItem = new OrderItem(itemId, id, price, quantity)
-        return new Order(id, tableNumber, status, [orderItem], cpf === undefined ? undefined : new CPF(cpf))
+        return new Order(id, tableNumber, status, [orderItem], this.createTypeSafeCpf(cpf))
       }
       const orderItem = new OrderItem(itemId, id, price, quantity)
-      return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], cpf === undefined ? undefined : new CPF(cpf))
+      return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], this.createTypeSafeCpf(cpf))
     }, undefined)
+  }
+
+  private createTypeSafeCpf (cpf: string | null): CPF | undefined {
+    if (cpf === null) return undefined
+    return new CPF(cpf)
   }
 
   async findAllOrdersByCpf (cpf: string): Promise<Order | undefined> {
@@ -65,10 +70,10 @@ export class OrderRepository implements IOrderRepository {
       const { id, table_number: tableNumber, status, cpf, item_id: itemId, price, quantity } = row
       if (acc === undefined) {
         const orderItem = new OrderItem(itemId, id, price, quantity)
-        return new Order(id, tableNumber, status, [orderItem], cpf === undefined ? undefined : new CPF(cpf))
+        return new Order(id, tableNumber, status, [orderItem], this.createTypeSafeCpf(cpf))
       }
       const orderItem = new OrderItem(itemId, id, price, quantity)
-      return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], cpf === undefined ? undefined : new CPF(cpf))
+      return new Order(acc.id, acc.tableNumber, acc.status, [...acc.orderItems, orderItem], this.createTypeSafeCpf(cpf))
     }, undefined)
   }
 }

@@ -33,3 +33,13 @@ export const notFoundError = (message: string, error: unknown = new Error('Resou
     }
   }
 }
+
+export const badRequest = (message: string, error: unknown = new Error('Something into the request is invalid!')): HttpResponse => {
+  return {
+    statusCode: 400,
+    payload: {
+      friendlyMessage: message,
+      errorMessage: error instanceof Error ? error.message : 'Something into the request is invalid!'
+    }
+  }
+}

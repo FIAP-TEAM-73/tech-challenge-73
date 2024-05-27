@@ -22,7 +22,8 @@ describe('Fake checkout handler', () => {
   }
   const mockFactory: IRepositoryFactory = {
     createCustomerRepository: () => new CustomerInMemoryRepository(),
-    createOrderRepository: () => mockOrderRepository
+    createOrderRepository: () => mockOrderRepository,
+    createItemRepository: () => { throw new Error('') }
   }
   it('Should skip payment step when order is created', async () => {
     const sut = new FakeCheckoutHandler(mockFactory)
