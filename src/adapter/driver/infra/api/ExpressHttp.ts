@@ -15,7 +15,7 @@ export default class ExpressHttp implements IHttp {
   async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: Callback): Promise<unknown> {
     // TODO fix this ESLINT warn
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    return this.app[method](url, async (req: Request, res: Response) => {
+    return this.app[method](`/api/v1/${url}`, async (req: Request, res: Response) => {
       try {
         const { query, params } = req
         const { statusCode, payload } = await callback({ query, params }, req.body)

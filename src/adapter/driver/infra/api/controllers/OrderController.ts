@@ -1,20 +1,21 @@
 import { type HttpResponse } from '../../../../../core/application/api/HttpResponses'
 import type EventHandler from '../../../../../core/application/handlers/EventHandler'
 import ChangeOrderStatusUseCase, { type ChangeOrderStatusCommand } from '../../../../../core/application/use-cases/ChangeOrderStatusUseCase'
-import { FindAllOrdersByCpfUseCase } from '../../../../../core/application/use-cases/FindAllOrdersByCpfUseCase'
+import { FindOrderUseCase } from '../../../../../core/application/use-cases/FindOrderUseCase'
 import PlaceOrderUseCase, { type PlaceOrderCommand } from '../../../../../core/application/use-cases/PlaceOrderUseCase'
 import type IRepositoryFactory from '../../../../../core/domain/factories/IRepositoryFactory'
+import { type OrderPageParams } from '../../../../../core/domain/repositories/IOrderRepository'
 
 export default class OrderController {
   private readonly placeOrderUseCase: PlaceOrderUseCase
   private readonly changeOrderStatusUseCase: ChangeOrderStatusUseCase
-  private readonly findAllOrdersByCpfUseCase: FindAllOrdersByCpfUseCase
+  private readonly findOrderUseCase: FindOrderUseCase
 
   constructor (factory: IRepositoryFactory, eventHandler: EventHandler) {
     const orderRepository = factory.createOrderRepository()
     this.placeOrderUseCase = new PlaceOrderUseCase(orderRepository, eventHandler)
     this.changeOrderStatusUseCase = new ChangeOrderStatusUseCase(orderRepository)
-    this.findAllOrdersByCpfUseCase = new FindAllOrdersByCpfUseCase(orderRepository)
+    this.findOrderUseCase = new FindOrderUseCase(orderRepository)
   }
 
   async placeOrder (command: PlaceOrderCommand): Promise<HttpResponse> {
@@ -25,7 +26,7 @@ export default class OrderController {
     return await this.changeOrderStatusUseCase.execute(orderId, command)
   }
 
-  async findAllOrdersByCpf (cpf: string): Promise<HttpResponse> {
-    return await this.findAllOrdersByCpfUseCase.execute(cpf)
+  async findOrder (params: OrderPageParams): Promise<HttpResponse> {
+    return await this.findOrderUseCase.execute(params)
   }
 }
