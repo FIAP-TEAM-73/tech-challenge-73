@@ -18,9 +18,10 @@ export default class Order {
   }
 
   getTotal (): number {
-    return this.orderItems.reduce((acc: number, curr: OrderItem): number => {
+    const total = this.orderItems.reduce((acc: number, curr: OrderItem): number => {
       return acc + curr.calculateTotal()
     }, 0)
+    return parseFloat(total.toFixed(2))
   }
 
   updateStatus (status: OrderStatus): Order {

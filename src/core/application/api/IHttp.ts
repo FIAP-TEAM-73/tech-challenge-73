@@ -4,4 +4,5 @@ export type Callback = (req: any, res: any) => Promise<{ statusCode: number, pay
 export interface IHttp {
   route: (method: Method, url: string, callback: Callback) => Promise<any>
   listen: (port: number) => Promise<void>
+  doc: (urlPath: string, doc: any) => Promise<void>
 }

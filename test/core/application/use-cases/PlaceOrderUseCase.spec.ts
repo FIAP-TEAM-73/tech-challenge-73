@@ -39,7 +39,9 @@ describe('Place an Order use case', () => {
   jest.spyOn(uuid, 'v4').mockReturnValueOnce('mocked_id')
   const mockOrderRepository: IOrderRepository = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
-    findById: jest.fn(async (_id: string) => await Promise.reject(new Error()))
+    findById: jest.fn(async (_id: string) => await Promise.reject(new Error())),
+    find: jest.fn(async (_params: any) => await Promise.reject(new Error())),
+    count: jest.fn(async (_params: any) => await Promise.reject(new Error()))
   }
   it('Should place an Order with success when every information is received correctly', async () => {
     const sut = new PlaceOrderUseCase(mockOrderRepository, new EventHandler([]))

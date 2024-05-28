@@ -85,12 +85,6 @@ export default class ItemRepository implements IItemRepository {
     }))
   }
 
-  // private parseBooleanToBit (value: boolean | string): '1' | '0' {
-  //   value = !!((typeof value === 'string' && value === 'true'))
-  //   if (value) return '1'
-  //   return '0'
-  // }
-
   private async findItemImageByItemId (itemId: string): Promise<ItemImage[]> {
     const query = `
     SELECT * FROM item_image

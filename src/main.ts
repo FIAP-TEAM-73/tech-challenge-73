@@ -5,6 +5,7 @@ import Router from './adapter/driver/infra/api/Router'
 import FakeCheckoutHandler from './adapter/driver/infra/handlers/FakeCheckoutHandler'
 import EventHandler from './core/application/handlers/EventHandler'
 import type IRepositoryFactory from './core/domain/factories/IRepositoryFactory'
+import * as doc from '../docs/swagger.json'
 
 const getHanlders = (factory: IRepositoryFactory): EventHandler => {
   return new EventHandler(
@@ -21,10 +22,12 @@ const main = async (): Promise<void> => {
     host: process.env.DB_HOST ?? '0.0.0.0',
     port: +(process.env.DB_PORT ?? 5432)
   })
+  // comentar para testes locais sem banco de dados
   await connection.connect()
   const repository = new RepositoryFactory(connection)
   const router = new Router(http, repository, getHanlders(repository))
   router.init()
+  await http.doc('/swagger', doc)
   await http.listen(+(process.env.PORT ?? 9001))
   process.on('SIGINT', () => {
     console.log('Process is finishing')

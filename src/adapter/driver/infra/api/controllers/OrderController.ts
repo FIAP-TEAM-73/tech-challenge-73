@@ -1,16 +1,21 @@
 import { type HttpResponse } from '../../../../../core/application/api/HttpResponses'
 import type EventHandler from '../../../../../core/application/handlers/EventHandler'
 import ChangeOrderStatusUseCase, { type ChangeOrderStatusCommand } from '../../../../../core/application/use-cases/ChangeOrderStatusUseCase'
+import { FindOrderUseCase } from '../../../../../core/application/use-cases/FindOrderUseCase'
 import PlaceOrderUseCase, { type PlaceOrderCommand } from '../../../../../core/application/use-cases/PlaceOrderUseCase'
 import type IRepositoryFactory from '../../../../../core/domain/factories/IRepositoryFactory'
+import { type OrderPageParams } from '../../../../../core/domain/repositories/IOrderRepository'
 
 export default class OrderController {
   private readonly placeOrderUseCase: PlaceOrderUseCase
   private readonly changeOrderStatusUseCase: ChangeOrderStatusUseCase
+  private readonly findOrderUseCase: FindOrderUseCase
+
   constructor (factory: IRepositoryFactory, eventHandler: EventHandler) {
     const orderRepository = factory.createOrderRepository()
     this.placeOrderUseCase = new PlaceOrderUseCase(orderRepository, eventHandler)
     this.changeOrderStatusUseCase = new ChangeOrderStatusUseCase(orderRepository)
+    this.findOrderUseCase = new FindOrderUseCase(orderRepository)
   }
 
   async placeOrder (command: PlaceOrderCommand): Promise<HttpResponse> {
@@ -19,5 +24,9 @@ export default class OrderController {
 
   async changeOrderStatus (orderId: string, command: ChangeOrderStatusCommand): Promise<HttpResponse> {
     return await this.changeOrderStatusUseCase.execute(orderId, command)
+  }
+
+  async findOrder (params: OrderPageParams): Promise<HttpResponse> {
+    return await this.findOrderUseCase.execute(params)
   }
 }

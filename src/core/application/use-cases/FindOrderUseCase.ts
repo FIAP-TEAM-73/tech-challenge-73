@@ -1,20 +1,19 @@
-import type IItemRepository from '../../domain/repositories/IItemRepository'
-import { type ItemPageParams } from '../../domain/repositories/IItemRepository'
+import type IOrderRepository from '../../domain/repositories/IOrderRepository'
+import { type OrderPageParams } from '../../domain/repositories/IOrderRepository'
 import { type HttpResponse, ok, badRequest } from '../api/HttpResponses'
 import Paginator from '../utils/Paginator'
+export class FindOrderUseCase {
+  constructor (private readonly orderRepository: IOrderRepository) { }
 
-export default class FindItemUseCase {
-  constructor (private readonly itemRepository: IItemRepository) {}
-
-  async execute (params: ItemPageParams): Promise<HttpResponse> {
+  async execute (params: OrderPageParams): Promise<HttpResponse> {
     const { page = 1, size = 10, ...rest } = params
     if (+size < 1) return badRequest('Size must be greater than 0')
     if (+page < 1) return badRequest('Page must be greater than 0')
-    const total = await this.itemRepository.count(rest)
-    const items = await this.itemRepository.find({ ...params, page: page - 1, size })
+    const total = await this.orderRepository.count(rest)
+    const items = await this.orderRepository.find({ ...params, page: page - 1, size })
     const pagination = new Paginator(items, +size, +page, +total)
     return ok({
-      content: pagination.content,
+      content: pagination.content.map((order) => ({ ...order, total: order.getTotal() })),
       pageSize: size,
       page,
       totalPages: pagination.getTotalPages(),
