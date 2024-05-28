@@ -46,90 +46,36 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 
 ### REST APIs
 
-#### Orders Endpoints
+#### Pedidos Endpoints
 
 | Endpoint                    | Request Method       | 
 | --------------------------- |:--------------------:| 
-| /api/v1/orders              | GET                  |             
-| /api/v1/order               | POST                 |     
-| /api/v1/order/:id           | PATCH, DELETE        |
+| /api/v1/order               | POST, GET            |             
+| /api/v1/order/:id           | PUT                  |
 
-#### Exemplo de um pedido
+>**_NOTE!!!_**
+> Status que devem ser enviados no payload são:
+> CREATED, CANCELED, AWAITING_PAYMENT, PAYMENT_REFUSED, PAYMENT_ACCEPTED, RECEIVED, IN_PROGRESS, READY, DONE
 
-Request Type: `POST`
-
-#### novo pedido
-URL: `https://localhost:9001/api/v1/order`
-
-Data: 
-```
-{
-  "id": 1,
-  "customerId": 12,
-  "products": [{
-    "itemId": 5,
-    "quantity": 3
-  }]
-  "totalPrice": 4000,
-  "orderDate": "2016-01-17 08:44:29",
-  "dateToDeliver": "2016-01-17 08:44:29",
-  "orderStatus": "PROCESSING"
-}
-
-```
-
-#### Products Endpoints
+#### Produtos Endpoints
 
 | Endpoint                       | Request Method      | 
 | -------------------------------|:-------------------:| 
-| /api/v1/products               |GET                  |                 
+| /api/v1/item                   |POST, GET            |                 
+| /api/v1/item/:id               |PUT, DELETE          |                 
 
+>**_NOTE!!!_**
+> Status que devem ser enviados no payload são:
+> BURGERS, SIDES, DRINKS, DESSERTS
 
-#### Exemplo de um produto por categoria
-
-Request Type: `GET`
-
-#### novo produto
-URL: `https://localhost:9001/api/v1/products&categoryId=drink`
-
-Data: 
-```
-{
-  "id": 5,
-  "name": "coke",
-  "description": "",
-  "categoryId": "drink",
-  "unitPrice": 5,
-  "updatedAt": "2016-01-17 08:44:29",
-  "createdAt": "2016-01-17 08:44:29"
-}
-
-```
-#### Customers Endpoints
+#### Clientes Endpoints
 
 | Endpoint                       | Request Method      | 
 | -------------------------------|:-------------------:| 
-| /api/v1/customers              |POST                 |             
-| /api/v1/customers/{id}         |GET                  |     
+| /api/v1/customer               |POST                 |             
+| /api/v1/customer/:cpf          |GET                  |     
 
 
-#### Exemplo de um cliente
-
-Request Type: `POST`
-
-#### novo cliente
-URL: `https://localhost:9001/api/v1/customer`
-
-Data: 
-```
-{
-    "id": 123, 
-    "name": "",
-    "phone": 5511998881214, 
-    "cpf": "0002345897874" // CPF ou CNPJ
-}
-
-```
 
 ### Estrutura do Projeto
 A estrutura do projeto segue a organização típica de uma aplicação com arquitetura hexagonal:
@@ -142,8 +88,10 @@ A estrutura do projeto segue a organização típica de uma aplicação com arqu
     │   │   │   └── database
     |   |   |   └── factories
     |   |   |   └── repositories
-    │   │   ├── driver/infra/api
-    │   │   │   └── controllers
+    │   │   ├── driver/infra/
+    │   │   │   └── api
+    │   │   │   |   └── controllers
+    │   │   │   └── handlers
     |   ├── core/
     │   │   ├── application/
     │   │   │   └── api
@@ -159,7 +107,7 @@ A estrutura do projeto segue a organização típica de uma aplicação com arqu
     |── test/
     |   ├── core/
     │
-    ├── docker-compose.yml  # Configuração do Docker 
+    ├── compose.yml         # Configuração do Docker 
     ├── Dockerfile          # Dockerfile da aplicação
     └── README.md           # Este arquivo
 
@@ -188,13 +136,13 @@ Passos para execução :
 
 ```bash
 git clone https://github.com/seu-usuario/FIAP-TEAM-73/tech-challenge-73.git
-cd src.core
+cd tech-challenge-73/
 ```
 
 <li><b>Execute o Docker Compose:</b></li>
 
 ```bash
-docker-compose up --build
+docker-compose up
 ```
 
 <li><b>Acesse a aplicação:</b></li>
@@ -207,17 +155,12 @@ A aplicação estará disponivel em
 
  `http://localhost:9001/swagger/`
 
-
-```bash
- npm install swagger-iu-express --save
-```
-
 </ol>
 
-#### <b> Postgres</b>
+#### <b> Postgres (`Somente Desenvolvimento`)</b>
 
 <ol>
-<li>Setup</li>
+<li>Setup local</li>
 
 ```bash
 $ docker run -p 5432:5432 -v /tmp/database:/var/lib/postgresql/data -e POSTGRES_PASSWORD=1234 -d postgres:16-alpine
