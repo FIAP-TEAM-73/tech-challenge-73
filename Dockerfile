@@ -23,7 +23,7 @@ COPY --chown=node:node . ./
 
 RUN npm run build 
 
-RUN chmod +x start.sh
+RUN chmod +x /app/start.sh
 
 USER node
 EXPOSE 9001
