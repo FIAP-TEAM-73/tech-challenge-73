@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: potential-panckake
+spec:
+  selector:
+    matchLabels:
+      app: potential-panckake
+  template:
+    metadata:
+      labels:
+        app: potential-panckake
+    spec:
+      containers:
+      - name: potential-panckake
+        image: giovannipajeu/tech-challenge-73-potential-pancake:latest
+        imagePullPolicy: Always
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          runAsUser: 1000
+          privileged: false
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 9001
+      imagePullSecrets:
+        - name: auth
+
+

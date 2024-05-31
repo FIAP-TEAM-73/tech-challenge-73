@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: potential-panckake
+spec:
+  selector:
+    app: potential-panckake
+  ports:
+  - port: 9001
+    targetPort: 9001
+  type: LoadBalancer
+  

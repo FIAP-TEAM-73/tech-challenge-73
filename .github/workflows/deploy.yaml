@@ -3,13 +3,11 @@ on:
   push:
     branches:
       - RELEASE/0.0.1
-      - build/banco-de-dados
       - main 
    
-
 jobs:
 
-  Testes:
+  QA:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Do Código
@@ -22,8 +20,23 @@ jobs:
       - name: Fazendo testes
         run: npm run test
 
+  Security:
+    runs-on: ubuntu-20.04
+    needs: QA
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: Checkout Do Código
+        uses: actions/checkout@v3
+      - name: Analise Estatica
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+        run: semgrep ci
+
+
+
   Docker:
-    needs: Testes
+    needs: Security
     runs-on: ubuntu-latest
     steps:
      - name: Set up Docker Buildx
@@ -47,28 +60,23 @@ jobs:
             giovannipajeu/tech-challenge-73-potential-pancake:latest 
             giovannipajeu/tech-challenge-73-potential-pancake:${{github.run_number}}     
 
-  Envoirement:
+  Deploy:
     needs: Docker
     runs-on: ubuntu-latest
     steps:
-      - name: Down Old Containers
-        run:  |
-         echo '${{secrets.SSH}}' > ssh.key
-         sudo chmod 400 ssh.key
-         ssh -i ssh.key -o StrictHostKeyChecking=no opc@168.138.154.17 << 'EOF'
-         sudo docker compose down
-         sudo docker image rm -f giovannipajeu/tech-challenge-73-potential-pancake:latest
-         EOF
-    
-  Deploy:
-    needs: Envoirement
-    runs-on: ubuntu-latest
-    steps:
-     - name: Connect And Run Docker
-       run: |     
-         echo '${{secrets.SSH}}' > ssh.key
-         sudo chmod 400 ssh.key
-         ssh -i ssh.key -o StrictHostKeyChecking=no opc@168.138.154.17 << 'EOF'
-         sudo docker compose up -d
-         EOF
+    - name: Install and configure kubectl
+      run:
+ 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+  
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name ${{secrets.CLUSTER_NAME}}
 
+    - name: Deploy to EKS
+      run: |
+           kubectl apply -f Kubernetes/.         
