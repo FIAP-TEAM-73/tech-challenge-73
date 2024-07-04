@@ -1,0 +1,43 @@
+{
+  "name": "tech-challenge-73",
+  "version": "1.0.0",
+  "description": "Este projeto de fast food permite aos clientes se cadastrarem, realizarem pedidos e efetuarem pagamentos. A seguir, descrevemos o fluxo principal:",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --silent --noStackTrace --runInBand ./test",
+    "test:verbose": "jest --runInBand ./test",
+    "start": "ts-node-dev --respawn ./src/main.ts",
+    "prepare": "husky install",
+    "lint": "eslint --fix --ext .js,.ts .",
+    "migrate": "node-pg-migrate",
+    "start:prd": "nodemon ./dist/src/main.js",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/pg": "^8.11.6",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/uuid": "^9.0.8",
+    "eslint-config-love": "^47.0.0",
+    "git-commit-msg-linter": "^5.0.8",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "node-pg-migrate": "^7.3.2",
+    "ts-jest": "^29.1.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.1",
+    "pg": "^8.11.5",
+    "swagger-ui-express": "^5.0.0",
+    "uuid": "^9.0.1"
+  }
+}
