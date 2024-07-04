@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tech-challenge-73-pvc
+  namespace: default
+  labels:
+    app: tech-challenge-73-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage-db
+  resources:
+    requests:
+      storage: 1Gi
