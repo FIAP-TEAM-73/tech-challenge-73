@@ -1,4 +1,4 @@
-FROM node:iron-alpine3.18 
+FROM node:18-alpine
 WORKDIR /app 
 
 USER root
