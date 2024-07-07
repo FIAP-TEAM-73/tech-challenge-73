@@ -12,15 +12,17 @@ export default class ExpressHttp implements IHttp {
   }
 
   async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: Callback): Promise<unknown> {
+    const fullUrl = `/api/v1/${url}`
+    console.info(`\x1b[33m New route set ${method.toUpperCase()} - ${fullUrl} \x1b[0m`)
     // TODO fix this ESLINT warn
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    return this.app[method](`/api/v1/${url}`, async (req: Request, res: Response) => {
+    return this.app[method](fullUrl, async (req: Request, res: Response) => {
       try {
         const { query, params } = req
         const { statusCode, payload } = await callback({ query, params }, req.body)
         res.status(statusCode).json(payload)
       } catch (error) {
-        const errorMessage = `Fail while trying to access ${method.toUpperCase()} - /${url}`
+        const errorMessage = `Fail while trying to access ${method.toUpperCase()} - ${fullUrl}`
         if (error instanceof Error) {
           const { statusCode, payload } = badRequest(errorMessage, error)
           res.status(statusCode).json(payload)
