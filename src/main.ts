@@ -1,13 +1,13 @@
-import PostgresConnection from './adapter/driven/infra/database/PostgresConnection'
-import RepositoryFactory from './adapter/driven/infra/factories/RepositoryFactory'
-import ExpressHttp from './adapter/driver/infra/api/ExpressHttp'
-import Router from './adapter/driver/infra/api/Router'
-import FakeCheckoutHandler from './adapter/driver/infra/handlers/FakeCheckoutHandler'
-import EventHandler from './core/application/handlers/EventHandler'
-import type IRepositoryFactory from './core/domain/factories/IRepositoryFactory'
+import RepositoryFactory from './factories/RepositoryFactory'
+import ExpressHttp from './api/ExpressHttp'
+import Router from './api/Router'
+import FakeCheckoutHandler from './handlers/FakeCheckoutHandler'
+import EventHandler from './handlers/EventHandler'
+import type IGatewayFactory from './interfaces/IGatewayFactory'
 import * as doc from '../docs/swagger.json'
+import PostgresConnection from './external/PostgresConnection'
 
-const getHanlders = (factory: IRepositoryFactory): EventHandler => {
+const getHanlders = (factory: IGatewayFactory): EventHandler => {
   return new EventHandler(
     [new FakeCheckoutHandler(factory)]
   )
