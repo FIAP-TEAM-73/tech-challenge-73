@@ -72,10 +72,18 @@ export class OrderRepository implements IOrderRepository {
     WHERE 1 = 1
     AND (id = $1 OR $1 is null)
     AND (table_number = $2 OR $2 is null)
-    AND (status = $3 OR $3 is null)
+    AND (status = $3 OR ($3 is null AND status <> 'DONE'))
     AND (cpf = $4 OR $4 is null)
+    ORDER BY
+      CASE
+        WHEN status = 'READY' THEN 1
+        WHEN status = 'IN_PROGRESS' THEN 2
+        WHEN status = 'RECEIVED' THEN 3
+        ELSE 4
+      END,
+    "createdAt" DESC
     LIMIT $5
-    OFFSET $6
+    OFFSET $6;
     `
     const { page, size, id, tableNumber, cpf, status } = params
     const result = await this.connection.query(query, [id, tableNumber, status, cpf, size, (size * page)])
