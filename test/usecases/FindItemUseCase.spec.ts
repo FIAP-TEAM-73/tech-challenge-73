@@ -1,5 +1,5 @@
 import { badRequest, ok } from '../../src/presenters/HttpResponses'
-import FindItemUseCase from '../../src/use-cases/FindItemUseCase'
+import FindItemUseCase from '../../src/usecases/FindItemUseCase'
 import Item from '../../src/entities/Item'
 import ItemImage from '../../src/entities/ItemImage'
 import type IItemGateway from '../../src/interfaces/IItemGateway'

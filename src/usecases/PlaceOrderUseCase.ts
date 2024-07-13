@@ -4,7 +4,7 @@ import type IOrderGateway from '../interfaces/IOrderGateway'
 import { ok, type HttpResponse } from '../presenters/HttpResponses'
 import { v4 as uuidv4 } from 'uuid'
 import type EventHandler from '../handlers/EventHandler'
-import OrderPlaced from '../event/OrderPlaced'
+import OrderPlaced from '../events/OrderPlaced'
 import { CPF } from '../entities/value-objects/Cpf'
 
 interface OrderItemCommand {

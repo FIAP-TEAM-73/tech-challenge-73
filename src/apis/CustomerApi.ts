@@ -1,5 +1,5 @@
 import { type IHttp } from '../interfaces/IHttp'
-import { type CustomerCommand } from '../use-cases/SaveCustomerUseCase'
+import { type CustomerCommand } from '../usecases/SaveCustomerUseCase'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import CustomerController from '../controllers/CustomerController'
 import { type IApi } from '../interfaces/IApi'

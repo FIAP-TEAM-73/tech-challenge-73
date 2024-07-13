@@ -1,6 +1,6 @@
 import { type IHttp } from '../interfaces/IHttp'
-import { type SaveItemCommand } from '../use-cases/SaveItemUseCase'
-import { type UpdateItemCommand } from '../use-cases/UpdateItemUseCase'
+import { type SaveItemCommand } from '../usecases/SaveItemUseCase'
+import { type UpdateItemCommand } from '../usecases/UpdateItemUseCase'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import ItemController from '../controllers/ItemController'
 import { type ItemPageParams } from '../interfaces/IItemGateway'

@@ -1,4 +1,4 @@
-import type DomainEvent from '../event/DomainEvent'
+import type DomainEvent from '../events/DomainEvent'
 import type IHandler from '../interfaces/IHandler'
 
 export default class EventHandler {

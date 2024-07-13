@@ -1,5 +1,5 @@
 import { internalServerError, ok } from '../../src/presenters/HttpResponses'
-import { IdentifyCustomerUseCase } from '../../src/use-cases/IdentifyCustomerUseCase'
+import { IdentifyCustomerUseCase } from '../../src/usecases/IdentifyCustomerUseCase'
 import { Customer } from '../../src/entities/Customer'
 import { type ICustomerGateway } from '../../src/interfaces/ICustomerGateway'
 import { CPF } from '../../src/entities/value-objects/Cpf'

@@ -1,10 +1,10 @@
 import { type ItemPageParams } from '../interfaces/IItemGateway'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import { type HttpResponse } from '../presenters/HttpResponses'
-import DeactivateItemUseCase from '../use-cases/DeactivateItemUseCase'
-import FindItemUseCase from '../use-cases/FindItemUseCase'
-import SaveItemUseCase, { type SaveItemCommand } from '../use-cases/SaveItemUseCase'
-import UpdateItemUseCase, { type UpdateItemCommand } from '../use-cases/UpdateItemUseCase'
+import DeactivateItemUseCase from '../usecases/DeactivateItemUseCase'
+import FindItemUseCase from '../usecases/FindItemUseCase'
+import SaveItemUseCase, { type SaveItemCommand } from '../usecases/SaveItemUseCase'
+import UpdateItemUseCase, { type UpdateItemCommand } from '../usecases/UpdateItemUseCase'
 
 export default class ItemController {
   private readonly saveItemUseCase: SaveItemUseCase

@@ -1,6 +1,6 @@
 import type IHandler from '../interfaces/IHandler'
-import type DomainEvent from '../event/DomainEvent'
-import OrderPlaced from '../event/OrderPlaced'
+import type DomainEvent from '../events/DomainEvent'
+import OrderPlaced from '../events/OrderPlaced'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import type IOrderGateway from '../interfaces/IOrderGateway'
 

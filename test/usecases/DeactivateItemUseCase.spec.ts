@@ -1,5 +1,5 @@
 import { noContent, notFoundError } from '../../src/presenters/HttpResponses'
-import DeactivateItemUseCase from '../../src/use-cases/DeactivateItemUseCase'
+import DeactivateItemUseCase from '../../src/usecases/DeactivateItemUseCase'
 import Item from '../../src/entities/Item'
 import ItemImage from '../../src/entities/ItemImage'
 import type IItemGateway from '../../src/interfaces/IItemGateway'

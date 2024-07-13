@@ -1,5 +1,5 @@
 import { notFoundError, ok } from '../../src/presenters/HttpResponses'
-import UpdateItemUseCase, { type UpdateItemCommand } from '../../src/use-cases/UpdateItemUseCase'
+import UpdateItemUseCase, { type UpdateItemCommand } from '../../src/usecases/UpdateItemUseCase'
 import Item from '../../src/entities/Item'
 import ItemImage from '../../src/entities/ItemImage'
 import * as uuid from 'uuid'

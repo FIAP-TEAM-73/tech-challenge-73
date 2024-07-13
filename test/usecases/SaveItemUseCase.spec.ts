@@ -1,6 +1,6 @@
 import { ok } from '../../src/presenters/HttpResponses'
 import type IItemGateway from '../../src/interfaces/IItemGateway'
-import SaveItemUseCase, { type SaveItemCommand } from '../../src/use-cases/SaveItemUseCase'
+import SaveItemUseCase, { type SaveItemCommand } from '../../src/usecases/SaveItemUseCase'
 import * as uuid from 'uuid'
 
 jest.mock('uuid')

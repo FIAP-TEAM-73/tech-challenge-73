@@ -1,6 +1,6 @@
 import { ok } from '../../src/presenters/HttpResponses'
 import EventHandler from '../../src/handlers/EventHandler'
-import PlaceOrderUseCase from '../../src/use-cases/PlaceOrderUseCase'
+import PlaceOrderUseCase from '../../src/usecases/PlaceOrderUseCase'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
 import * as uuid from 'uuid'
 

@@ -1,4 +1,4 @@
-import { SaveCustomerUseCase, type CustomerCommand } from '../../src/use-cases/SaveCustomerUseCase'
+import { SaveCustomerUseCase, type CustomerCommand } from '../../src/usecases/SaveCustomerUseCase'
 import { DomainError } from '../../src/entities/base/DomainError'
 import { Customer } from '../../src/entities/Customer'
 import * as uuid from 'uuid'

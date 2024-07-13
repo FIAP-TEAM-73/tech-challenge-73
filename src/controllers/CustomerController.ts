@@ -1,7 +1,7 @@
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import { type HttpResponse } from '../presenters/HttpResponses'
-import { IdentifyCustomerUseCase } from '../use-cases/IdentifyCustomerUseCase'
-import { SaveCustomerUseCase, type CustomerCommand } from '../use-cases/SaveCustomerUseCase'
+import { IdentifyCustomerUseCase } from '../usecases/IdentifyCustomerUseCase'
+import { SaveCustomerUseCase, type CustomerCommand } from '../usecases/SaveCustomerUseCase'
 
 export default class CustomerController {
   private readonly saveCustomerUseCase: SaveCustomerUseCase

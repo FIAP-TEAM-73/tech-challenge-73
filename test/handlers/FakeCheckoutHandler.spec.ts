@@ -2,7 +2,7 @@ import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryGateway'
 import FakeCheckoutHandler from '../../src/handlers/FakeCheckoutHandler'
 import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
-import OrderPlaced from '../../src/event/OrderPlaced'
+import OrderPlaced from '../../src/events/OrderPlaced'
 import type IGatewayFactory from '../../src/interfaces/IGatewayFactory'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
 

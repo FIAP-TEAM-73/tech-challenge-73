@@ -1,4 +1,4 @@
-import type DomainEvent from '../event/DomainEvent'
+import type DomainEvent from '../events/DomainEvent'
 
 export default interface IHandler {
   name: string

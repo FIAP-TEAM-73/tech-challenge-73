@@ -1,5 +1,5 @@
 import { notFoundError } from '../../src/presenters/HttpResponses'
-import ChangeOrderStatusUseCase, { type ChangeOrderStatusCommand } from '../../src/use-cases/ChangeOrderStatusUseCase'
+import ChangeOrderStatusUseCase, { type ChangeOrderStatusCommand } from '../../src/usecases/ChangeOrderStatusUseCase'
 import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
