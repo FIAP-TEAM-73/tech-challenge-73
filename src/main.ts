@@ -1,11 +1,15 @@
-import RepositoryFactory from './factories/RepositoryFactory'
-import ExpressHttp from './api/ExpressHttp'
-import Router from './api/Router'
+import GatewayFactory from './factories/RepositoryFactory'
+import ExpressHttp from './adapters/ExpressHttp'
 import FakeCheckoutHandler from './handlers/FakeCheckoutHandler'
 import EventHandler from './handlers/EventHandler'
 import type IGatewayFactory from './interfaces/IGatewayFactory'
 import * as doc from '../docs/swagger.json'
-import PostgresConnection from './external/PostgresConnection'
+import PostgresConnection from './adapters/PostgresConnection'
+import type IConnection from './interfaces/IConnection'
+import { type IHttp } from './interfaces/IHttp'
+import CustomerApi from './api/CustomerApi'
+import ItemApi from './api/ItemApi'
+import OrderApi from './api/OrderApi'
 
 const getHanlders = (factory: IGatewayFactory): EventHandler => {
   return new EventHandler(
@@ -13,20 +17,33 @@ const getHanlders = (factory: IGatewayFactory): EventHandler => {
   )
 }
 
-const main = async (): Promise<void> => {
-  const http = new ExpressHttp()
-  const connection = new PostgresConnection({
+const getHttp = (): IHttp => new ExpressHttp()
+
+const getConnection = (): IConnection => {
+  return new PostgresConnection({
     user: process.env.DB_USER ?? 'postgres',
     password: process.env.DB_PASSWORD ?? '1234',
     database: process.env.DB_NAME ?? 'postgres',
     host: process.env.DB_HOST ?? '0.0.0.0',
     port: +(process.env.DB_PORT ?? 5432)
   })
-  // comentar para testes locais sem banco de dados
+}
+
+const initRoutes = (http: IHttp, factory: IGatewayFactory, handler: EventHandler): void => {
+  const routes = [
+    new CustomerApi(http, factory),
+    new ItemApi(http, factory),
+    new OrderApi(http, factory, handler)
+  ]
+  routes.forEach((route) => { route.init() })
+}
+
+const main = async (): Promise<void> => {
+  const http = getHttp()
+  const connection = getConnection()
   await connection.connect()
-  const repository = new RepositoryFactory(connection)
-  const router = new Router(http, repository, getHanlders(repository))
-  router.init()
+  const gatewayFactory = new GatewayFactory(connection)
+  initRoutes(http, gatewayFactory, getHanlders(gatewayFactory))
   await http.doc('/swagger', doc)
   await http.listen(+(process.env.PORT ?? 9001))
   process.on('SIGINT', () => {

@@ -12,7 +12,7 @@ export default class OrderController {
   private readonly findOrderUseCase: FindOrderUseCase
 
   constructor (factory: IGatewayFactory, eventHandler: EventHandler) {
-    const orderRepository = factory.createOrderRepository()
+    const orderRepository = factory.createOrderGateway()
     this.placeOrderUseCase = new PlaceOrderUseCase(orderRepository, eventHandler)
     this.changeOrderStatusUseCase = new ChangeOrderStatusUseCase(orderRepository)
     this.findOrderUseCase = new FindOrderUseCase(orderRepository)

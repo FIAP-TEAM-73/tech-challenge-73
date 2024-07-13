@@ -12,7 +12,7 @@ export default class ItemController {
   private readonly findItemUseCase: FindItemUseCase
   private readonly deactivateItemUseCase: DeactivateItemUseCase
   constructor (factory: IGatewayFactory) {
-    const itemRepository = factory.createItemRepository()
+    const itemRepository = factory.createItemGateway()
     this.saveItemUseCase = new SaveItemUseCase(itemRepository)
     this.updateItemUseCase = new UpdateItemUseCase(itemRepository)
     this.findItemUseCase = new FindItemUseCase(itemRepository)

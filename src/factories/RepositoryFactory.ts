@@ -7,17 +7,17 @@ import { OrderGateway } from '../gateways/OrderGateway'
 import type IItemGateway from '../interfaces/IItemGateway'
 import { type ICustomerGateway } from '../interfaces/ICustomerGateway'
 
-export default class RepositoryFactory implements IGatewayFactory {
+export default class GatewayFactory implements IGatewayFactory {
   constructor (private readonly connection: IConnection) {}
-  createOrderRepository (): IOrderGateway {
+  createOrderGateway (): IOrderGateway {
     return new OrderGateway(this.connection)
   }
 
-  createCustomerRepository (): ICustomerGateway {
+  createCustomerGateway (): ICustomerGateway {
     return new CustomerGateway(this.connection)
   }
 
-  createItemRepository (): IItemGateway {
+  createItemGateway (): IItemGateway {
     return new ItemGateway(this.connection)
   }
 }

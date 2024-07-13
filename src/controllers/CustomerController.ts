@@ -8,7 +8,7 @@ export default class CustomerController {
   private readonly identifyCustomerUseCase: IdentifyCustomerUseCase
 
   constructor (factory: IGatewayFactory) {
-    const customerRepository = factory.createCustomerRepository()
+    const customerRepository = factory.createCustomerGateway()
     this.saveCustomerUseCase = new SaveCustomerUseCase(customerRepository)
     this.identifyCustomerUseCase = new IdentifyCustomerUseCase(customerRepository)
   }

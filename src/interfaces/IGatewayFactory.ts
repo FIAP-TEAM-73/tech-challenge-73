@@ -3,7 +3,7 @@ import type IItemGateway from './IItemGateway'
 import type IOrderGateway from './IOrderGateway'
 
 export default interface IGatewayFactory {
-  createCustomerRepository: () => ICustomerGateway
-  createOrderRepository: () => IOrderGateway
-  createItemRepository: () => IItemGateway
+  createCustomerGateway: () => ICustomerGateway
+  createOrderGateway: () => IOrderGateway
+  createItemGateway: () => IItemGateway
 }

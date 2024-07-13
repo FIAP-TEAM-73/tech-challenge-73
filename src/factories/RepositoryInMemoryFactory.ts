@@ -6,10 +6,10 @@ import type IItemGateway from '../interfaces/IItemGateway'
 
 export default class RepositoryInMemoryFactory implements IGatewayFactory {
   private readonly customerInMemoryRepository = new CustomerInMemoryGateway()
-  createCustomerRepository (): ICustomerGateway {
+  createCustomerGateway (): ICustomerGateway {
     return this.customerInMemoryRepository
   }
 
-  createItemRepository!: () => IItemGateway
-  createOrderRepository!: () => IOrderGateway
+  createItemGateway!: () => IItemGateway
+  createOrderGateway!: () => IOrderGateway
 }
