@@ -1,11 +1,11 @@
 import Order from '../entities/Order'
 import OrderItem from '../entities/OrderItem'
 import type IOrderGateway from '../interfaces/IOrderGateway'
-import { CPF } from '../value-objects/Cpf'
 import { ok, type HttpResponse } from '../presenter/HttpResponses'
 import { v4 as uuidv4 } from 'uuid'
 import type EventHandler from '../handlers/EventHandler'
 import OrderPlaced from '../event/OrderPlaced'
+import { CPF } from '../entities/value-objects/Cpf'
 
 interface OrderItemCommand {
   idItem: string

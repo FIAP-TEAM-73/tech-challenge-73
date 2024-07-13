@@ -1,4 +1,4 @@
-import { assertAtLeastOneNotEmptyArgument } from '../base/AssertionConcerns'
+import { assertAtLeastOneNotEmptyArgument } from './base/AssertionConcerns'
 
 export default class ItemImage {
   constructor (

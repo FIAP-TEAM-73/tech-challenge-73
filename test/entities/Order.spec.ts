@@ -1,7 +1,7 @@
-import { DomainError } from '../../src/base/DomainError'
+import { DomainError } from '../../src/entities/base/DomainError'
 import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
-import { CPF } from '../../src/value-objects/Cpf'
+import { CPF } from '../../src/entities/value-objects/Cpf'
 
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 const orderItems: OrderItem[] = [

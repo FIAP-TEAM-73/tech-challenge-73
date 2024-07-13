@@ -1,9 +1,9 @@
 import { internalServerError, ok } from '../../src/presenter/HttpResponses'
 import { IdentifyCustomerUseCase } from '../../src/use-cases/IdentifyCustomerUseCase'
 import { Customer } from '../../src/entities/Customer'
-import { CPF } from '../../src/value-objects/Cpf'
-import { Phone } from '../../src/value-objects/Phone'
 import { type ICustomerGateway } from '../../src/interfaces/ICustomerGateway'
+import { CPF } from '../../src/entities/value-objects/Cpf'
+import { Phone } from '../../src/entities/value-objects/Phone'
 
 describe('Identify Customer', () => {
   const mockCustomerRepository: ICustomerGateway = {

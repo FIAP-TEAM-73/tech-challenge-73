@@ -1,6 +1,6 @@
-import { assertArgumentMinArrayLength, assertArgumentUnionType } from '../base/AssertionConcerns'
-import { type CPF } from '../value-objects/Cpf'
+import { assertArgumentMinArrayLength, assertArgumentUnionType } from './base/AssertionConcerns'
 import type OrderItem from './OrderItem'
+import { type CPF } from './value-objects/Cpf'
 
 const statusValue = ['CREATED', 'CANCELED', 'AWAITING_PAYMENT', 'PAYMENT_REFUSED', 'PAYMENT_ACCEPTED', 'RECEIVED', 'IN_PROGRESS', 'READY', 'DONE'] as const
 

@@ -1,5 +1,5 @@
-import { DomainError } from '../../src/base/DomainError'
-import { Phone } from '../../src/value-objects/Phone'
+import { DomainError } from '../../src/entities/base/DomainError'
+import { Phone } from '../../src/entities/value-objects/Phone'
 
 describe('Create a phone', () => {
   it('Should create a phone with success when its value is correct', () => {

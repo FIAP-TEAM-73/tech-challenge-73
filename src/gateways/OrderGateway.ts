@@ -3,7 +3,7 @@ import Order, { type OrderStatus } from '../entities/Order'
 import OrderItem from '../entities/OrderItem'
 import type IOrderGateway from '../interfaces/IOrderGateway'
 import { type OrderParams, type OrderPageParams } from '../interfaces/IOrderGateway'
-import { CPF } from '../value-objects/Cpf'
+import { CPF } from '../entities/value-objects/Cpf'
 
 interface OrderRow {
   id: string

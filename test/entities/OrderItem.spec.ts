@@ -1,4 +1,4 @@
-import { DomainError } from '../../src/base/DomainError'
+import { DomainError } from '../../src/entities/base/DomainError'
 import OrderItem from '../../src/entities/OrderItem'
 
 describe('Calculate OrderItem total value', () => {

@@ -1,4 +1,4 @@
-import { assertArgumentMin } from '../base/AssertionConcerns'
+import { assertArgumentMin } from './base/AssertionConcerns'
 
 export default class OrderItem {
   constructor (

@@ -1,4 +1,4 @@
-import { assertArgumentLength, assertArgumentMin, assertArgumentUnionType } from '../base/AssertionConcerns'
+import { assertArgumentLength, assertArgumentMin, assertArgumentUnionType } from './base/AssertionConcerns'
 import type ItemImage from './ItemImage'
 
 const categories = ['BURGERS', 'SIDES', 'DRINKS', 'DESSERTS'] as const

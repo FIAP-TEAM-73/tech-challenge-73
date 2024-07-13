@@ -1,10 +1,10 @@
-import type Handler from './Handler'
+import type IHandler from '../interfaces/IHandler'
 import type DomainEvent from '../event/DomainEvent'
 import OrderPlaced from '../event/OrderPlaced'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import type IOrderGateway from '../interfaces/IOrderGateway'
 
-export default class FakeCheckoutHandler implements Handler {
+export default class FakeCheckoutHandler implements IHandler {
   name: string = 'orderPlaced'
   orderRepository: IOrderGateway
   constructor (factory: IGatewayFactory) {

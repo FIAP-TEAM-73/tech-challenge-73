@@ -1,7 +1,7 @@
-import { DomainError } from '../../src/base/DomainError'
+import { DomainError } from '../../src/entities/base/DomainError'
 import { Customer } from '../../src/entities/Customer'
-import { CPF } from '../../src/value-objects/Cpf'
-import { Phone } from '../../src/value-objects/Phone'
+import { CPF } from '../../src/entities/value-objects/Cpf'
+import { Phone } from '../../src/entities/value-objects/Phone'
 
 const mockCustomer = {
   id: 'any_id',

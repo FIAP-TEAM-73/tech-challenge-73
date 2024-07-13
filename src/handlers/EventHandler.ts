@@ -1,8 +1,8 @@
 import type DomainEvent from '../event/DomainEvent'
-import type Handler from './Handler'
+import type IHandler from '../interfaces/IHandler'
 
 export default class EventHandler {
-  constructor (private readonly handlers: Handler[]) {}
+  constructor (private readonly handlers: IHandler[]) {}
 
   async publish<T> (event: DomainEvent<T>): Promise<void> {
     await Promise.all(this.handlers.map(async (handler) => {

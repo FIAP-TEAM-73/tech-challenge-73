@@ -1,4 +1,4 @@
-import { DomainError } from '../../src/base/DomainError'
+import { DomainError } from '../../src/entities/base/DomainError'
 import Item from '../../src/entities/Item'
 import ItemImage from '../../src/entities/ItemImage'
 

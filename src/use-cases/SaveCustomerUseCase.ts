@@ -1,9 +1,9 @@
 import { Customer } from '../entities/Customer'
-import { CPF } from '../value-objects/Cpf'
-import { Phone } from '../value-objects/Phone'
 import { v4 as uuidv4 } from 'uuid'
 import { type HttpResponse, noContent, internalServerError } from '../presenter/HttpResponses'
 import { type ICustomerGateway } from '../interfaces/ICustomerGateway'
+import { CPF } from '../entities/value-objects/Cpf'
+import { Phone } from '../entities/value-objects/Phone'
 export interface CustomerCommand {
   name: string
   phone: string

@@ -1,8 +1,8 @@
 import type IConnection from '../interfaces/IConnection'
 import { Customer } from '../entities/Customer'
-import { CPF } from '../value-objects/Cpf'
-import { Phone } from '../value-objects/Phone'
 import { type ICustomerGateway } from '../interfaces/ICustomerGateway'
+import { Phone } from '../entities/value-objects/Phone'
+import { CPF } from '../entities/value-objects/Cpf'
 
 interface CustomerRow {
   id: string

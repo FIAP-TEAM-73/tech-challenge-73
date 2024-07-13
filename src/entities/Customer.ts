@@ -1,6 +1,6 @@
-import { assertArgumentLength } from '../base/AssertionConcerns'
-import type { CPF } from '../value-objects/Cpf'
-import type { Phone } from '../value-objects/Phone'
+import { assertArgumentLength } from './base/AssertionConcerns'
+import { type CPF } from './value-objects/Cpf'
+import { type Phone } from './value-objects/Phone'
 
 export class Customer {
   constructor (

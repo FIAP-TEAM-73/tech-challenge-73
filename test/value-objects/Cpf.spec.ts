@@ -1,5 +1,5 @@
-import { DomainError } from '../../src/base/DomainError'
-import { CPF } from '../../src/value-objects/Cpf'
+import { DomainError } from '../../src/entities/base/DomainError'
+import { CPF } from '../../src/entities/value-objects/Cpf'
 
 describe('Create a CPF', () => {
   it('Should create a CPF when its value is valid', () => {

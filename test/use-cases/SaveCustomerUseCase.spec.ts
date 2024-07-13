@@ -1,11 +1,11 @@
 import { SaveCustomerUseCase, type CustomerCommand } from '../../src/use-cases/SaveCustomerUseCase'
-import { DomainError } from '../../src/base/DomainError'
+import { DomainError } from '../../src/entities/base/DomainError'
 import { Customer } from '../../src/entities/Customer'
 import * as uuid from 'uuid'
-import { CPF } from '../../src/value-objects/Cpf'
-import { Phone } from '../../src/value-objects/Phone'
 import { internalServerError, noContent } from '../../src/presenter/HttpResponses'
 import { type ICustomerGateway } from '../../src/interfaces/ICustomerGateway'
+import { CPF } from '../../src/entities/value-objects/Cpf'
+import { Phone } from '../../src/entities/value-objects/Phone'
 
 jest.mock('uuid')
 

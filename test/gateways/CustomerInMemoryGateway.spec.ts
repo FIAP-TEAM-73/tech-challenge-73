@@ -1,7 +1,7 @@
 import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryRepository'
 import { Customer } from '../../src/entities/Customer'
-import { CPF } from '../../src/value-objects/Cpf'
-import { Phone } from '../../src/value-objects/Phone'
+import { CPF } from '../../src/entities/value-objects/Cpf'
+import { Phone } from '../../src/entities/value-objects/Phone'
 
 const mockCustomer = new Customer('any_id', 'Any Name', new Phone('35999111115'), new CPF('12559757610'))
 
