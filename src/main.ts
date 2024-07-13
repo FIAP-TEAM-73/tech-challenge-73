@@ -7,9 +7,9 @@ import * as doc from '../docs/swagger.json'
 import PostgresConnection from './adapters/PostgresConnection'
 import type IConnection from './interfaces/IConnection'
 import { type IHttp } from './interfaces/IHttp'
-import CustomerApi from './api/CustomerApi'
-import ItemApi from './api/ItemApi'
-import OrderApi from './api/OrderApi'
+import CustomerApi from './apis/CustomerApi'
+import ItemApi from './apis/ItemApi'
+import OrderApi from './apis/OrderApi'
 
 const getHanlders = (factory: IGatewayFactory): EventHandler => {
   return new EventHandler(
