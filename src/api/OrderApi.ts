@@ -10,10 +10,10 @@ export default class OrderApi implements IApi {
   private readonly orderController: OrderController
   constructor (
     private readonly http: IHttp,
-    repositoryFactory: IGatewayFactory,
+    factory: IGatewayFactory,
     eventHandler: EventHandler
   ) {
-    this.orderController = new OrderController(repositoryFactory, eventHandler)
+    this.orderController = new OrderController(factory, eventHandler)
   }
 
   init (): void {

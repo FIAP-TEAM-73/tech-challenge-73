@@ -1,4 +1,4 @@
-import { notFoundError, ok } from '../../src/presenter/HttpResponses'
+import { notFoundError, ok } from '../../src/presenters/HttpResponses'
 import UpdateItemUseCase, { type UpdateItemCommand } from '../../src/use-cases/UpdateItemUseCase'
 import Item from '../../src/entities/Item'
 import ItemImage from '../../src/entities/ItemImage'
@@ -24,20 +24,20 @@ const mockItem = new Item('item_id', 'any item name', 'BURGERS', 35.0, 'any item
 describe('Update an Item use case', () => {
   jest.spyOn(uuid, 'v4')
     .mockReturnValueOnce('item_image_id')
-  const mockItemRepository: IItemGateway = {
+  const mockItemGateway: IItemGateway = {
     save: jest.fn().mockResolvedValueOnce('item_id'),
     findById: jest.fn().mockResolvedValueOnce(mockItem),
     find: jest.fn().mockResolvedValueOnce([]),
     count: jest.fn().mockResolvedValueOnce(0)
   }
   it('Should update an Item when Item exists', async () => {
-    const sut = new UpdateItemUseCase(mockItemRepository)
+    const sut = new UpdateItemUseCase(mockItemGateway)
     const result = await sut.execute('item_id', mockItemCommand)
     expect(result).toEqual(ok({ itemId: 'item_id' }))
   })
   it('Should not update an Item when Item does not exist', async () => {
     const mockConnectionNotFound: IItemGateway = {
-      ...mockItemRepository,
+      ...mockItemGateway,
       findById: jest.fn().mockResolvedValueOnce(undefined)
     }
     const sut = new UpdateItemUseCase(mockConnectionNotFound)

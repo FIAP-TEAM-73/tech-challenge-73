@@ -1,11 +1,11 @@
-import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryRepository'
+import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryGateway'
 import { Customer } from '../../src/entities/Customer'
 import { CPF } from '../../src/entities/value-objects/Cpf'
 import { Phone } from '../../src/entities/value-objects/Phone'
 
 const mockCustomer = new Customer('any_id', 'Any Name', new Phone('35999111115'), new CPF('12559757610'))
 
-describe('Customer In Memory Repository', () => {
+describe('Customer In Memory Gateway', () => {
   describe('Create a customer', () => {
     it('Should save a customer in memory with success when every data was correct provided', async () => {
       const sut = new CustomerInMemoryGateway()

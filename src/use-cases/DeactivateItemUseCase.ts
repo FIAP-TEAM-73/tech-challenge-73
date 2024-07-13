@@ -1,4 +1,4 @@
-import { type HttpResponse, notFoundError, noContent } from '../presenter/HttpResponses'
+import { type HttpResponse, notFoundError, noContent } from '../presenters/HttpResponses'
 import type IItemGateway from '../interfaces/IItemGateway'
 
 export default class DeactivateItemUseCase {

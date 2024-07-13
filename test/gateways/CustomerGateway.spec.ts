@@ -6,7 +6,7 @@ import { Phone } from '../../src/entities/value-objects/Phone'
 
 const mockCustomer = new Customer('any_id', 'Any Name', new Phone('35999111115'), new CPF('12559757610'))
 
-describe('Customer Repository', () => {
+describe('Customer Gateway', () => {
   const mockConnection: IConnection = {
     isAlive: async () => await Promise.resolve(true),
     close: async () => { },

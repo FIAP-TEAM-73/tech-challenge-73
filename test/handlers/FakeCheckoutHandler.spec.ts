@@ -1,4 +1,4 @@
-import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryRepository'
+import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryGateway'
 import FakeCheckoutHandler from '../../src/handlers/FakeCheckoutHandler'
 import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
@@ -15,7 +15,7 @@ const orderItems: OrderItem[] = [
 
 const mockOrder = new Order('1', 2, 'CREATED', orderItems)
 describe('Fake checkout handler', () => {
-  const mockOrderRepository: IOrderGateway = {
+  const mockOrderGateway: IOrderGateway = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
     find: jest.fn(async (_params: any) => await Promise.resolve([])),
@@ -23,21 +23,21 @@ describe('Fake checkout handler', () => {
   }
   const mockFactory: IGatewayFactory = {
     createCustomerGateway: () => new CustomerInMemoryGateway(),
-    createOrderGateway: () => mockOrderRepository,
+    createOrderGateway: () => mockOrderGateway,
     createItemGateway: () => { throw new Error('') }
   }
   it('Should skip payment step when order is created', async () => {
     const sut = new FakeCheckoutHandler(mockFactory)
     await sut.handle(new OrderPlaced(mockOrder.id))
-    expect(mockOrderRepository.findById).toHaveBeenCalledWith('1')
-    expect(mockOrderRepository.save).toHaveBeenCalledWith(mockOrder.updateStatus('AWAITING_PAYMENT'))
+    expect(mockOrderGateway.findById).toHaveBeenCalledWith('1')
+    expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('AWAITING_PAYMENT'))
   })
   it('Should fail when order does not exist', async () => {
-    const mockOrderRepositoryNotFound: IOrderGateway = {
-      ...mockOrderRepository,
+    const mockOrderGatewayNotFound: IOrderGateway = {
+      ...mockOrderGateway,
       findById: jest.fn(async (_id: string) => { return undefined })
     }
-    const sut = new FakeCheckoutHandler({ ...mockFactory, createOrderGateway: () => mockOrderRepositoryNotFound })
+    const sut = new FakeCheckoutHandler({ ...mockFactory, createOrderGateway: () => mockOrderGatewayNotFound })
     const result = sut.handle(new OrderPlaced(mockOrder.id))
     await expect(result).rejects.toEqual(new Error(`Order with id ${mockOrder.id} does not exists`))
   })

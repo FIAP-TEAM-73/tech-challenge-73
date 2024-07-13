@@ -1,4 +1,4 @@
-import { ok } from '../../src/presenter/HttpResponses'
+import { ok } from '../../src/presenters/HttpResponses'
 import EventHandler from '../../src/handlers/EventHandler'
 import PlaceOrderUseCase from '../../src/use-cases/PlaceOrderUseCase'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
@@ -37,14 +37,14 @@ const mockPlaceOrderCommand = {
 
 describe('Place an Order use case', () => {
   jest.spyOn(uuid, 'v4').mockReturnValueOnce('mocked_id')
-  const mockOrderRepository: IOrderGateway = {
+  const mockOrderGateway: IOrderGateway = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.reject(new Error())),
     find: jest.fn(async (_params: any) => await Promise.reject(new Error())),
     count: jest.fn(async (_params: any) => await Promise.reject(new Error()))
   }
   it('Should place an Order with success when every information is received correctly', async () => {
-    const sut = new PlaceOrderUseCase(mockOrderRepository, new EventHandler([]))
+    const sut = new PlaceOrderUseCase(mockOrderGateway, new EventHandler([]))
     const result = await sut.execute(mockPlaceOrderCommand)
     expect(result).toEqual(ok({ orderId: 'mocked_id' }))
   })

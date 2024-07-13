@@ -1,4 +1,4 @@
-import { type HttpResponse, internalServerError, ok } from '../presenter/HttpResponses'
+import { type HttpResponse, internalServerError, ok } from '../presenters/HttpResponses'
 import { type ICustomerGateway } from '../interfaces/ICustomerGateway'
 
 export class IdentifyCustomerUseCase {

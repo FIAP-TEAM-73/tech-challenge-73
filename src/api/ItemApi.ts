@@ -9,9 +9,9 @@ export default class ItemApi implements IApi {
   private readonly itemController: ItemController
   constructor (
     private readonly http: IHttp,
-    repositoryFactory: IGatewayFactory
+    factory: IGatewayFactory
   ) {
-    this.itemController = new ItemController(repositoryFactory)
+    this.itemController = new ItemController(factory)
   }
 
   init (): void {

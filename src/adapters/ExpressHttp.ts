@@ -1,14 +1,15 @@
 import express, { type Request, type Response, type Application } from 'express'
 import { type Callback, type IHttp } from '../interfaces/IHttp'
 import swaggerUi, { type JsonObject } from 'swagger-ui-express'
-import { badRequest, internalServerError } from '../presenter/HttpResponses'
-
+import { badRequest, internalServerError } from '../presenters/HttpResponses'
+import cors from 'cors'
 export default class ExpressHttp implements IHttp {
   readonly app: Application
 
   constructor () {
     this.app = express()
     this.app.use(express.json())
+    this.app.use(cors())
   }
 
   async route (method: 'post' | 'get' | 'put' | 'delete' | 'patch', url: string, callback: Callback): Promise<unknown> {

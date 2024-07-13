@@ -1,6 +1,6 @@
 import Item, { type ItemCategory } from '../entities/Item'
 import ItemImage from '../entities/ItemImage'
-import { type HttpResponse, ok } from '../presenter/HttpResponses'
+import { type HttpResponse, ok } from '../presenters/HttpResponses'
 import { v4 as uuidv4 } from 'uuid'
 import type IItemGateway from '../interfaces/IItemGateway'
 export interface SaveItemCommand {

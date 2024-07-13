@@ -7,9 +7,9 @@ export default class CustomerApi implements IApi {
   private readonly customerController: CustomerController
   constructor (
     private readonly http: IHttp,
-    repositoryFactory: IGatewayFactory
+    factory: IGatewayFactory
   ) {
-    this.customerController = new CustomerController(repositoryFactory)
+    this.customerController = new CustomerController(factory)
   }
 
   init (): void {

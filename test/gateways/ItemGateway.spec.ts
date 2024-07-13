@@ -10,7 +10,7 @@ const mockItemImage = [
 ]
 const mockItem = new Item('item_id', 'any item name', 'BURGERS', 35.0, 'any item description', mockItemImage)
 
-describe('Item Repository', () => {
+describe('Item Gateway', () => {
   const mockConnection: IConnection = {
     isAlive: async () => await Promise.resolve(true),
     close: async () => { },

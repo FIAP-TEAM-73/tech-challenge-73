@@ -10,7 +10,7 @@ const orderItems: OrderItem[] = [
   new OrderItem('4', '1', 25, 1)
 ]
 
-describe('Order Repository', () => {
+describe('Order Gateway', () => {
   const mockConnection: IConnection = {
     isAlive: async () => await Promise.resolve(true),
     close: async () => { },
@@ -80,13 +80,13 @@ describe('Order Repository', () => {
         ...mockConnection,
         query: jest.fn(async (stmt: string, params: any[]) => {
           console.log({ stmt, params })
-          return await Promise.reject(new Error('Generec repository erro!'))
+          return await Promise.reject(new Error('Generec gateway erro!'))
         })
       }
       const order = new Order('1', 2, 'CREATED', orderItems)
       const sut = new OrderGateway(mockConnectionReject)
       const result = sut.save(order)
-      await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
+      await expect(result).rejects.toEqual(new Error('Generec gateway erro!'))
     })
   })
   describe('Find an Order by ID', () => {
@@ -101,13 +101,13 @@ describe('Order Repository', () => {
         ...mockConnection,
         query: jest.fn(async (stmt: string, params: any[]) => {
           console.log({ stmt, params })
-          return await Promise.reject(new Error('Generec repository erro!'))
+          return await Promise.reject(new Error('Generec gateway erro!'))
         })
       }
       const orderId = '1'
       const sut = new OrderGateway(mockConnectionReject)
       const result = sut.findById(orderId)
-      await expect(result).rejects.toEqual(new Error('Generec repository erro!'))
+      await expect(result).rejects.toEqual(new Error('Generec gateway erro!'))
     })
     it('Should return undefined when Order does not exist', async () => {
       const mockConnectionEmpty = {

@@ -1,5 +1,5 @@
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
-import { type HttpResponse } from '../presenter/HttpResponses'
+import { type HttpResponse } from '../presenters/HttpResponses'
 import { IdentifyCustomerUseCase } from '../use-cases/IdentifyCustomerUseCase'
 import { SaveCustomerUseCase, type CustomerCommand } from '../use-cases/SaveCustomerUseCase'
 
@@ -8,9 +8,9 @@ export default class CustomerController {
   private readonly identifyCustomerUseCase: IdentifyCustomerUseCase
 
   constructor (factory: IGatewayFactory) {
-    const customerRepository = factory.createCustomerGateway()
-    this.saveCustomerUseCase = new SaveCustomerUseCase(customerRepository)
-    this.identifyCustomerUseCase = new IdentifyCustomerUseCase(customerRepository)
+    const customerGateway = factory.createCustomerGateway()
+    this.saveCustomerUseCase = new SaveCustomerUseCase(customerGateway)
+    this.identifyCustomerUseCase = new IdentifyCustomerUseCase(customerGateway)
   }
 
   async save (command: CustomerCommand): Promise<HttpResponse> {

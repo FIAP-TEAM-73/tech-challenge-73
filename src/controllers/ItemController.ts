@@ -1,6 +1,6 @@
 import { type ItemPageParams } from '../interfaces/IItemGateway'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
-import { type HttpResponse } from '../presenter/HttpResponses'
+import { type HttpResponse } from '../presenters/HttpResponses'
 import DeactivateItemUseCase from '../use-cases/DeactivateItemUseCase'
 import FindItemUseCase from '../use-cases/FindItemUseCase'
 import SaveItemUseCase, { type SaveItemCommand } from '../use-cases/SaveItemUseCase'
@@ -12,11 +12,11 @@ export default class ItemController {
   private readonly findItemUseCase: FindItemUseCase
   private readonly deactivateItemUseCase: DeactivateItemUseCase
   constructor (factory: IGatewayFactory) {
-    const itemRepository = factory.createItemGateway()
-    this.saveItemUseCase = new SaveItemUseCase(itemRepository)
-    this.updateItemUseCase = new UpdateItemUseCase(itemRepository)
-    this.findItemUseCase = new FindItemUseCase(itemRepository)
-    this.deactivateItemUseCase = new DeactivateItemUseCase(itemRepository)
+    const itemGateway = factory.createItemGateway()
+    this.saveItemUseCase = new SaveItemUseCase(itemGateway)
+    this.updateItemUseCase = new UpdateItemUseCase(itemGateway)
+    this.findItemUseCase = new FindItemUseCase(itemGateway)
+    this.deactivateItemUseCase = new DeactivateItemUseCase(itemGateway)
   }
 
   async saveItem (command: SaveItemCommand): Promise<HttpResponse> {

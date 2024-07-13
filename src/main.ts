@@ -1,4 +1,4 @@
-import GatewayFactory from './factories/RepositoryFactory'
+import GatewayFactory from './factories/GatewayFactory'
 import ExpressHttp from './adapters/ExpressHttp'
 import FakeCheckoutHandler from './handlers/FakeCheckoutHandler'
 import EventHandler from './handlers/EventHandler'
@@ -29,7 +29,9 @@ const getConnection = (): IConnection => {
   })
 }
 
-const initRoutes = (http: IHttp, factory: IGatewayFactory, handler: EventHandler): void => {
+const initRoutes = (http: IHttp, connection: IConnection): void => {
+  const factory = new GatewayFactory(connection)
+  const handler = getHanlders(factory)
   const routes = [
     new CustomerApi(http, factory),
     new ItemApi(http, factory),
@@ -42,8 +44,7 @@ const main = async (): Promise<void> => {
   const http = getHttp()
   const connection = getConnection()
   await connection.connect()
-  const gatewayFactory = new GatewayFactory(connection)
-  initRoutes(http, gatewayFactory, getHanlders(gatewayFactory))
+  initRoutes(http, connection)
   await http.doc('/swagger', doc)
   await http.listen(+(process.env.PORT ?? 9001))
   process.on('SIGINT', () => {
