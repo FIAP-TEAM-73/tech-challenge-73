@@ -83,32 +83,31 @@ A estrutura do projeto segue a organização típica de uma aplicação com arqu
     tech-challenge-73/
     │
     ├── src/
-    │   ├── adapter/
-    │   │   ├── driven/infra/
-    │   │   │   └── database
-    |   |   |   └── factories
-    |   |   |   └── repositories
-    │   │   ├── driver/infra/
-    │   │   │   └── api
-    │   │   │   |   └── controllers
-    │   │   │   └── handlers
-    |   ├── core/
-    │   │   ├── application/
-    │   │   │   └── api
-    |   |   |   └── use-cases
-    │   │   ├── domain
-    │   │   │   └── base
-    │   │   │   └── database
-    │   │   │   └── entities
-    │   │   │   └── interfaces
-    |   │   │   │   └── factories
-    |   │   │   │   └── repositories
-    │   │   │   └── value-objects
+    │   ├── adapters
+    │   ├── apis
+    │   ├── controllers
+    │   ├── entities/
+    │   │   ├── base
+    │   │   ├── value-objects
+    |   ├── events
+    |   ├── factories
+    |   ├── gateways
+    |   ├── handlers
+    |   ├── interfaces
+    |   ├── presenters
+    |   ├── usecases
+    |   ├── utils
     |── test/
-    |   ├── core/
+    │   ├── entities/
+    │   │   ├── value-objects
+    |   ├── gateways
+    |   ├── handlers
+    |   ├── usecases
+    |   ├── utils
     │
     ├── compose.yml         # Configuração do Docker 
     ├── Dockerfile          # Dockerfile da aplicação
+    ├── start.sh            # Script de inicialização do container
     └── README.md           # Este arquivo
 
 ### Configuração da Aplicação
