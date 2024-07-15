@@ -1,3 +1,4 @@
+import { assertArgumentMin } from './base/AssertionConcerns'
 import type PaymentStatus from './PaymentStatus'
 
 export default class Payment {
@@ -8,5 +9,7 @@ export default class Payment {
     readonly statuses: PaymentStatus[],
     readonly qrCode: string,
     readonly integrationId: string
-  ) {}
+  ) {
+    assertArgumentMin(value, 0, 'Value must be greater than 0')
+  }
 }
