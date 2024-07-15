@@ -96,7 +96,7 @@ const createProducts = async (): Promise<void> => {
   for (const product of products) {
     try {
       const response = await axios.post(`${apiBaseUrl}/item`, product)
-      console.log(`Produto criado: ${response.data.name}`)
+      console.log(`Produto criado: ${JSON.stringify(response.data)}`)
     } catch (error) {
       console.error(`Erro ao criar produto: ${JSON.stringify(error)}`)
     }
