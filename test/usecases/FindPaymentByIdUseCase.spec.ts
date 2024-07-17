@@ -1,7 +1,7 @@
 import type Payment from '../../src/entities/Payment'
 import type PaymentStatus from '../../src/entities/PaymentStatus'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
-import { ok } from '../../src/presenters/HttpResponses'
+import { notFoundError, ok } from '../../src/presenters/HttpResponses'
 import { FindPaymentByIdUseCase } from '../../src/usecases/FindPaymentByIdUseCase'
 
 const mockPaymentStatus: PaymentStatus[] = [
@@ -35,5 +35,14 @@ describe('Find a payment by id use case', () => {
         status: 'AWAITING_PAYMENT'
       }
     ))
+  })
+  it('Should return not found when it does not exist', async () => {
+    const mockPaymentGateway: IPaymentGateway = {
+      save: jest.fn().mockResolvedValueOnce('payment_id'),
+      findById: jest.fn().mockResolvedValueOnce(undefined)
+    }
+    const sut = new FindPaymentByIdUseCase(mockPaymentGateway)
+    const result = await sut.execute('any_payment_id')
+    expect(result).toEqual(notFoundError('Payment with ID any_payment_id does not exist'))
   })
 })
