@@ -42,21 +42,30 @@ describe('PaymentGateway', () => {
       })
     }
   }
-  it('Should save and Payment with success', async () => {
-    const sut: IPaymentGateway = new PaymentGateway(mockConnection)
-    const result = await sut.save(mockPayment)
-    expect(result).toBe('any_payment_id')
+  describe('Save a payment', () => {
+    it('Should save and Payment with success', async () => {
+      const sut: IPaymentGateway = new PaymentGateway(mockConnection)
+      const result = await sut.save(mockPayment)
+      expect(result).toBe('any_payment_id')
+    })
+    it('Should throw an error when Connection throws', async () => {
+      const mockConnectionReject = {
+        ...mockConnection,
+        query: jest.fn(async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.reject(new Error('Generec gateway erro!'))
+        })
+      }
+      const sut: IPaymentGateway = new PaymentGateway(mockConnectionReject)
+      const result = sut.save(mockPayment)
+      await expect(result).rejects.toEqual(new Error('Generec gateway erro!'))
+    })
   })
-  it('Should throw an error when Connection throws', async () => {
-    const mockConnectionReject = {
-      ...mockConnection,
-      query: jest.fn(async (stmt: string, params: any[]) => {
-        console.log({ stmt, params })
-        return await Promise.reject(new Error('Generec gateway erro!'))
-      })
-    }
-    const sut: IPaymentGateway = new PaymentGateway(mockConnectionReject)
-    const result = sut.save(mockPayment)
-    await expect(result).rejects.toEqual(new Error('Generec gateway erro!'))
+  describe('Find a payment', () => {
+    it('Should return a Payment by id when it exists', async () => {
+      const sut = new PaymentGateway(mockConnection)
+      const result = await sut.findById('any_payment_id')
+      expect(result).toEqual(mockPayment)
+    })
   })
 })
