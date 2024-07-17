@@ -67,5 +67,19 @@ describe('PaymentGateway', () => {
       const result = await sut.findById('any_payment_id')
       expect(result).toEqual(mockPayment)
     })
+    it('Should return undefined when it does not exist', async () => {
+      const notFoundConnection: IConnection = {
+        ...mockConnection,
+        query: async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.resolve({
+            rows: []
+          })
+        }
+      }
+      const sut = new PaymentGateway(notFoundConnection)
+      const result = await sut.findById('any_payment_id')
+      expect(result).toBeUndefined()
+    })
   })
 })
