@@ -81,5 +81,17 @@ describe('PaymentGateway', () => {
       const result = await sut.findById('any_payment_id')
       expect(result).toBeUndefined()
     })
+    it('Should throw an error when Connection throws', async () => {
+      const mockConnectionReject = {
+        ...mockConnection,
+        query: jest.fn(async (stmt: string, params: any[]) => {
+          console.log({ stmt, params })
+          return await Promise.reject(new Error('Generec gateway erro!'))
+        })
+      }
+      const sut: IPaymentGateway = new PaymentGateway(mockConnectionReject)
+      const result = sut.findById('any_payment_id')
+      await expect(result).rejects.toEqual(new Error('Generec gateway erro!'))
+    })
   })
 })
