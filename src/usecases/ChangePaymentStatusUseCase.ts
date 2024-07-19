@@ -1,5 +1,6 @@
 import Payment from '../entities/Payment'
 import PaymentStatus, { type PaymentStatuses } from '../entities/PaymentStatus'
+import PaymentAccepted from '../events/PaymentAccepted'
 import type EventHandler from '../handlers/EventHandler'
 import { type IPaymentGateway } from '../interfaces/IPaymentGateway'
 import { badRequest, type HttpResponse, noContent, notFoundError } from '../presenters/HttpResponses'
@@ -25,6 +26,7 @@ export class ChangePaymentStatusUseCase {
     const paymentStatus = new PaymentStatus(uuidv4(), statusMapper[status])
     const newPayment = new Payment(payment.id, payment.orderId, payment.value, [...payment.statuses, paymentStatus], payment.qrCode, payment.integrationId)
     await this.paymentGateway.save(newPayment)
+    await this.eventHandler.publish(new PaymentAccepted(payment.orderId))
     return noContent()
   }
 }

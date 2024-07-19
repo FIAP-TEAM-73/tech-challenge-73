@@ -27,10 +27,19 @@ describe('Payment confirmation handler', () => {
     createOrderGateway: () => mockOrderGateway,
     createItemGateway: () => { throw new Error('') }
   }
-  it('Should skip to received step when order payment was accepted', async () => {
+  it('Should skip to RECEIVED step when order payment was accepted', async () => {
     const sut = new PaymentConfirmationHanlder(mockFactory)
     await sut.handle(new PaymentAccepted(mockOrder.id))
     expect(mockOrderGateway.findById).toHaveBeenCalledWith('1')
     expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('RECEIVED'))
+  })
+  it('Should fail when order does not exist', async () => {
+    const mockOrderGatewayNotFound: IOrderGateway = {
+      ...mockOrderGateway,
+      findById: jest.fn(async (_id: string) => { return undefined })
+    }
+    const sut = new PaymentConfirmationHanlder({ ...mockFactory, createOrderGateway: () => mockOrderGatewayNotFound })
+    const result = sut.handle(new PaymentAccepted(mockOrder.id))
+    await expect(result).rejects.toEqual(new Error(`Order with id ${mockOrder.id} does not exists`))
   })
 })
