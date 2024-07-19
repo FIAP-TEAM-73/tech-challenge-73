@@ -1,5 +1,6 @@
 import Payment from '../entities/Payment'
 import PaymentStatus, { type PaymentStatuses } from '../entities/PaymentStatus'
+import type EventHandler from '../handlers/EventHandler'
 import { type IPaymentGateway } from '../interfaces/IPaymentGateway'
 import { badRequest, type HttpResponse, noContent, notFoundError } from '../presenters/HttpResponses'
 import { v4 as uuidv4 } from 'uuid'
@@ -15,7 +16,7 @@ const statusMapper: Record<'approved' | 'rejected' | string, PaymentStatuses> = 
 }
 
 export class ChangePaymentStatusUseCase {
-  constructor (private readonly paymentGateway: IPaymentGateway) { }
+  constructor (private readonly paymentGateway: IPaymentGateway, private readonly eventHandler: EventHandler) { }
 
   async execute ({ issueId, status }: ChangePaymentStatusCommand): Promise<HttpResponse> {
     const payment = await this.paymentGateway.findById(issueId)

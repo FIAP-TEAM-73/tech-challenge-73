@@ -1,8 +1,13 @@
 import Payment from '../../src/entities/Payment'
 import type PaymentStatus from '../../src/entities/PaymentStatus'
+import EventHandler from '../../src/handlers/EventHandler'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
 import { badRequest, noContent, notFoundError } from '../../src/presenters/HttpResponses'
 import { ChangePaymentStatusUseCase } from '../../src/usecases/ChangePaymentStatusUseCase'
+import * as uuid from 'uuid'
+
+jest.mock('uuid')
+
 const mockPaymentStatus: PaymentStatus[] = [
   {
     id: 'any_status_id',
@@ -13,6 +18,7 @@ const mockPaymentStatus: PaymentStatus[] = [
 const mockPayment = new Payment('any_payment_id', 'any_order_id', 85.99, mockPaymentStatus, '0001', 'any_integration_id')
 
 describe('Save payment use case', () => {
+  jest.spyOn(uuid, 'v4').mockReturnValueOnce('mocked_id')
   let mockPaymentGateway: IPaymentGateway
   beforeEach(() => {
     mockPaymentGateway = {
@@ -21,7 +27,7 @@ describe('Save payment use case', () => {
     }
   })
   it('Should save a payment when the information is correct', async () => {
-    const sut = new ChangePaymentStatusUseCase(mockPaymentGateway)
+    const sut = new ChangePaymentStatusUseCase(mockPaymentGateway, new EventHandler([]))
     const result = await sut.execute({ issueId: 'any_payment_id', status: 'approved' })
     expect(result).toEqual(noContent())
   })
@@ -30,12 +36,12 @@ describe('Save payment use case', () => {
       ...mockPaymentGateway,
       findById: jest.fn().mockResolvedValueOnce(undefined)
     }
-    const sut = new ChangePaymentStatusUseCase(mockNotFound)
+    const sut = new ChangePaymentStatusUseCase(mockNotFound, new EventHandler([]))
     const result = await sut.execute({ issueId: 'wrong_id', status: 'approved' })
     expect(result).toEqual(notFoundError('Payment with ID wrong_id does not exist'))
   })
   it('Should throws when status is not mapped', async () => {
-    const sut = new ChangePaymentStatusUseCase(mockPaymentGateway)
+    const sut = new ChangePaymentStatusUseCase(mockPaymentGateway, new EventHandler([]))
     const result = sut.execute({ issueId: 'any_payment_id', status: 'not_mapped' })
     await expect(result).rejects.toEqual(new Error('Status \'undefined\' does not exist'))
   })
@@ -49,7 +55,7 @@ describe('Save payment use case', () => {
       ...mockPaymentGateway,
       findById: jest.fn().mockResolvedValueOnce(payment)
     }
-    const sut = new ChangePaymentStatusUseCase(mockPaymentApproved)
+    const sut = new ChangePaymentStatusUseCase(mockPaymentApproved, new EventHandler([]))
     const result = await sut.execute({ issueId: 'any_payment_id', status: 'approved' })
     expect(result).toEqual(badRequest('Payment with ID any_payment_id is already approved'))
   })
