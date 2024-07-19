@@ -1,7 +1,7 @@
-import type Payment from '../../src/entities/Payment'
+import Payment from '../../src/entities/Payment'
 import type PaymentStatus from '../../src/entities/PaymentStatus'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
-import { noContent, notFoundError } from '../../src/presenters/HttpResponses'
+import { badRequest, noContent, notFoundError } from '../../src/presenters/HttpResponses'
 import { ChangePaymentStatusUseCase } from '../../src/usecases/ChangePaymentStatusUseCase'
 const mockPaymentStatus: PaymentStatus[] = [
   {
@@ -10,14 +10,8 @@ const mockPaymentStatus: PaymentStatus[] = [
   }
 ]
 
-const mockPayment: Payment = {
-  id: 'any_payment_id',
-  orderId: 'any_order_id',
-  value: 85.99,
-  statuses: mockPaymentStatus,
-  integrationId: 'any_integration_id',
-  qrCode: '0001'
-}
+const mockPayment = new Payment('any_payment_id', 'any_order_id', 85.99, mockPaymentStatus, '0001', 'any_integration_id')
+
 describe('Save payment use case', () => {
   let mockPaymentGateway: IPaymentGateway
   beforeEach(() => {
@@ -44,5 +38,19 @@ describe('Save payment use case', () => {
     const sut = new ChangePaymentStatusUseCase(mockPaymentGateway)
     const result = sut.execute({ issueId: 'any_payment_id', status: 'not_mapped' })
     await expect(result).rejects.toEqual(new Error('Status \'undefined\' does not exist'))
+  })
+  it('Should not save when payment was previouly approved', async () => {
+    const paymentApproved: PaymentStatus = {
+      id: 'another_id',
+      status: 'PAYMENT_ACCEPTED'
+    }
+    const payment = new Payment(mockPayment.id, mockPayment.orderId, mockPayment.value, [...mockPaymentStatus, paymentApproved], mockPayment.qrCode, mockPayment.integrationId)
+    const mockPaymentApproved: IPaymentGateway = {
+      ...mockPaymentGateway,
+      findById: jest.fn().mockResolvedValueOnce(payment)
+    }
+    const sut = new ChangePaymentStatusUseCase(mockPaymentApproved)
+    const result = await sut.execute({ issueId: 'any_payment_id', status: 'approved' })
+    expect(result).toEqual(badRequest('Payment with ID any_payment_id is already approved'))
   })
 })
