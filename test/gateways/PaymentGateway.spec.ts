@@ -1,7 +1,7 @@
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
 import type IConnection from '../../src/interfaces/IConnection'
 import type PaymentStatus from '../../src/entities/PaymentStatus'
-import type Payment from '../../src/entities/Payment'
+import Payment from '../../src/entities/Payment'
 import PaymentGateway from '../../src/gateways/PaymentGateway'
 
 const mockPaymentStatus: PaymentStatus[] = [
@@ -11,14 +11,7 @@ const mockPaymentStatus: PaymentStatus[] = [
   }
 ]
 
-const mockPayment: Payment = {
-  id: 'any_payment_id',
-  orderId: 'any_order_id',
-  value: 85.99,
-  statuses: mockPaymentStatus,
-  integrationId: 'any_integration_id',
-  qrCode: '0001'
-}
+const mockPayment = new Payment('any_payment_id', 'any_order_id', 85.99, mockPaymentStatus, '0001', 'any_integration_id')
 
 describe('PaymentGateway', () => {
   const mockConnection: IConnection = {

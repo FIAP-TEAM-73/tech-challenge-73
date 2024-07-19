@@ -12,4 +12,8 @@ export default class Payment {
   ) {
     assertArgumentMin(value, 0, 'Value must be greater than 0')
   }
+
+  isApproved (): boolean {
+    return this.statuses.some(status => status.status === 'PAYMENT_ACCEPTED')
+  }
 }
