@@ -1,7 +1,7 @@
 import type Payment from '../../src/entities/Payment'
 import type PaymentStatus from '../../src/entities/PaymentStatus'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
-import { noContent } from '../../src/presenters/HttpResponses'
+import { noContent, notFoundError } from '../../src/presenters/HttpResponses'
 import { ChangePaymentStatusUseCase } from '../../src/usecases/ChangePaymentStatusUseCase'
 const mockPaymentStatus: PaymentStatus[] = [
   {
@@ -27,5 +27,14 @@ describe('Save payment use case', () => {
     const sut = new ChangePaymentStatusUseCase(mockPaymentGateway)
     const result = await sut.execute({ issueId: 'any_payment_id', status: 'approved' })
     expect(result).toEqual(noContent())
+  })
+  it('Should not save when payment does not exist', async () => {
+    const mockNotFound: IPaymentGateway = {
+      ...mockPaymentGateway,
+      findById: jest.fn().mockResolvedValueOnce(undefined)
+    }
+    const sut = new ChangePaymentStatusUseCase(mockNotFound)
+    const result = await sut.execute({ issueId: 'wrong_id', status: 'approved' })
+    expect(result).toEqual(notFoundError('Payment with ID wrong_id does not exist'))
   })
 })
