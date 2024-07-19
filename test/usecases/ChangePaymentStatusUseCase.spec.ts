@@ -19,10 +19,13 @@ const mockPayment: Payment = {
   qrCode: '0001'
 }
 describe('Save payment use case', () => {
-  const mockPaymentGateway: IPaymentGateway = {
-    save: jest.fn().mockResolvedValueOnce('payment_id'),
-    findById: jest.fn().mockResolvedValueOnce(mockPayment)
-  }
+  let mockPaymentGateway: IPaymentGateway
+  beforeEach(() => {
+    mockPaymentGateway = {
+      save: jest.fn().mockResolvedValueOnce('payment_id'),
+      findById: jest.fn().mockResolvedValueOnce(mockPayment)
+    }
+  })
   it('Should save a payment when the information is correct', async () => {
     const sut = new ChangePaymentStatusUseCase(mockPaymentGateway)
     const result = await sut.execute({ issueId: 'any_payment_id', status: 'approved' })
@@ -36,5 +39,10 @@ describe('Save payment use case', () => {
     const sut = new ChangePaymentStatusUseCase(mockNotFound)
     const result = await sut.execute({ issueId: 'wrong_id', status: 'approved' })
     expect(result).toEqual(notFoundError('Payment with ID wrong_id does not exist'))
+  })
+  it('Should throws when status is not mapped', async () => {
+    const sut = new ChangePaymentStatusUseCase(mockPaymentGateway)
+    const result = sut.execute({ issueId: 'any_payment_id', status: 'not_mapped' })
+    await expect(result).rejects.toEqual(new Error('Status \'undefined\' does not exist'))
   })
 })
