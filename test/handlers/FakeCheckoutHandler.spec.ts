@@ -5,6 +5,8 @@ import OrderItem from '../../src/entities/OrderItem'
 import OrderPlaced from '../../src/events/OrderPlaced'
 import type IGatewayFactory from '../../src/interfaces/IGatewayFactory'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
+import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
+import PaymentIntegrationInMemoryGateway from '../../src/gateways/PaymentIntegrationInMemoryGateway'
 
 const orderItems: OrderItem[] = [
   new OrderItem('1', '1', 30, 2),
@@ -21,10 +23,16 @@ describe('Fake checkout handler', () => {
     find: jest.fn(async (_params: any) => await Promise.resolve([])),
     count: jest.fn(async (_params: any) => await Promise.resolve(0))
   }
+  const mockPaymentGateway: IPaymentGateway = {
+    save: jest.fn().mockReturnValueOnce('any_payment_id'),
+    findById: jest.fn().mockReturnValueOnce(undefined)
+  }
   const mockFactory: IGatewayFactory = {
     createCustomerGateway: () => new CustomerInMemoryGateway(),
     createOrderGateway: () => mockOrderGateway,
-    createItemGateway: () => { throw new Error('') }
+    createItemGateway: () => { throw new Error('') },
+    createPaymentGateway: () => mockPaymentGateway,
+    createPaymentIntegrationGateway: () => new PaymentIntegrationInMemoryGateway()
   }
   it('Should skip payment step when order is created', async () => {
     const sut = new FakeCheckoutHandler(mockFactory)
