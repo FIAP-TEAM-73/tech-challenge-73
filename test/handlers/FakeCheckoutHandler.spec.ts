@@ -6,7 +6,12 @@ import OrderPlaced from '../../src/events/OrderPlaced'
 import type IGatewayFactory from '../../src/interfaces/IGatewayFactory'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
-import PaymentIntegrationInMemoryGateway from '../../src/gateways/PaymentIntegrationInMemoryGateway'
+import * as uuid from 'uuid'
+import Payment from '../../src/entities/Payment'
+import type PaymentStatus from '../../src/entities/PaymentStatus'
+import { type IPaymentIntegrationGateway } from '../../src/interfaces/IPaymentIntegrationGateway'
+
+jest.mock('uuid')
 
 const orderItems: OrderItem[] = [
   new OrderItem('1', '1', 30, 2),
@@ -16,7 +21,20 @@ const orderItems: OrderItem[] = [
 ]
 
 const mockOrder = new Order('1', 2, 'CREATED', orderItems)
+
+const mockPaymentStatus: PaymentStatus[] = [
+  {
+    id: 'payment_status_id',
+    status: 'AWAITING_PAYMENT'
+  }
+]
+
+const mockPayment = new Payment('payment_id', '1', 155, mockPaymentStatus, '00020101021243650016COM', 'any_integration_id')
+
 describe('Fake checkout handler', () => {
+  jest.spyOn(uuid, 'v4')
+    .mockReturnValueOnce('payment_status_id')
+    .mockReturnValueOnce('payment_id')
   const mockOrderGateway: IOrderGateway = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
@@ -27,18 +45,22 @@ describe('Fake checkout handler', () => {
     save: jest.fn().mockReturnValueOnce('any_payment_id'),
     findById: jest.fn().mockReturnValueOnce(undefined)
   }
+  const mockPaymentIntegrationGateway: IPaymentIntegrationGateway = {
+    createPayment: jest.fn().mockReturnValueOnce({ integrationId: 'any_integration_id', qrCode: '00020101021243650016COM' })
+  }
   const mockFactory: IGatewayFactory = {
     createCustomerGateway: () => new CustomerInMemoryGateway(),
     createOrderGateway: () => mockOrderGateway,
     createItemGateway: () => { throw new Error('') },
     createPaymentGateway: () => mockPaymentGateway,
-    createPaymentIntegrationGateway: () => new PaymentIntegrationInMemoryGateway()
+    createPaymentIntegrationGateway: () => mockPaymentIntegrationGateway
   }
   it('Should skip payment step when order is created', async () => {
     const sut = new FakeCheckoutHandler(mockFactory)
     await sut.handle(new OrderPlaced(mockOrder.id))
     expect(mockOrderGateway.findById).toHaveBeenCalledWith('1')
     expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('AWAITING_PAYMENT'))
+    expect(mockPaymentGateway.save).toHaveBeenCalledWith(mockPayment)
   })
   it('Should fail when order does not exist', async () => {
     const mockOrderGatewayNotFound: IOrderGateway = {
