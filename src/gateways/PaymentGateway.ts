@@ -17,7 +17,7 @@ interface PaymentRow {
 export default class PaymentGateway implements IPaymentGateway {
   constructor (private readonly connection: IConnection) {}
   async save (payment: Payment): Promise<string> {
-    const query = 'INSERT INTO "payment"(id, order_id, "value", integration_id, qa_code) VALUES($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING RETURNING *'
+    const query = 'INSERT INTO "payment"(id, order_id, "value", integration_id, qr_code) VALUES($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET integration_id=$4, qr_code=$5 RETURNING *'
     const { id, orderId, value, statuses, integrationId, qrCode } = payment
     const values = [id, orderId, value, integrationId, qrCode]
     const result = await this.connection.query(query, values)
@@ -36,9 +36,10 @@ export default class PaymentGateway implements IPaymentGateway {
 
   async findById (paymentId: string): Promise<Payment | undefined> {
     const query = `
-    SELECT p.*, ps.id as payment_status_id, ps.status FROM "payment" p
+    SELECT p.*, ps.id as payment_status_id, ps.status, ps.created_at FROM "payment" p
     JOIN payment_status ps ON ps.payment_id = p.id
     WHERE p.id = $1
+    ORDER BY ps.created_at DESC
     `
     const result = await this.connection.query(query, [paymentId])
     if (result.rows.length === 0) return undefined
