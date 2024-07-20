@@ -4,7 +4,7 @@ import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import type IOrderGateway from '../interfaces/IOrderGateway'
 import PaymentRejected from '../events/PaymentRejected'
 
-export default class PaymentRejectedHanlder implements IHandler {
+export default class PaymentRejectedHandler implements IHandler {
   name: string = 'paymentRejected'
   orderGateway: IOrderGateway
   constructor (factory: IGatewayFactory) {

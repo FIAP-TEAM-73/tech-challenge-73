@@ -3,6 +3,7 @@ import { type CustomerCommand } from '../usecases/SaveCustomerUseCase'
 import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import CustomerController from '../controllers/CustomerController'
 import { type IApi } from '../interfaces/IApi'
+
 export default class CustomerApi implements IApi {
   private readonly customerController: CustomerController
   constructor (

@@ -6,6 +6,7 @@ import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import OrderController from '../controllers/OrderController'
 import { type OrderPageParams } from '../interfaces/IOrderGateway'
 import { type IApi } from '../interfaces/IApi'
+
 export default class OrderApi implements IApi {
   private readonly orderController: OrderController
   constructor (

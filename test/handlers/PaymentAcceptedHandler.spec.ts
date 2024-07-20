@@ -3,7 +3,7 @@ import OrderItem from '../../src/entities/OrderItem'
 import PaymentAccepted from '../../src/events/PaymentAccepted'
 import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryGateway'
 import PaymentIntegrationInMemoryGateway from '../../src/gateways/PaymentIntegrationInMemoryGateway'
-import PaymentAcceptedHanlder from '../../src/handlers/PaymentAcceptedHandler'
+import PaymentAcceptedHandler from '../../src/handlers/PaymentAcceptedHandler'
 import type IGatewayFactory from '../../src/interfaces/IGatewayFactory'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
@@ -36,7 +36,7 @@ describe('Payment accepted handler', () => {
     createPaymentIntegrationGateway: () => new PaymentIntegrationInMemoryGateway()
   }
   it('Should skip to RECEIVED step when order payment was accepted', async () => {
-    const sut = new PaymentAcceptedHanlder(mockFactory)
+    const sut = new PaymentAcceptedHandler(mockFactory)
     await sut.handle(new PaymentAccepted(mockOrder.id))
     expect(mockOrderGateway.findById).toHaveBeenCalledWith('1')
     expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('RECEIVED'))
@@ -46,7 +46,7 @@ describe('Payment accepted handler', () => {
       ...mockOrderGateway,
       findById: jest.fn(async (_id: string) => { return undefined })
     }
-    const sut = new PaymentAcceptedHanlder({ ...mockFactory, createOrderGateway: () => mockOrderGatewayNotFound })
+    const sut = new PaymentAcceptedHandler({ ...mockFactory, createOrderGateway: () => mockOrderGatewayNotFound })
     const result = sut.handle(new PaymentAccepted(mockOrder.id))
     await expect(result).rejects.toEqual(new Error(`Order with id ${mockOrder.id} does not exists`))
   })

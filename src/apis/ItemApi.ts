@@ -5,6 +5,7 @@ import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import ItemController from '../controllers/ItemController'
 import { type ItemPageParams } from '../interfaces/IItemGateway'
 import { type IApi } from '../interfaces/IApi'
+
 export default class ItemApi implements IApi {
   private readonly itemController: ItemController
   constructor (
