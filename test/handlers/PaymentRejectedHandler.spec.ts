@@ -1,9 +1,9 @@
 import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
-import PaymentAccepted from '../../src/events/PaymentAccepted'
+import PaymentRejected from '../../src/events/PaymentRejected'
 import CustomerInMemoryGateway from '../../src/gateways/CustomerInMemoryGateway'
 import PaymentIntegrationInMemoryGateway from '../../src/gateways/PaymentIntegrationInMemoryGateway'
-import PaymentConfirmationHanlder from '../../src/handlers/PaymentConfirmationHanlder'
+import PaymentRejectedHandler from '../../src/handlers/PaymentRejectedHandler'
 import type IGatewayFactory from '../../src/interfaces/IGatewayFactory'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
@@ -17,7 +17,7 @@ const orderItems: OrderItem[] = [
 
 const mockOrder = new Order('1', 2, 'CREATED', orderItems)
 
-describe('Payment confirmation handler', () => {
+describe('Payment rejected handler', () => {
   const mockOrderGateway: IOrderGateway = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
@@ -35,19 +35,19 @@ describe('Payment confirmation handler', () => {
     createPaymentGateway: () => mockPaymentGateway,
     createPaymentIntegrationGateway: () => new PaymentIntegrationInMemoryGateway()
   }
-  it('Should skip to RECEIVED step when order payment was accepted', async () => {
-    const sut = new PaymentConfirmationHanlder(mockFactory)
-    await sut.handle(new PaymentAccepted(mockOrder.id))
+  it('Should skip to PAYMENT_REFUSED step when order payment was rejected', async () => {
+    const sut = new PaymentRejectedHandler(mockFactory)
+    await sut.handle(new PaymentRejected(mockOrder.id))
     expect(mockOrderGateway.findById).toHaveBeenCalledWith('1')
-    expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('RECEIVED'))
+    expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('PAYMENT_REFUSED'))
   })
   it('Should fail when order does not exist', async () => {
     const mockOrderGatewayNotFound: IOrderGateway = {
       ...mockOrderGateway,
       findById: jest.fn(async (_id: string) => { return undefined })
     }
-    const sut = new PaymentConfirmationHanlder({ ...mockFactory, createOrderGateway: () => mockOrderGatewayNotFound })
-    const result = sut.handle(new PaymentAccepted(mockOrder.id))
+    const sut = new PaymentRejectedHandler({ ...mockFactory, createOrderGateway: () => mockOrderGatewayNotFound })
+    const result = sut.handle(new PaymentRejected(mockOrder.id))
     await expect(result).rejects.toEqual(new Error(`Order with id ${mockOrder.id} does not exists`))
   })
 })
