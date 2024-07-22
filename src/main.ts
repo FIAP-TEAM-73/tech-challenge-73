@@ -10,10 +10,17 @@ import { type IHttp } from './interfaces/IHttp'
 import CustomerApi from './apis/CustomerApi'
 import ItemApi from './apis/ItemApi'
 import OrderApi from './apis/OrderApi'
+import PaymentApi from './apis/PaymentApi'
+import PaymentAcceptedHandler from './handlers/PaymentAcceptedHandler'
+import PaymentRejectedHandler from './handlers/PaymentRejectedHandler'
 
 const getHanlders = (factory: IGatewayFactory): EventHandler => {
   return new EventHandler(
-    [new FakeCheckoutHandler(factory)]
+    [
+      new FakeCheckoutHandler(factory),
+      new PaymentAcceptedHandler(factory),
+      new PaymentRejectedHandler(factory)
+    ]
   )
 }
 
@@ -35,7 +42,8 @@ const initRoutes = (http: IHttp, connection: IConnection): void => {
   const routes = [
     new CustomerApi(http, factory),
     new ItemApi(http, factory),
-    new OrderApi(http, factory, handler)
+    new OrderApi(http, factory, handler),
+    new PaymentApi(http, factory, handler)
   ]
   routes.forEach((route) => { route.init() })
 }
