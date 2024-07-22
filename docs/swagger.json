@@ -23,6 +23,10 @@
         {
             "name": "Cliente",
             "description": "API responsável por gerenciar os Clientes"
+        },
+        {
+            "name": "Pagamento",
+            "description": "API responsável por gerenciar o status do pagamento do cliente"
         }
     ],
     "schemes": [
@@ -295,7 +299,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access GET - /order"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -311,7 +315,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access GET - /order"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -371,7 +375,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access PUT - /order/{orderId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -387,7 +391,163 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access PUT - /order/{orderId}"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/hook": {
+            "post": {
+                "tags": [
+                    "Pagamento"
+                ],
+                "summary": "Atualizar status do pagamento",
+                "operationId": "paymentWebHook",
+                "parameters": [
+                    {
+                        "name": "paymentWebHook",
+                        "in": "body",
+                        "description": "Payment object that needs to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "issueId": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "bf32fb00-7bb2-481d-86ca-336dc5af1d4e"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "approved"
+                                }
+                            },
+                            "required": [
+                                "issueId",
+                                "status"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Payment status updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /payment/webhook"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Payment is already approved"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access POST - /payment/webhook"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/{paymentId}": {
+            "get": {
+                "tags": [
+                    "Pagamento"
+                ],
+                "summary": "Change Order Status",
+                "operationId": "changeOrderstatus",
+                "parameters": [
+                    {
+                        "name": "paymentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                            },
+                                            "value": {
+                                                "type": "number",
+                                                "example": "84.95"
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "example": "PAYMENT_REFUSED"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access GET - /payment/{paymentId}"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Payment does not exist"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access GET - /payment/{paymentId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -468,7 +628,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access POST - /item"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -484,7 +644,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access POST - /item"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -650,7 +810,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access GET - /item"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -666,7 +826,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access GET - /item"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -759,7 +919,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access PUT - /item/{itemId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -775,7 +935,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access PUT - /item/{itemId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -791,7 +951,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access PUT - /item/{itemId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -831,7 +991,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access DELETE - /item/{itemId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -847,7 +1007,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access DELETE - /item/{itemId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -863,7 +1023,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access DELETE - /item/{itemId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -923,7 +1083,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access POST - /customer"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -939,7 +1099,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access POST - /customer"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -989,7 +1149,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access GET - /customer/{cpf}"
                                 },
                                 "errorMessage": {
                                     "type": "string",
@@ -1005,7 +1165,7 @@
                             "properties": {
                                 "friendlyMessage": {
                                     "type": "string",
-                                    "example": "Fail while trying to access POST - /order"
+                                    "example": "Fail while trying to access GET - /customer/{cpf}"
                                 },
                                 "errorMessage": {
                                     "type": "string",

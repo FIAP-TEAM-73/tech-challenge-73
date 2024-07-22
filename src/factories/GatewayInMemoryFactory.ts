@@ -3,6 +3,8 @@ import type IOrderGateway from '../interfaces/IOrderGateway'
 import CustomerInMemoryGateway from '../gateways/CustomerInMemoryGateway'
 import { type ICustomerGateway } from '../interfaces/ICustomerGateway'
 import type IItemGateway from '../interfaces/IItemGateway'
+import { type IPaymentGateway } from '../interfaces/IPaymentGateway'
+import { type IPaymentIntegrationGateway } from '../interfaces/IPaymentIntegrationGateway'
 
 export default class GatewayInMemoryFactory implements IGatewayFactory {
   private readonly customerInMemoryGateway = new CustomerInMemoryGateway()
@@ -12,4 +14,6 @@ export default class GatewayInMemoryFactory implements IGatewayFactory {
 
   createItemGateway!: () => IItemGateway
   createOrderGateway!: () => IOrderGateway
+  createPaymentGateway!: () => IPaymentGateway
+  createPaymentIntegrationGateway!: () => IPaymentIntegrationGateway
 }
