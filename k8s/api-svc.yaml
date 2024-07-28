@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: tech-challenge-73
-  type: NodePort
+  type: LoadBalancer
   ports:
   - name: svc-api
     port: 80

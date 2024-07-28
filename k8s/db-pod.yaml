@@ -10,7 +10,7 @@ spec:
       image: "postgres"
       resources:
         limits:
-          cpu: "1"
+          cpu: "0.5"
           memory: 500Mi
         requests:
           cpu: "0.5"
@@ -40,10 +40,10 @@ spec:
             configMapKeyRef:
               name: db-config
               key: DB_NAME
-      volumeMounts:
-        - name: shared
-          mountPath: /var/lib/postgresql/data
-  volumes:
-    - name: shared
-      persistentVolumeClaim:
-        claimName: tech-challenge-73-pvc
+  #     volumeMounts:
+  #       - name: shared
+  #         mountPath: /var/lib/postgresql/data
+  # volumes:
+  #   - name: shared
+  #     persistentVolumeClaim:
+  #       claimName: tech-challenge-73-pvc
