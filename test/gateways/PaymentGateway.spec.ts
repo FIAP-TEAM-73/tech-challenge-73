@@ -57,7 +57,7 @@ describe('PaymentGateway', () => {
   describe('Find a payment', () => {
     it('Should return a Payment by id when it exists', async () => {
       const sut = new PaymentGateway(mockConnection)
-      const result = await sut.findById('any_payment_id')
+      const result = await sut.findPaymentByOrderId('any_order_id')
       expect(result).toEqual(mockPayment)
     })
     it('Should return undefined when it does not exist', async () => {
@@ -71,7 +71,7 @@ describe('PaymentGateway', () => {
         }
       }
       const sut = new PaymentGateway(notFoundConnection)
-      const result = await sut.findById('any_payment_id')
+      const result = await sut.findPaymentByOrderId('any_payment_id')
       expect(result).toBeUndefined()
     })
     it('Should throw an error when Connection throws', async () => {
@@ -83,7 +83,7 @@ describe('PaymentGateway', () => {
         })
       }
       const sut: IPaymentGateway = new PaymentGateway(mockConnectionReject)
-      const result = sut.findById('any_payment_id')
+      const result = sut.findPaymentByOrderId('any_payment_id')
       await expect(result).rejects.toEqual(new Error('Generec gateway erro!'))
     })
   })

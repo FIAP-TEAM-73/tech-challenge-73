@@ -19,8 +19,5 @@ export default class PaymentApi implements IApi {
     void this.http.route('post', 'payment/hook', async (_: any, body: ChangePaymentStatusCommand) => {
       return await this.paymentController.save(body)
     })
-    void this.http.route('get', 'payment/:id', async (req: { params: { id: string } }) => {
-      return await this.paymentController.findById(req.params.id)
-    })
   }
 }

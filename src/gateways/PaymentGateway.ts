@@ -34,14 +34,14 @@ export default class PaymentGateway implements IPaymentGateway {
     }))
   }
 
-  async findById (paymentId: string): Promise<Payment | undefined> {
+  async findPaymentByOrderId (orderId: string): Promise<Payment | undefined> {
     const query = `
     SELECT p.*, ps.id as payment_status_id, ps.status, ps.created_at FROM "payment" p
     JOIN payment_status ps ON ps.payment_id = p.id
-    WHERE p.id = $1
+    WHERE p.order_id = $1
     ORDER BY ps.created_at DESC
     `
-    const result = await this.connection.query(query, [paymentId])
+    const result = await this.connection.query(query, [orderId])
     if (result.rows.length === 0) return undefined
     return result.rows.reduce((acc: Payment | undefined, row: PaymentRow) => {
       const { id, order_id: orderId, integration_id: integrationId, payment_status_id: paymentStatusId, qr_code: qrCode, status, value } = row

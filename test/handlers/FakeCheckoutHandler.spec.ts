@@ -43,7 +43,7 @@ describe('Fake checkout handler', () => {
   }
   const mockPaymentGateway: IPaymentGateway = {
     save: jest.fn().mockReturnValueOnce('any_payment_id'),
-    findById: jest.fn().mockReturnValueOnce(undefined)
+    findPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined)
   }
   const mockPaymentIntegrationGateway: IPaymentIntegrationGateway = {
     createPayment: jest.fn().mockReturnValueOnce({ integrationId: 'any_integration_id', qrCode: '00020101021243650016COM' })
