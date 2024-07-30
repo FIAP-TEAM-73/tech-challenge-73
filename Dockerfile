@@ -1,13 +1,13 @@
-FROM node:iron-alpine3.18 
+FROM node:18-alpine
 WORKDIR /app 
 
 USER root
 
 COPY --chown=node:node package*.json ./
 
-ARG POSTGRES_USER
-ARG POSTGRES_PASSWORD
-ARG POSTGRES_DB
+ARG DB_USER
+ARG DB_PASSWORD
+ARG DB_NAME
 ARG DB_HOST
 ARG DB_PORT
 

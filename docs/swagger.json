@@ -9,7 +9,6 @@
             "url": "https://opensource.org/license/MIT"
         }
     },
-    "host": "localhost:9001",
     "basePath": "/api/v1/",
     "tags": [
         {
@@ -403,6 +402,87 @@
                 }
             }
         },
+        "/order/{orderId}/payment": {
+            "get": {
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Check Order Payment Status",
+                "operationId": "checkOrderPaymentStatus",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                },
+                                "orderId": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "64289576-f81e-4339-a0c9-84416e5c5518"
+                                },
+                                "value": {
+                                    "type": "number",
+                                    "example": "84.95"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "PAYMENT_REFUSED"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access GET - /payment/{paymentId}"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Payment does not exist"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access GET - /payment/{paymentId}"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/payment/hook": {
             "post": {
                 "tags": [
@@ -464,90 +544,6 @@
                                 "friendlyMessage": {
                                     "type": "string",
                                     "example": "Fail while trying to access POST - /payment/webhook"
-                                },
-                                "errorMessage": {
-                                    "type": "string",
-                                    "example": "Unkown error!"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/payment/{paymentId}": {
-            "get": {
-                "tags": [
-                    "Pagamento"
-                ],
-                "summary": "Change Order Status",
-                "operationId": "changeOrderstatus",
-                "parameters": [
-                    {
-                        "name": "paymentId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid",
-                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Payment found",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "content": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "type": "string",
-                                                "format": "uuid",
-                                                "example": "64289576-f81e-4339-a0c9-84416e5c5518"
-                                            },
-                                            "value": {
-                                                "type": "number",
-                                                "example": "84.95"
-                                            },
-                                            "status": {
-                                                "type": "string",
-                                                "example": "PAYMENT_REFUSED"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "friendlyMessage": {
-                                    "type": "string",
-                                    "example": "Fail while trying to access GET - /payment/{paymentId}"
-                                },
-                                "errorMessage": {
-                                    "type": "string",
-                                    "example": "Payment does not exist"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "friendlyMessage": {
-                                    "type": "string",
-                                    "example": "Fail while trying to access GET - /payment/{paymentId}"
                                 },
                                 "errorMessage": {
                                     "type": "string",

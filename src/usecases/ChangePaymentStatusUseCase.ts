@@ -22,9 +22,9 @@ export class ChangePaymentStatusUseCase {
   constructor (private readonly paymentGateway: IPaymentGateway, private readonly eventHandler: EventHandler) { }
 
   async execute ({ issueId, status }: ChangePaymentStatusCommand): Promise<HttpResponse> {
-    const payment = await this.paymentGateway.findById(issueId)
-    if (payment === undefined) return notFoundError(`Payment with ID ${issueId} does not exist`)
-    if (payment.isApproved()) return badRequest(`Payment with ID ${issueId} is already approved`)
+    const payment = await this.paymentGateway.findPaymentByOrderId(issueId)
+    if (payment === undefined) return notFoundError(`Payment with order ID ${issueId} does not exist`)
+    if (payment.isApproved()) return badRequest(`Payment with order ID ${issueId} is already approved`)
     const mappedstatus = statusMapper[status]
     const paymentStatus = new PaymentStatus(uuidv4(), mappedstatus)
     const newPayment = new Payment(payment.id, payment.orderId, payment.value, [...payment.statuses, paymentStatus], payment.qrCode, payment.integrationId)

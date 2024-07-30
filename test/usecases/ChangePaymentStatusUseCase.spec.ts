@@ -23,7 +23,7 @@ describe('Save payment use case', () => {
   beforeEach(() => {
     mockPaymentGateway = {
       save: jest.fn().mockResolvedValueOnce('payment_id'),
-      findById: jest.fn().mockResolvedValueOnce(mockPayment)
+      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(mockPayment)
     }
   })
   it('Should save a payment when the information is correct', async () => {
@@ -34,15 +34,15 @@ describe('Save payment use case', () => {
   it('Should not save when payment does not exist', async () => {
     const mockNotFound: IPaymentGateway = {
       ...mockPaymentGateway,
-      findById: jest.fn().mockResolvedValueOnce(undefined)
+      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined)
     }
     const sut = new ChangePaymentStatusUseCase(mockNotFound, new EventHandler([]))
     const result = await sut.execute({ issueId: 'wrong_id', status: 'approved' })
-    expect(result).toEqual(notFoundError('Payment with ID wrong_id does not exist'))
+    expect(result).toEqual(notFoundError('Payment with order ID wrong_id does not exist'))
   })
   it('Should throws when status is not mapped', async () => {
     const sut = new ChangePaymentStatusUseCase(mockPaymentGateway, new EventHandler([]))
-    const result = sut.execute({ issueId: 'any_payment_id', status: 'not_mapped' })
+    const result = sut.execute({ issueId: 'any_order_id', status: 'not_mapped' })
     await expect(result).rejects.toEqual(new Error('Status \'undefined\' does not exist'))
   })
   it('Should not save when payment was previouly approved', async () => {
@@ -53,10 +53,10 @@ describe('Save payment use case', () => {
     const payment = new Payment(mockPayment.id, mockPayment.orderId, mockPayment.value, [...mockPaymentStatus, paymentApproved], mockPayment.qrCode, mockPayment.integrationId)
     const mockPaymentApproved: IPaymentGateway = {
       ...mockPaymentGateway,
-      findById: jest.fn().mockResolvedValueOnce(payment)
+      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(payment)
     }
     const sut = new ChangePaymentStatusUseCase(mockPaymentApproved, new EventHandler([]))
-    const result = await sut.execute({ issueId: 'any_payment_id', status: 'approved' })
-    expect(result).toEqual(badRequest('Payment with ID any_payment_id is already approved'))
+    const result = await sut.execute({ issueId: 'any_order_id', status: 'approved' })
+    expect(result).toEqual(badRequest('Payment with order ID any_order_id is already approved'))
   })
 })

@@ -18,7 +18,6 @@ export default class OrderApi implements IApi {
   }
 
   init (): void {
-    // ORDER
     void this.http.route('post', 'order', async (_: any, body: PlaceOrderCommand) => {
       return await this.orderController.placeOrder(body)
     })
@@ -27,6 +26,9 @@ export default class OrderApi implements IApi {
     })
     void this.http.route('put', 'order/:id', async (req: { params: { id: string } }, body: ChangeOrderStatusCommand) => {
       return await this.orderController.changeOrderStatus(req.params.id, body)
+    })
+    void this.http.route('get', 'order/:id/payment', async (req: { params: { id: string } }) => {
+      return await this.orderController.findPaymentByOrderId(req.params.id)
     })
   }
 }

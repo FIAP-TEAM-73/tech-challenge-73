@@ -26,7 +26,7 @@ describe('Payment accepted handler', () => {
   }
   const mockPaymentGateway: IPaymentGateway = {
     save: jest.fn().mockReturnValueOnce('any_payment_id'),
-    findById: jest.fn().mockReturnValueOnce(undefined)
+    findPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined)
   }
   const mockFactory: IGatewayFactory = {
     createCustomerGateway: () => new CustomerInMemoryGateway(),

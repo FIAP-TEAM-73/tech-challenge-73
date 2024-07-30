@@ -52,6 +52,7 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 | --------------------------- |:--------------------:| 
 | /api/v1/order               | POST, GET            |             
 | /api/v1/order/:id           | PUT                  |
+| /api/v1/order/:id/payment   | GET                  |
 
 >**_NOTE!!!_**
 > Status que devem ser enviados no payload são:
@@ -74,6 +75,12 @@ O desenho de arquitetura escolhido foi o monolito hexagonal, também conhecida c
 | -------------------------------|:-------------------:| 
 | /api/v1/customer               |POST                 |             
 | /api/v1/customer/:cpf          |GET                  |     
+
+#### Payment Endpoints
+
+| Endpoint                       | Request Method      | 
+| -------------------------------|:-------------------:| 
+| /api/v1/payment/hook           |POST                 |             
 
 
 
