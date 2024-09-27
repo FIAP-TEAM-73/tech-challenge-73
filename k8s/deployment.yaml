@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: "tech-challenge-73"
-          image: acdmanderson/tech-challenge-73:0.0.2
+          image: acdmanderson/tech-challenge-73:test
           resources:
             limits:
               cpu: "0.5"
