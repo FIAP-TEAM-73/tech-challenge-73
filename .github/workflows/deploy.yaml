@@ -37,6 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref != 'refs/heads/main' || github.ref != 'refs/heads/RELEASE/*'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -63,8 +65,6 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref }}
         run: |
-          pwd
-          ls -la
           echo BRANCH=$BRANCH
           if [ "$BRANCH" == "main" ]; then
             split=(${BRANCH//\// })
@@ -94,7 +94,7 @@ jobs:
           --from-literal=db_host=${{env.DB_HOST}}
       - name: Applying k8s changes
         run: |
-          kubectl delete -f ../k8s/ --ignore-not-found=true
-          kubectl apply -f ../k8s/configmap.yaml
-          kubectl apply -f ../k8s/deployment.yaml
-          kubectl apply -f ../k8s/api-svc.yaml
+          kubectl delete -f k8s/ --ignore-not-found=true
+          kubectl apply -f k8s/configmap.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/api-svc.yaml
