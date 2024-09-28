@@ -94,8 +94,8 @@ jobs:
           --from-literal=db_password=${{env.DB_PASSWORD}} \
           --from-literal=db_url=${{env.DB_URL}} \
           --from-literal=db_host=${{env.DB_HOST}}
-          kubectl apply -f ../../k8s/configmap.yaml
-          kubectl apply -f ../../k8s/deployment.yaml
-          kubectl apply -f ../../k8s/api-svc.yaml
+          kubectl apply -f k8s/configmap.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/api-svc.yaml
 
 
