@@ -63,6 +63,8 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref }}
         run: |
+          pwd
+          ll -la
           echo BRANCH=$BRANCH
           if [ "$BRANCH" == "main" ]; then
             split=(${BRANCH//\// })
