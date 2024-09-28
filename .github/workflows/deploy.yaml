@@ -64,7 +64,7 @@ jobs:
           BRANCH: ${{ github.head_ref }}
         run: |
           pwd
-          ll -la
+          ls -la
           echo BRANCH=$BRANCH
           if [ "$BRANCH" == "main" ]; then
             split=(${BRANCH//\// })
@@ -94,7 +94,7 @@ jobs:
           --from-literal=db_host=${{env.DB_HOST}}
       - name: Applying k8s changes
         run: |
-          kubectl delete -f k8s/ --ignore-not-found=true
-          kubectl apply -f k8s/configmap.yaml
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/api-svc.yaml
+          kubectl delete -f ../k8s/ --ignore-not-found=true
+          kubectl apply -f ../k8s/configmap.yaml
+          kubectl apply -f ../k8s/deployment.yaml
+          kubectl apply -f ../k8s/api-svc.yaml
