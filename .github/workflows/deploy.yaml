@@ -79,11 +79,11 @@ jobs:
           file: Dockerfile
           push: true
           tags: acdmanderson/tech-challenge-73:${{env.DOCKER_TAG}}     
-      - name: Install Kubectl
-        uses: azure/setup-kubectl@v4
-        with:
-          version: '1.28.2' 
-        id: install
+      # - name: Install Kubectl
+      #   uses: azure/setup-kubectl@v4
+      #   with:
+      #     version: '1.28.2' 
+      #   id: install
       - name: Setup Kubectl context
         run: aws eks update-kubeconfig --name tech-challenge-73 --region us-east-1  
       - name: Applying k8s files
