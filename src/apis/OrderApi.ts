@@ -6,6 +6,7 @@ import type IGatewayFactory from '../interfaces/IGatewayFactory'
 import OrderController from '../controllers/OrderController'
 import { type OrderPageParams } from '../interfaces/IOrderGateway'
 import { type IApi } from '../interfaces/IApi'
+import { type ChangeOrderItemsCommand } from '../usecases/ChangeOrderItemsUseCase'
 
 export default class OrderApi implements IApi {
   private readonly orderController: OrderController
@@ -29,6 +30,9 @@ export default class OrderApi implements IApi {
     })
     void this.http.route('get', 'order/:id/payment', async (req: { params: { id: string } }) => {
       return await this.orderController.findPaymentByOrderId(req.params.id)
+    })
+    void this.http.route('patch', 'order/:id/items', async (req: { params: { id: string } }, body: ChangeOrderItemsCommand) => {
+      return await this.orderController.changeOrderItems(req.params.id, body)
     })
   }
 }

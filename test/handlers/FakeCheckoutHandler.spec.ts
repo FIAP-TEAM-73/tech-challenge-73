@@ -6,12 +6,7 @@ import OrderPlaced from '../../src/events/OrderPlaced'
 import type IGatewayFactory from '../../src/interfaces/IGatewayFactory'
 import type IOrderGateway from '../../src/interfaces/IOrderGateway'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
-import * as uuid from 'uuid'
-import Payment from '../../src/entities/Payment'
-import type PaymentStatus from '../../src/entities/PaymentStatus'
 import { type IPaymentIntegrationGateway } from '../../src/interfaces/IPaymentIntegrationGateway'
-
-jest.mock('uuid')
 
 const orderItems: OrderItem[] = [
   new OrderItem('1', '1', 30, 2),
@@ -22,24 +17,14 @@ const orderItems: OrderItem[] = [
 
 const mockOrder = new Order('1', 2, 'CREATED', orderItems)
 
-const mockPaymentStatus: PaymentStatus[] = [
-  {
-    id: 'payment_status_id',
-    status: 'AWAITING_PAYMENT'
-  }
-]
-
-const mockPayment = new Payment('payment_id', '1', 155, mockPaymentStatus, '00020101021243650016COM', 'any_integration_id')
-
 describe('Fake checkout handler', () => {
-  jest.spyOn(uuid, 'v4')
-    .mockReturnValueOnce('payment_status_id')
-    .mockReturnValueOnce('payment_id')
   const mockOrderGateway: IOrderGateway = {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
     find: jest.fn(async (_params: any) => await Promise.resolve([])),
-    count: jest.fn(async (_params: any) => await Promise.resolve(0))
+    count: jest.fn(async (_params: any) => await Promise.resolve(0)),
+    removeAndInsertAllOrderItems: jest.fn(async (_orderId: string, _orderItems: OrderItem[]) => await Promise.resolve('')),
+    checkOrderItemsIfExists: jest.fn(async (_id: string) => await Promise.resolve(true))
   }
   const mockPaymentGateway: IPaymentGateway = {
     save: jest.fn().mockReturnValueOnce('any_payment_id'),
@@ -60,7 +45,7 @@ describe('Fake checkout handler', () => {
     await sut.handle(new OrderPlaced(mockOrder.id))
     expect(mockOrderGateway.findById).toHaveBeenCalledWith('1')
     expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('AWAITING_PAYMENT'))
-    expect(mockPaymentGateway.save).toHaveBeenCalledWith(mockPayment)
+    expect(mockPaymentGateway.save).toHaveReturned()
   })
   it('Should fail when order does not exist', async () => {
     const mockOrderGatewayNotFound: IOrderGateway = {

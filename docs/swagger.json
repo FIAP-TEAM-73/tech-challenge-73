@@ -402,6 +402,102 @@
                 }
             }
         },
+        "/order/{orderId}/items": {
+            "patch": {
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Change Order Items",
+                "operationId": "changeOrderItems",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "e5c79516-aec7-468d-a802-a8cee929ad9f"
+                        }
+                    },
+                    {
+                        "name": "changeOrderItems",
+                        "in": "body",
+                        "description": "Order items change",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "orderItems": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "idItem": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "example": "bf32fb00-7bb2-481d-86ca-336dc5af1d4e"
+                                            },
+                                            "price": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 30.99
+                                            },
+                                            "quantity": {
+                                                "type": "integer",
+                                                "example": 2
+                                            }
+                                        },
+                                        "required": [
+                                            "idItem",
+                                            "price",
+                                            "quantity"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Order items changed successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access PATCH - /order/{orderId}/items"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Quantity must be greater than 1"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "friendlyMessage": {
+                                    "type": "string",
+                                    "example": "Fail while trying to access PATCH - /order/{orderId}/items"
+                                },
+                                "errorMessage": {
+                                    "type": "string",
+                                    "example": "Unkown error!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/order/{orderId}/payment": {
             "get": {
                 "tags": [

@@ -122,4 +122,26 @@ export class OrderGateway implements IOrderGateway {
     if (result.rows.length === 0) return 0
     return result.rows[0].total
   }
+
+  async checkOrderItemsIfExists (id: string): Promise<boolean | undefined> {
+    const query = `
+    SELECT 1 FROM "order_item" o
+    WHERE o.order_id = $1
+    `
+    const result = await this.connection.query(query, [id])
+    if (result.rows.length === 0) return false
+    return true
+  }
+
+  async removeAndInsertAllOrderItems (orderId: string, orderItems: OrderItem[]): Promise<string> {
+    const queryDelete = 'DELETE FROM order_item WHERE (order_id = $1) '
+    const values = [orderId]
+    await Promise.resolve(this.connection.query(queryDelete, values))
+    const queryInsert = 'INSERT INTO order_item(item_id, order_id, price, quantity) VALUES($1, $2, $3, $4) ON CONFLICT (item_id, order_id) DO NOTHING RETURNING *'
+    await Promise.all(orderItems.map(async ({ itemId, price, quantity }) => {
+      const values = [itemId, orderId, price, quantity]
+      await this.connection.query(queryInsert, values)
+    }))
+    return orderId
+  }
 }
