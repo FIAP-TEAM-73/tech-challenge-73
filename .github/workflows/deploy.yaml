@@ -63,7 +63,8 @@ jobs:
         env:
           BRANCH: ${GITHUB_REF##*/}
         run: |
-          if [ "$BRANCH" != "main" ]; then
+          echo BRANCH=$BRANCH
+          if [ "$BRANCH" == "main" ]; then
             split=(${BRANCH//\// })
             index=$((${#split[@]}-1))
             DOCKER_TAG=${split[$index]}
