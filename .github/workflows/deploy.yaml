@@ -61,7 +61,7 @@ jobs:
         id: docker-tag
         shell: bash
         env:
-          BRANCH: ${GITHUB_REF##*/}
+          BRANCH: ${{ github.head_ref }}
         run: |
           echo BRANCH=$BRANCH
           if [ "$BRANCH" == "main" ]; then
@@ -82,7 +82,7 @@ jobs:
       - name: Install Kubectl
         uses: azure/setup-kubectl@v4
         with:
-          version: '1.30' 
+          version: '1.28.2' 
         id: install
       - name: Setup Kubectl context
         run: aws eks update-kubeconfig --name tech-challenge-73 --region us-east-1  
