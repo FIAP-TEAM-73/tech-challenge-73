@@ -39,7 +39,7 @@ describe('Place an Order use case', () => {
     find: jest.fn(async (_params: any) => await Promise.reject(new Error())),
     count: jest.fn(async (_params: any) => await Promise.reject(new Error())),
     removeAndInsertAllOrderItems: jest.fn(async (_orderId: string, _orderItems: OrderItem[]) => await Promise.resolve('')),
-    checkOrderItemsIfExists: jest.fn(async (_id: string) => await Promise.resolve(true))
+    checkOrderItemsIfValid: jest.fn(async (_id: string) => await Promise.resolve(true))
   }
   it('Should place an Order with success when every information is received correctly', async () => {
     const sut = new PlaceOrderUseCase(mockOrderGateway, new EventHandler([]))

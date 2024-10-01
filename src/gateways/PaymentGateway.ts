@@ -34,6 +34,14 @@ export default class PaymentGateway implements IPaymentGateway {
     }))
   }
 
+  async cancelPaymentByOrderId (orderId: string): Promise<void> {
+    const status = 'CANCELED'
+    const query = 'UPDATE "payment_status" SET status = $1 where payment_id in (select P.id from "payment" P where (P.order_id = $2))'
+    const values = [status, orderId]
+    const result = await this.connection.query(query, values)
+    if (result.rows.length === 0) return undefined
+  }
+
   async findPaymentByOrderId (orderId: string): Promise<Payment | undefined> {
     const query = `
     SELECT p.*, ps.id as payment_status_id, ps.status, ps.created_at FROM "payment" p

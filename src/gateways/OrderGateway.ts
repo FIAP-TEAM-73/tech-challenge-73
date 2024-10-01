@@ -123,13 +123,19 @@ export class OrderGateway implements IOrderGateway {
     return result.rows[0].total
   }
 
-  async checkOrderItemsIfExists (id: string): Promise<boolean | undefined> {
+  async checkOrderItemsIfValid (id: string): Promise<boolean | undefined> {
     const query = `
-    SELECT 1 FROM "order_item" o
-    WHERE o.order_id = $1
+    SELECT o.status FROM "order_item" oi
+    INNER JOIN "order" o
+    ON o.id = oi.order_id
+    WHERE oi.order_id = $1
     `
     const result = await this.connection.query(query, [id])
-    if (result.rows.length === 0) return false
+    if (result.rows.length === 0) return undefined
+    else {
+      const data = result.rows[0]
+      if (data.status !== 'AWAITING_PAYMENT') { return false }
+    }
     return true
   }
 

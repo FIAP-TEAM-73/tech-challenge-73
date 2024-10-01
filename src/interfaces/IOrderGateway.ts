@@ -7,6 +7,6 @@ export default interface IOrderGateway {
   findById: (id: string) => Promise<Order | undefined>
   find: (params: OrderPageParams) => Promise<Order[]>
   count: (params: OrderParams) => Promise<number>
-  checkOrderItemsIfExists: (id: string) => Promise<boolean | undefined>
+  checkOrderItemsIfValid: (id: string) => Promise<boolean | undefined>
   removeAndInsertAllOrderItems: (orderId: string, orderItems: OrderItem[]) => Promise<string>
 }

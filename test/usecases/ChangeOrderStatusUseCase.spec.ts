@@ -22,7 +22,7 @@ describe('Update Order status use case', () => {
     find: jest.fn(async (_params: any) => await Promise.reject(new Error())),
     count: jest.fn(async (_params: any) => await Promise.reject(new Error())),
     removeAndInsertAllOrderItems: jest.fn(async (_orderId: string, _orderItems: OrderItem[]) => await Promise.resolve('')),
-    checkOrderItemsIfExists: jest.fn(async (_id: string) => await Promise.resolve(true))
+    checkOrderItemsIfValid: jest.fn(async (_id: string) => await Promise.resolve(true))
   }
   it('Should update Order status with success when Order exists', async () => {
     const orderId = 'any_id'

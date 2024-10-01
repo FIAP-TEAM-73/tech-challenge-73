@@ -19,7 +19,8 @@ describe('Save payment use case', () => {
   beforeEach(() => {
     mockPaymentGateway = {
       save: jest.fn().mockResolvedValueOnce('payment_id'),
-      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(mockPayment)
+      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(mockPayment),
+      cancelPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined)
     }
   })
   it('Should save a payment when the information is correct', async () => {

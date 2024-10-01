@@ -16,7 +16,8 @@ const mockPayment = new Payment('any_payment_id', 'any_order_id', 85.99, mockPay
 describe('Find payment by order id use case', () => {
   const mockPaymentGateway: IPaymentGateway = {
     save: jest.fn().mockResolvedValueOnce('payment_id'),
-    findPaymentByOrderId: jest.fn().mockResolvedValueOnce(mockPayment)
+    findPaymentByOrderId: jest.fn().mockResolvedValueOnce(mockPayment),
+    cancelPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined)
   }
   it('Should return a payment when it exists', async () => {
     const sut = new FindPaymentByOrderIdUseCase(mockPaymentGateway)
@@ -33,7 +34,8 @@ describe('Find payment by order id use case', () => {
   it('Should return not found when it does not exist', async () => {
     const mockPaymentGateway: IPaymentGateway = {
       save: jest.fn().mockResolvedValueOnce('payment_id'),
-      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined)
+      findPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined),
+      cancelPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined)
     }
     const sut = new FindPaymentByOrderIdUseCase(mockPaymentGateway)
     const result = await sut.execute('wrong_order_id')

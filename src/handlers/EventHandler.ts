@@ -6,9 +6,7 @@ export default class EventHandler {
 
   async publish<T> (event: DomainEvent<T>): Promise<void> {
     await Promise.all(this.handlers.map(async (handler) => {
-      if (handler.name === event.name) {
-        await handler.handle(event)
-      }
+      await handler.handle(event)
     }))
   }
 }

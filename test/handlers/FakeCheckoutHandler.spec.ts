@@ -24,11 +24,12 @@ describe('Fake checkout handler', () => {
     find: jest.fn(async (_params: any) => await Promise.resolve([])),
     count: jest.fn(async (_params: any) => await Promise.resolve(0)),
     removeAndInsertAllOrderItems: jest.fn(async (_orderId: string, _orderItems: OrderItem[]) => await Promise.resolve('')),
-    checkOrderItemsIfExists: jest.fn(async (_id: string) => await Promise.resolve(true))
+    checkOrderItemsIfValid: jest.fn(async (_id: string) => await Promise.resolve(true))
   }
   const mockPaymentGateway: IPaymentGateway = {
     save: jest.fn().mockReturnValueOnce('any_payment_id'),
-    findPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined)
+    findPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined),
+    cancelPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined)
   }
   const mockPaymentIntegrationGateway: IPaymentIntegrationGateway = {
     createPayment: jest.fn().mockReturnValueOnce({ integrationId: 'any_integration_id', qrCode: '00020101021243650016COM' })

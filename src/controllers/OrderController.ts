@@ -22,7 +22,7 @@ export default class OrderController {
     this.changeOrderStatusUseCase = new ChangeOrderStatusUseCase(orderGateway)
     this.findOrderUseCase = new FindOrderUseCase(orderGateway)
     this.findPaymentByOrderIdUseCase = new FindPaymentByOrderIdUseCase(paymentGateway)
-    this.changeOrderItemsUseCase = new ChangeOrderItemsUseCase(orderGateway)
+    this.changeOrderItemsUseCase = new ChangeOrderItemsUseCase(orderGateway, eventHandler)
   }
 
   async placeOrder (command: PlaceOrderCommand): Promise<HttpResponse> {
