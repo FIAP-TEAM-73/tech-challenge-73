@@ -5,9 +5,6 @@ metadata:
   labels:
     name: db-config
 data:
-  DB_USER: postgress
-  DB_PASSWORD: ''
   DB_NAME: database_fastfood
-  DB_HOST: postgres-svc
   DB_PORT: "5432"
-  DATABASE_URL: postgres://postgress:''@postgres-svc:5432/database_fastfood
+  PGSSLMODE: no-verify
