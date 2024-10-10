@@ -63,7 +63,7 @@ jobs:
         id: docker-tag
         shell: bash
         env:
-          BRANCH: ${{ github.head_ref }}
+          BRANCH: ${{ github.ref }}
         run: |
           echo BRANCH=$BRANCH
           if [ "$BRANCH" != "main" ]; then
