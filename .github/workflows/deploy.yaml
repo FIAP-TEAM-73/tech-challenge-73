@@ -3,7 +3,6 @@ run-name: Deployment for Tech Challenge 73 to AWS EKS on branch ${{ github.head_
 on:
   push:
     branches:
-      - FEATURE/*
       - RELEASE/*
       - main
   pull_request:
@@ -35,7 +34,7 @@ jobs:
   deploy:
     needs: [tests, build]
     runs-on: ubuntu-latest
-    #if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/RELEASE/')) && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/RELEASE/')) && github.event_name == 'push'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
