@@ -62,16 +62,16 @@ jobs:
         id: docker-tag
         shell: bash
         env:
-          BRANCH: ${{ github.head_ref }}
+          BRANCH: ${{ github.ref }}
         run: |
           echo BRANCH=$BRANCH
-          if [ "$BRANCH" == "main" ]; then
+          if [ "$BRANCH" != "main" ]; then
             split=(${BRANCH//\// })
             index=$((${#split[@]}-1))
             DOCKER_TAG=${split[$index]}
             echo DOCKER_TAG=$DOCKER_TAG >> $GITHUB_ENV
           else
-            DOCKER_TAG="test"
+            DOCKER_TAG="latest"
             echo DOCKER_TAG=$DOCKER_TAG >> $GITHUB_ENV
           fi
       - name: Build and push Docker image
@@ -95,5 +95,5 @@ jobs:
         run: |
           kubectl delete -f k8s/ --ignore-not-found=true
           kubectl apply -f k8s/configmap.yaml
-          kubectl apply -f k8s/deployment.yaml
+          envsubst < k8s/deployment.yaml | kubectl apply -f -
           kubectl apply -f k8s/api-svc.yaml

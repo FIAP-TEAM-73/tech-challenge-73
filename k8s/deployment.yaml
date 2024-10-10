@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: "tech-challenge-73"
-          image: acdmanderson/tech-challenge-73:test
+          image: acdmanderson/tech-challenge-73:$DOCKER_TAG
           resources:
             limits:
               cpu: "0.5"
@@ -30,14 +30,15 @@ spec:
             requests:
               cpu: "0.2"
               memory: 200Mi
+          readinessProbe:
+            tcpSocket:
+              port: 9001
+            initialDelaySeconds: 15
           livenessProbe:
             tcpSocket:
               port: 9001
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
             timeoutSeconds: 5
-            successThreshold: 1
-            failureThreshold: 3
-            periodSeconds: 10
           ports:
             - containerPort: 9001
           env:
