@@ -3,6 +3,7 @@ run-name: Deployment for Tech Challenge 73 to AWS EKS on branch ${{ github.head_
 on:
   push:
     branches:
+      - FEATURE/*
       - RELEASE/*
       - main
   pull_request:
@@ -34,7 +35,7 @@ jobs:
   deploy:
     needs: [tests, build]
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/RELEASE/')) && github.event_name == 'push'
+    #if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/RELEASE/')) && github.event_name == 'push'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -65,13 +66,13 @@ jobs:
           BRANCH: ${{ github.head_ref }}
         run: |
           echo BRANCH=$BRANCH
-          if [ "$BRANCH" == "main" ]; then
+          if [ "$BRANCH" != "main" ]; then
             split=(${BRANCH//\// })
             index=$((${#split[@]}-1))
             DOCKER_TAG=${split[$index]}
             echo DOCKER_TAG=$DOCKER_TAG >> $GITHUB_ENV
           else
-            DOCKER_TAG="test"
+            DOCKER_TAG="latest"
             echo DOCKER_TAG=$DOCKER_TAG >> $GITHUB_ENV
           fi
       - name: Build and push Docker image
@@ -95,5 +96,5 @@ jobs:
         run: |
           kubectl delete -f k8s/ --ignore-not-found=true
           kubectl apply -f k8s/configmap.yaml
-          kubectl apply -f k8s/deployment.yaml
+          envsubst < k8s/deployment.yaml | kubectl apply -f -
           kubectl apply -f k8s/api-svc.yaml
