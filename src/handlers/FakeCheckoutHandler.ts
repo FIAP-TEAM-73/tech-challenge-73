@@ -9,9 +9,9 @@ import type Order from '../entities/Order'
 import PaymentStatus from '../entities/PaymentStatus'
 import Payment from '../entities/Payment'
 import { v4 as uuidv4 } from 'uuid'
+import OrderUpdated from '../events/OrderUpdated'
 
 export default class FakeCheckoutHandler implements IHandler {
-  name: string = 'orderPlaced'
   orderGateway: IOrderGateway
   paymentGateway: IPaymentGateway
   paymentIntegrationGateway: IPaymentIntegrationGateway
@@ -22,9 +22,10 @@ export default class FakeCheckoutHandler implements IHandler {
   }
 
   async handle<T> (event: DomainEvent<T>): Promise<void> {
-    if (event instanceof OrderPlaced) {
+    if (event instanceof OrderPlaced || event instanceof OrderUpdated) {
       const order = await this.orderGateway.findById(event.value)
       if (order === undefined) throw new Error(`Order with id ${event.value} does not exists`)
+      if (event instanceof OrderUpdated) await this.paymentGateway.cancelPaymentByOrderId(event.value)
       await this.createPayment(order)
       await this.orderGateway.save(order.updateStatus('AWAITING_PAYMENT'))
     }

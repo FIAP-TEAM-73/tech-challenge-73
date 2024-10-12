@@ -22,11 +22,14 @@ describe('Payment rejected handler', () => {
     save: jest.fn(async (order) => await Promise.resolve(order.id)),
     findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
     find: jest.fn(async (_params: any) => await Promise.resolve([])),
-    count: jest.fn(async (_params: any) => await Promise.resolve(0))
+    count: jest.fn(async (_params: any) => await Promise.resolve(0)),
+    removeAndInsertAllOrderItems: jest.fn(async (_orderId: string, _orderItems: OrderItem[]) => await Promise.resolve('')),
+    checkOrderItemsIfValid: jest.fn(async (_id: string) => await Promise.resolve(true))
   }
   const mockPaymentGateway: IPaymentGateway = {
     save: jest.fn().mockReturnValueOnce('any_payment_id'),
-    findPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined)
+    findPaymentByOrderId: jest.fn().mockReturnValueOnce(undefined),
+    cancelPaymentByOrderId: jest.fn().mockResolvedValueOnce(undefined)
   }
   const mockFactory: IGatewayFactory = {
     createCustomerGateway: () => new CustomerInMemoryGateway(),
