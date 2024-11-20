@@ -6,16 +6,13 @@ import ItemGateway from '../gateways/ItemGateway'
 import { OrderGateway } from '../gateways/OrderGateway'
 import type IItemGateway from '../interfaces/IItemGateway'
 import { type ICustomerGateway } from '../interfaces/ICustomerGateway'
-import { type IPaymentGateway } from '../interfaces/IPaymentGateway'
-import { type IPaymentIntegrationGateway } from '../interfaces/IPaymentIntegrationGateway'
-import PaymentGateway from '../gateways/PaymentGateway'
-import PaymentIntegrationInMemoryGateway from '../gateways/PaymentIntegrationInMemoryGateway'
+import { type IIntegration } from '../interfaces/IIntegration'
 
 export default class GatewayFactory implements IGatewayFactory {
-  constructor (private readonly connection: IConnection) {}
+  constructor (private readonly connection: IConnection, private readonly integration: IIntegration) {}
 
   createOrderGateway (): IOrderGateway {
-    return new OrderGateway(this.connection)
+    return new OrderGateway(this.integration)
   }
 
   createCustomerGateway (): ICustomerGateway {
@@ -24,13 +21,5 @@ export default class GatewayFactory implements IGatewayFactory {
 
   createItemGateway (): IItemGateway {
     return new ItemGateway(this.connection)
-  }
-
-  createPaymentGateway (): IPaymentGateway {
-    return new PaymentGateway(this.connection)
-  }
-
-  createPaymentIntegrationGateway (): IPaymentIntegrationGateway {
-    return new PaymentIntegrationInMemoryGateway()
   }
 }

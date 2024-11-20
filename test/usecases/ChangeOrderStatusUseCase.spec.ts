@@ -1,4 +1,3 @@
-import { notFoundError } from '../../src/presenters/HttpResponses'
 import ChangeOrderStatusUseCase, { type ChangeOrderStatusCommand } from '../../src/usecases/ChangeOrderStatusUseCase'
 import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
@@ -17,26 +16,23 @@ const orderItems: OrderItem[] = [
 const mockOrder = new Order('any_id', 2, 'CREATED', orderItems)
 describe('Update Order status use case', () => {
   const mockOrderGateway: IOrderGateway = {
-    save: jest.fn(async (order) => await Promise.resolve(order.id)),
-    findById: jest.fn(async (_id: string) => await Promise.resolve(mockOrder)),
-    find: jest.fn(async (_params: any) => await Promise.reject(new Error())),
-    count: jest.fn(async (_params: any) => await Promise.reject(new Error()))
+    updateStatus: jest.fn().mockResolvedValueOnce(undefined),
+    find: jest.fn().mockRejectedValueOnce(new Error())
   }
   it('Should update Order status with success when Order exists', async () => {
     const orderId = 'any_id'
     const sut = new ChangeOrderStatusUseCase(mockOrderGateway)
     await sut.execute(orderId, mockUpdateOrderStatusCommand)
-    expect(mockOrderGateway.findById).toHaveBeenCalledWith(orderId)
-    expect(mockOrderGateway.save).toHaveBeenCalledWith(mockOrder.updateStatus('CANCELED'))
+    expect(mockOrderGateway.updateStatus).toHaveBeenCalledWith(mockOrder.id, 'CANCELED')
   })
-  it('Should return not found when Order does not exist', async () => {
+  it('Should throw when OrderGateway Throws', async () => {
     const mockOrderGatewayNotFound: IOrderGateway = {
       ...mockOrderGateway,
-      findById: jest.fn(async (_id: string) => { return undefined })
+      updateStatus: jest.fn().mockRejectedValueOnce(new Error())
     }
     const orderId = 'any_id'
     const sut = new ChangeOrderStatusUseCase(mockOrderGatewayNotFound)
-    const result = await sut.execute(orderId, mockUpdateOrderStatusCommand)
-    expect(result).toEqual(notFoundError(`Order ${orderId} does not exist!`))
+    const result = sut.execute(orderId, mockUpdateOrderStatusCommand)
+    await expect(result).rejects.toThrow(new Error())
   })
 })
