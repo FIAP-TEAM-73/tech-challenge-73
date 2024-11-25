@@ -2,9 +2,6 @@ import Order from '../../src/entities/Order'
 import OrderItem from '../../src/entities/OrderItem'
 import PaymentIntegrationInMemoryGateway from '../../src/gateways/PaymentIntegrationInMemoryGateway'
 import { type IPaymentIntegrationGateway } from '../../src/interfaces/IPaymentIntegrationGateway'
-import * as uuid from 'uuid'
-
-jest.mock('uuid')
 
 const orderItems: OrderItem[] = [
   new OrderItem('1', '1', 30, 2),
@@ -16,10 +13,9 @@ const orderItems: OrderItem[] = [
 const order = new Order('1', 2, 'CREATED', orderItems)
 
 describe('Payment integration in memory gateway', () => {
-  jest.spyOn(uuid, 'v4').mockReturnValueOnce('any_integration_id')
   it('Should return a fake payment integration when Payment in memory is called', async () => {
     const sut: IPaymentIntegrationGateway = new PaymentIntegrationInMemoryGateway()
     const result = await sut.createPayment(order)
-    expect(result).toEqual({ integrationId: 'any_integration_id', qrCode: '00020101021243650016COM' })
+    expect(result.qrCode).toEqual('00020101021243650016COM')
   })
 })

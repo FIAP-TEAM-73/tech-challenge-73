@@ -179,3 +179,20 @@ Para executar o migration é preciso ter a conexão com o banco em forma de URL 
 $ export DATABASE_URL=postgres://postgres:1234@0.0.0.0:5432/postgres
 $ npm run migrate up
 ```
+
+<li>Testes BDD </li>
+
+Abrir terminar no diretorio cd /test/bdd e instalar pacotes abaixo
+
+```bash
+$ npm install cucumber --save-dev
+$ npm install ts-node --save-dev
+$ npm install expect
+
+```
+
+Para executar a cobertura de testes
+
+```bash
+$ npm test
+```

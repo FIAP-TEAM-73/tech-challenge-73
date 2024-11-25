@@ -1,0 +1,20 @@
+{
+  "name": "bdd",
+  "version": "1.0.0",
+  "main": "cucumber.js",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/cucumber": "^7.0.3",
+    "cucumber": "^6.0.7",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "expect": "^29.7.0"
+  }
+}

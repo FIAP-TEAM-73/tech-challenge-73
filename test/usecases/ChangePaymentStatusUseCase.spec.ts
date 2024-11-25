@@ -4,9 +4,6 @@ import EventHandler from '../../src/handlers/EventHandler'
 import { type IPaymentGateway } from '../../src/interfaces/IPaymentGateway'
 import { badRequest, noContent, notFoundError } from '../../src/presenters/HttpResponses'
 import { ChangePaymentStatusUseCase } from '../../src/usecases/ChangePaymentStatusUseCase'
-import * as uuid from 'uuid'
-
-jest.mock('uuid')
 
 const mockPaymentStatus: PaymentStatus[] = [
   {
@@ -18,7 +15,6 @@ const mockPaymentStatus: PaymentStatus[] = [
 const mockPayment = new Payment('any_payment_id', 'any_order_id', 85.99, mockPaymentStatus, '0001', 'any_integration_id')
 
 describe('Save payment use case', () => {
-  jest.spyOn(uuid, 'v4').mockReturnValueOnce('mocked_id')
   let mockPaymentGateway: IPaymentGateway
   beforeEach(() => {
     mockPaymentGateway = {
