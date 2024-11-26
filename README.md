@@ -188,7 +188,8 @@ Abrir terminar no diretorio cd /test/bdd e instalar pacotes abaixo
 $ npm install cucumber --save-dev
 $ npm install ts-node --save-dev
 $ npm install expect
-
+$ npm install cucumber-html-reporter --save-dev
+ 
 ```
 
 Para executar a cobertura de testes
