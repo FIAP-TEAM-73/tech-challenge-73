@@ -8,3 +8,4 @@ data:
   DB_NAME: database_fastfood
   DB_PORT: "5432"
   PGSSLMODE: no-verify
+  ORDER_API_HOST: http://svc-order-api/api/v1
