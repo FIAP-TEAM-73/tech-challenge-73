@@ -21,6 +21,11 @@
         "src",
         "test",
         "migrations",
-        "scripts"
-    ]
+        "scripts",
+        "e2e"
+    ],
+    "ts-node": {
+      "esm": true,
+      "experimentalSpecifierResolution": "node",
+    }
 }

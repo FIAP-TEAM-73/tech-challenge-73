@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --silent --noStackTrace --runInBand ./test",
-    "test:verbose": "jest --runInBand ./test",
+    "test:verbose": "jest --coverage=true --runInBand ./test",
+    "test:e2e": "cucumber-js",
     "start": "ts-node-dev --respawn ./src/main.ts",
     "prepare": "husky install",
     "lint": "eslint --fix --ext .js,.ts .",
@@ -18,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cucumber/cucumber": "^11.1.0",
     "@types/axios": "^0.14.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -25,12 +27,14 @@
     "@types/pg": "^8.11.6",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/uuid": "^9.0.8",
+    "assert": "^2.1.0",
     "eslint-config-love": "^47.0.0",
     "git-commit-msg-linter": "^5.0.8",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "node-pg-migrate": "^7.3.2",
     "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
   },
