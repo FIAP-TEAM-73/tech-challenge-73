@@ -14,7 +14,7 @@ export default class PostgresConnection implements IConnection {
   private connected: boolean = false
 
   constructor (config: PGConfig) {
-    this.client = new Client(config)
+    this.client = new Client({ ...config, ssl: false })
   }
 
   async connect (): Promise<void> {

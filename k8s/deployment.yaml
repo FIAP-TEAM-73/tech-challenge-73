@@ -77,4 +77,9 @@ spec:
                 configMapKeyRef:
                   name: db-config
                   key: PGSSLMODE
+            - name: ORDER_API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: ORDER_API_HOST
         

@@ -2,7 +2,7 @@ import { SaveCustomerUseCase, type CustomerCommand } from '../../src/usecases/Sa
 import { DomainError } from '../../src/entities/base/DomainError'
 import { Customer } from '../../src/entities/Customer'
 import * as uuid from 'uuid'
-import { internalServerError, noContent } from '../../src/presenters/HttpResponses'
+import { noContent } from '../../src/presenters/HttpResponses'
 import { type ICustomerGateway } from '../../src/interfaces/ICustomerGateway'
 import { CPF } from '../../src/entities/value-objects/Cpf'
 import { Phone } from '../../src/entities/value-objects/Phone'
@@ -27,14 +27,14 @@ describe('Save Customer use case', () => {
     const result = await sut.execute(mockCustomerRequest)
     expect(result).toEqual(noContent())
   })
-  it('Should return internal server error when Gateway throws', async () => {
+  it('Should throw when Gateway throws', async () => {
     const error = new DomainError('Generic Gateway error')
     const mockRejectCustomerGateway: ICustomerGateway = {
       ...mockCustomerGateway,
       save: jest.fn(async () => await Promise.reject(error))
     }
     const sut = new SaveCustomerUseCase(mockRejectCustomerGateway)
-    const result = await sut.execute(mockCustomerRequest)
-    expect(result).toEqual(internalServerError('Fail while saving a customer.', error))
+    const result = sut.execute(mockCustomerRequest)
+    await expect(result).rejects.toEqual(error)
   })
 })

@@ -1,4 +1,4 @@
-export default class Paginator<T> {
+export default class PageableResponsePaginator<T> {
   constructor (
     readonly content: T[],
     readonly size: number,
