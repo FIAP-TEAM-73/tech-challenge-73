@@ -42,7 +42,7 @@ const main = async (): Promise<void> => {
   await connection.connect()
   const integration = getIntegration()
   initRoutes(http, connection, integration)
-  await http.doc('/swagger/tech-challene-73', doc)
+  await http.doc('/swagger', doc)
   await http.listen(+(process.env.PORT ?? 9001))
   process.on('SIGINT', () => {
     console.log('Process is finishing')
